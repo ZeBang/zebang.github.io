@@ -11,3 +11,11 @@ redirect_from:
 This is Zebang Li's home on the web!
 Welcome.
 
+## News
+
+-   2020-09-10: this web published.
+
+## Recent Posts
+
+-   This web is still under construction...
+
