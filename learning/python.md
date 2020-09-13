@@ -37,4 +37,10 @@ types.BuiltinFunctionType
 isinstance(min, types.BuiltinFunctionType)
 > True
 ```
-Or just use `help()` 
+Or just use `help()`
+
+References:
+[RUNOOB](https://www.runoob.com/python3/python3-tutorial.html)
+[Liaoxuefeng](https://www.liaoxuefeng.com/wiki/1016959663602400)
+[Python official Doc](https://docs.python.org/zh-cn/3/tutorial/index.html)
+[StackOverflow](https://stackoverflow.com/)
