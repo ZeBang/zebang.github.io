@@ -44,3 +44,4 @@ References:
 [Liaoxuefeng](https://www.liaoxuefeng.com/wiki/1016959663602400)
 [Python official Doc](https://docs.python.org/zh-cn/3/tutorial/index.html)
 [StackOverflow](https://stackoverflow.com/)
+[awesome-python](https://awesome-python.com/)
