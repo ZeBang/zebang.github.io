@@ -1,0 +1,235 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Summary of Linux Operation</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-01-31"><meta name="DC.source" content="linux.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Summary of Linux Operation</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">linux&#19979;vi&#25805;&#20316;Found a swap file by the name</a></li><li><a href="#2">&#37197;&#32622;Nginx</a></li><li><a href="#4">&#24443;&#24213;&#21368;&#36733;&#24182;&#37325;&#26032;&#23433;&#35013;Nginx</a></li></ul></div><h2>linux&#19979;vi&#25805;&#20316;Found a swap file by the name<a name="1"></a></h2><pre class="language-matlab">E325: ATTENTION
+Found <span class="string">a</span> <span class="string">swap</span> <span class="string">file</span> <span class="string">by</span> <span class="string">the</span> <span class="string">name</span> <span class="string">".Test.java.swp"</span>
+</pre><pre class="language-matlab">&#21407;&#22240;&#26159;&#25105;&#20043;&#21069;&#26377;&#19968;&#27425;&#20351;&#29992;vi &#25805;&#20316;Test.java&#25991;&#20214;&#26102;&#20986;&#29616;&#20102;&#24322;&#24120;&#20013;&#26029;&#65292;&#25152;&#20197;&#22312;&#24403;&#21069;&#30446;&#24405;&#19979;&#20135;&#29983;&#20102;&#19968;&#20010;.Test.java.swp&#25991;&#20214;
+&#20294;&#26159;&#25105;&#20351;&#29992;ls&#21629;&#20196;&#26597;&#30475;&#35813;&#30446;&#24405;&#19979;&#65292;&#21364;&#21457;&#29616;&#27809;&#26377;&#36825;&#20010;&#25991;&#20214;&#65292;&#21518;&#26469;&#20351;&#29992;ls -a&#21629;&#20196;&#26597;&#30475;&#25165;&#30693;&#36947;Test.java.swp&#26159;&#19968;&#20010;&#38544;&#34255;&#25991;&#20214;&#12290;
+&#27880;&#65306;&#20197;.&#24320;&#22836;&#30340;&#25991;&#20214;&#23601;&#26159;&#38544;&#34255;&#25991;&#20214;
+&#24403;&#25105;&#25226;&#35813;&#38544;&#34255;&#25991;&#20214;&#21024;&#38500;&#21518;&#20877;&#27425;&#25171;&#24320;&#23601;&#27809;&#26377;&#19978;&#38754;&#30340;&#35686;&#21578;&#20102;&#12290;
+</pre><pre class="language-matlab">[root@localhost tmp]# ls <span class="string">-a</span>
+[root@localhost tmp]# rm <span class="string">.Test.java.swp</span>
+</pre><h2>&#37197;&#32622;Nginx<a name="2"></a></h2><pre class="language-matlab">&#25226;&#37197;&#32622;&#25991;&#20214;awesome&#25918;&#21040;/etc/nginx/sites-available/&#30446;&#24405;&#19979;&#65306;
+</pre><pre class="codeinput"> server <span class="string">{</span>
+    listen      <span class="string">80</span>; # &#30417;&#21548;80&#31471;&#21475;
+
+    root       <span class="string">/srv/awesome/www</span>;
+    access_log <span class="string">/srv/awesome/log/access_log</span>;
+    error_log  <span class="string">/srv/awesome/log/error_log</span>;
+
+    # server_name <span class="string">awesome.liaoxuefeng.com</span>; # &#37197;&#32622;&#22495;&#21517;
+
+    # &#22788;&#29702;&#38745;&#24577;&#25991;&#20214;/favicon.ico:
+    location <span class="string">/favicon.ico</span> <span class="string">{</span>
+        root <span class="string">/srv/awesome/www</span>;
+    }
+
+    # &#22788;&#29702;&#38745;&#24577;&#36164;&#28304;:
+    location <span class="string">~</span> <span class="string">^\/static\/.*$</span> <span class="string">{</span>
+        root <span class="string">/srv/awesome/www</span>;
+    }
+
+    # &#21160;&#24577;&#35831;&#27714;&#36716;&#21457;&#21040;9000&#31471;&#21475;(gunicorn):
+    location / {
+        proxy_pass       http://127.0.0.1:9000;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</pre><pre class="language-matlab">&#28982;&#21518;&#22312;/etc/nginx/sites-enabled/&#30446;&#24405;&#19979;&#21019;&#24314;&#36719;&#38142;&#25509;&#65292;&#24182;&#19988;&#35753;Nginx&#37325;&#26032;&#21152;&#36733;&#37197;&#32622;&#25991;&#20214;&#65292;&#19981;&#20986;&#24847;&#22806;&#65292;&#25105;&#20204;&#30340;awesome-python-webapp&#24212;&#35813;&#27491;&#24120;&#36816;&#34892;&#65306;
+</pre><pre>  [root@localhost tmp]# pwd
+  /etc/nginx/sites-enabled
+  [root@localhost tmp]# sudo ln -s /etc/nginx/sites-available/awesome .
+  [root@localhost tmp]# sudo /etc/init.d/nginx reload</pre><h2>&#24443;&#24213;&#21368;&#36733;&#24182;&#37325;&#26032;&#23433;&#35013;Nginx<a name="4"></a></h2><p><b>1.1</b> &#21024;&#38500;nginx&#65292;&#8211;purge&#21253;&#25324;&#37197;&#32622;&#25991;&#20214;</p><pre>  [root@localhost tmp]# sudo apt-get --purge remove nginx</pre><p><b>1.2</b> &#33258;&#21160;&#31227;&#38500;&#20840;&#37096;&#19981;&#20351;&#29992;&#30340;&#36719;&#20214;&#21253;</p><pre>  [root@localhost tmp]# sudo apt-get autoremove</pre><p><b>1.3</b> &#32599;&#21015;&#20986;&#19982;nginx&#30456;&#20851;&#30340;&#36719;&#20214;</p><pre>  [root@localhost tmp]# dpkg --get-selections|grep nginx
+  &#25191;&#34892;1.3&#30340;&#32467;&#26524;:
+  stephen@stephen-OptiPlex-390:~$ dpkg --get-selections|grep nginx
+  nginx                       install
+  nginx-common                    install
+  nginx-core                  install</pre><p><b>1.4</b> &#21024;&#38500;1.3&#26597;&#35810;&#20986;&#19982;nginx&#26377;&#20851;&#30340;&#36719;&#20214;</p><pre>  [root@localhost tmp]# sudo apt-get --purge remove nginx
+  [root@localhost tmp]# sudo apt-get --purge remove nginx-common
+  [root@localhost tmp]# sudo apt-get --purge remove nginx-core
+  &#36825;&#26679;&#23601;&#21487;&#20197;&#23436;&#20840;&#21368;&#36733;&#25481;nginx&#21253;&#25324;&#37197;&#32622;&#25991;&#20214;</pre><p><b>2.</b> &#26597;&#30475;nginx&#27491;&#22312;&#36816;&#34892;&#30340;&#36827;&#31243;&#65292;&#22914;&#26524;&#26377;&#23601;kill&#25481;</p><pre>  [root@localhost tmp]# ps -ef |grep nginx
+  &#30475;&#19979;nginx&#36824;&#26377;&#27809;&#26377;&#21551;&#21160;,&#19968;&#33324;&#25191;&#34892;&#23436;1&#21518;&#65292;nginx&#36824;&#26159;&#21551;&#21160;&#30528;&#30340;&#65292;&#22914;&#19979;&#65306;
+  [root@localhost tmp]# stephen@stephen-OptiPlex-390:~$ ps -ef |grep nginx</pre><pre class="codeinput">` root      <span class="string">7875</span>  <span class="string">2317</span>  <span class="string">0</span> <span class="string">15:02</span> <span class="string">?</span>        <span class="string">00:00:00</span> <span class="string">nginx:</span> <span class="string">master</span> <span class="string">process</span> <span class="string">/usr/sbin/nginx</span>
+  www-data  7876  7875  0 15:02 ?        00:00:00 nginx: worker process
+  www-data  7877  7875  0 15:02 ?        00:00:00 nginx: worker process
+  www-data  7878  7875  0 15:02 ?        00:00:00 nginx: worker process
+  www-data  7879  7875  0 15:02 ?        00:00:00 nginx: worker process
+  stephen   <span class="string">8321</span>  <span class="string">3510</span>  <span class="string">0</span> <span class="string">15:20</span> <span class="string">pts/0</span>    <span class="string">00:00:00</span> <span class="string">grep</span> <span class="string">--color=auto</span> <span class="string">nginx</span>
+</pre><p><b>3.</b> kill nginx&#36827;&#31243;</p><pre>  [root@localhost tmp]# sudo kill  -9  7875 7876 7877 7879</pre><p><b>4.</b> &#20840;&#23616;&#26597;&#25214;&#19982;nginx&#30456;&#20851;&#30340;&#25991;&#20214;</p><pre>  [root@localhost tmp]# sudo  find  /  -name  nginx*</pre><p><b>5.</b> &#20381;&#20381;&#21024;&#38500;4&#21015;&#20986;&#30340;&#25152;&#26377;&#25991;&#20214;</p><pre>  [root@localhost tmp]# sudo  sudo rm -rf file</pre><p><b>6.</b> &#20877;&#27425;&#37325;&#35013;</p><pre>  [root@localhost tmp]# sudo apt-get update
+  [root@localhost tmp]# sudo apt-get install nginx</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Summary of Linux Operation
+%% linux下vi操作Found a swap file by the name 
+%   E325: ATTENTION  
+%   Found a swap file by the name ".Test.java.swp"  
+%
+%   原因是我之前有一次使用vi 操作Test.java文件时出现了异常中断，所以在当前目录下产生了一个.Test.java.swp文件
+%   但是我使用ls命令查看该目录下，却发现没有这个文件，后来使用ls -a命令查看才知道Test.java.swp是一个隐藏文件。
+%   注：以.开头的文件就是隐藏文件
+%   当我把该隐藏文件删除后再次打开就没有上面的警告了。
+%
+%   [root@localhost tmp]# ls -a
+%   [root@localhost tmp]# rm .Test.java.swp
+%% 配置Nginx
+%   把配置文件awesome放到/etc/nginx/sites-available/目录下： 
+
+ server {
+    listen      80; # 监听80端口
+
+    root       /srv/awesome/www;
+    access_log /srv/awesome/log/access_log;
+    error_log  /srv/awesome/log/error_log;
+
+    # server_name awesome.liaoxuefeng.com; # 配置域名
+
+    # 处理静态文件/favicon.ico:
+    location /favicon.ico {
+        root /srv/awesome/www;
+    }
+
+    # 处理静态资源:
+    location ~ ^\/static\/.*$ {
+        root /srv/awesome/www;
+    }
+
+    # 动态请求转发到9000端口(gunicorn):
+    location / {
+        proxy_pass       http://127.0.0.1:9000;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+%%%
+%   然后在/etc/nginx/sites-enabled/目录下创建软链接，并且让Nginx重新加载配置文件，不出意外，我们的awesome-python-webapp应该正常运行：
+%
+%    [root@localhost tmp]# pwd
+%    /etc/nginx/sites-enabled
+%    [root@localhost tmp]# sudo ln -s /etc/nginx/sites-available/awesome .
+%    [root@localhost tmp]# sudo /etc/init.d/nginx reload
+%%  彻底卸载并重新安装Nginx
+% *1.1* 删除nginx，–purge包括配置文件
+%
+%    [root@localhost tmp]# sudo apt-get REPLACE_WITH_DASH_DASHpurge remove nginx
+%
+% *1.2* 自动移除全部不使用的软件包
+%
+%    [root@localhost tmp]# sudo apt-get autoremove
+%
+% *1.3* 罗列出与nginx相关的软件
+%
+%    [root@localhost tmp]# dpkg REPLACE_WITH_DASH_DASHget-selections|grep nginx
+%    执行1.3的结果:
+%    stephen@stephen-OptiPlex-390:~$ dpkg REPLACE_WITH_DASH_DASHget-selections|grep nginx
+%    nginx                       install
+%    nginx-common                    install
+%    nginx-core                  install
+%
+% *1.4* 删除1.3查询出与nginx有关的软件
+%
+%    [root@localhost tmp]# sudo apt-get REPLACE_WITH_DASH_DASHpurge remove nginx
+%    [root@localhost tmp]# sudo apt-get REPLACE_WITH_DASH_DASHpurge remove nginx-common
+%    [root@localhost tmp]# sudo apt-get REPLACE_WITH_DASH_DASHpurge remove nginx-core
+%    这样就可以完全卸载掉nginx包括配置文件
+%
+% *2.* 查看nginx正在运行的进程，如果有就kill掉
+%
+%    [root@localhost tmp]# ps -ef |grep nginx
+%    看下nginx还有没有启动,一般执行完1后，nginx还是启动着的，如下：
+%    [root@localhost tmp]# stephen@stephen-OptiPlex-390:~$ ps -ef |grep nginx
+%
+` root      7875  2317  0 15:02 ?        00:00:00 nginx: master process /usr/sbin/nginx
+  www-data  7876  7875  0 15:02 ?        00:00:00 nginx: worker process
+  www-data  7877  7875  0 15:02 ?        00:00:00 nginx: worker process
+  www-data  7878  7875  0 15:02 ?        00:00:00 nginx: worker process
+  www-data  7879  7875  0 15:02 ?        00:00:00 nginx: worker process
+  stephen   8321  3510  0 15:20 pts/0    00:00:00 grep REPLACE_WITH_DASH_DASHcolor=auto nginx
+%%
+% *3.* kill nginx进程
+%
+%    [root@localhost tmp]# sudo kill  -9  7875 7876 7877 7879
+%
+% *4.* 全局查找与nginx相关的文件
+%
+%    [root@localhost tmp]# sudo  find  /  -name  nginx*
+%
+% *5.* 依依删除4列出的所有文件
+%
+%    [root@localhost tmp]# sudo  sudo rm -rf file
+%
+% *6.* 再次重装
+%
+%    [root@localhost tmp]# sudo apt-get update
+%    [root@localhost tmp]# sudo apt-get install nginx
+ 
+
+##### SOURCE END #####
+--></body></html>

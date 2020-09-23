@@ -1,0 +1,291 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>3D House</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-02-10"><meta name="DC.source" content="house.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>3D House</h1><!--introduction--><p>It's a VR project. Although it's better to do it by other softwares, I attempt to make it by Mupad. It's a good opportunity to enhance my skills and explore as many interesting things as I can.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">House</a></li><li><a href="#5">House with Trees</a></li><li><a href="#7">Code</a></li></ul></div><h2>House<a name="1"></a></h2><p><img vspace="5" hspace="5" src="house\house.gif" alt=""> </p><p>We can change the view or even walk into the house.</p><p><img vspace="5" hspace="5" src="house\house3.gif" alt=""> </p><p><img vspace="5" hspace="5" src="house\house4.gif" alt=""> </p><h2>House with Trees<a name="5"></a></h2><p>Besides, I add some trees and toys around the house. Very cute, isn't it?</p><p><img vspace="5" hspace="5" src="house\greenhouse2.gif" alt=""> </p><h2>Code<a name="7"></a></h2><pre class="codeinput">////////////////////wall//////////////////////////////////////
+
+<span class="keyword">for</span> j from <span class="string">0</span> <span class="string">to</span> <span class="string">6</span> <span class="string">do</span>
+
+      WL1[j] := plot::Group3d(plot::Box(0..1, 2*j..2*j+1, n..n+1,Color = RGB::VioletRedPale) $ n=1..10):
+      WL2[j] := plot::Group3d(plot::Box(0..1, 2*j+1..2*j+2, n-0.5..n+0.5,Color = RGB::VioletRedPale) $ n=1..10):
+      WL3[j] := plot::Group3d(plot::Box(0..1, 2*j..2*j+1, n..n+1) $ n=15..20,Color = RGB::VioletRedPale):
+      WL4[j] := plot::Group3d(plot::Box(0..1, 2*j+1..2*j+2, n-0.5..n+0.5,Color = RGB::Yellow) $ n=15..20):
+
+
+
+
+end_for:
+
+
+<span class="keyword">for</span> j from <span class="string">0</span> <span class="string">to</span> <span class="string">6</span> <span class="string">do</span>
+
+      WR1[j] := plot::Group3d(plot::Box(14..15, 2*j..2*j+1, n..n+1,Color = RGB::VioletRedPale) $ n=1..20):
+      WR2[j] := plot::Group3d(plot::Box(14..15, 2*j+1..2*j+2, n-0.5..n+0.5,Color = RGB::OrangeRed) $ n=1..20):
+
+
+end_for:
+<span class="keyword">for</span> j from <span class="string">0</span> <span class="string">to</span> <span class="string">6</span> <span class="string">do</span>
+
+      W1[j] := plot::Group3d(plot::Box(2*j..2*j+1, 13..14, n..n+1,Color = RGB::VioletRedPale) $ n=1..20):
+      W2[j] := plot::Group3d(plot::Box(2*j+1..2*j+2, 13..14, n-0.5..n+0.5) $ n=1..20):
+
+
+end_for:
+
+<span class="keyword">for</span> j from <span class="string">0</span> <span class="string">to</span> <span class="string">6</span> <span class="string">do</span>
+
+      WF1[j] := plot::Group3d(plot::Box(1+3*j..3*j+4, 0..1, 2*n..2*n+4,Color = RGB::VioletRedPale) $ n=4..8):
+
+
+
+end_for:
+
+
+      D1 <span class="string">:=</span> <span class="string">plot::Group3d(plot::Box(1..9.5, 0..1, 0.5+4*n..4*n+4,Color= RGB::PaleBlue) $ n=0..1):</span>
+/////////Roof//////////
+<span class="keyword">for</span> j from <span class="string">0</span> <span class="string">to</span> <span class="string">2</span> <span class="string">do</span>
+
+      R1[j] := plot::Group3d(plot::Box(1+j..j+3, 2*n..2*n+2, 20+3*j..3*j+23, Color = RGB::Green) $ n=0..6):
+      R2[j] := plot::Group3d(plot::Box(4+j..j+12, 2*n..2*n+2, 29..30) $ n=0..6):
+      R3[j] := plot::Group3d(plot::Box(6+j..j+12, 0..2, 20+n..n+24,Color = RGB::Yellow) $ n=0..5):
+      R4[j] := plot::Group3d(plot::Box(6+j..j+12, 12..14, 20+n..n+24,Color = RGB::Yellow) $ n=0..5):
+
+
+
+end_for:
+
+
+
+
+      T1 <span class="string">:=</span> <span class="string">plot::Group3d(plot::Box(15..23, 1..2, 5*n..5*n+5, Color = RGB::Grey) $ n=0..6):</span>
+      T2 <span class="string">:=</span> <span class="string">plot::Group3d(plot::Box(15..23, 13..14, 5*n..5*n+5,Color = RGB::VioletRedPale) $ n=0..6):</span>
+      T3 <span class="string">:=</span> <span class="string">plot::Group3d(plot::Box(22..23, 1..14, 5*n..5*n+5, Color = RGB::Grey) $ n=0..6):</span>
+      T4 <span class="string">:=</span> <span class="string">plot::Group3d(plot::Box(14..15, 1..14, 5*n..5*n+5) $ n=0..6):</span>
+      T5 <span class="string">:=</span> <span class="string">plot::Prism(5, [19, 1,38], [19, 14, 38], Color = RGB::Green):</span>
+
+/////////////tree////////////////////
+
+      G11 <span class="string">:=</span> <span class="string">plot::Cone(6, [-8,-8, 6], [-8, -8, 12],Color = RGB::Green):</span>
+      G12 <span class="string">:=</span> <span class="string">plot::Cone(3, [-8, -8, 11], [-8, -8, 15],Color = RGB::Green):</span>
+      G13 <span class="string">:=</span> <span class="string">plot::Cone(1.5, [-8, -8, 14], [-8, -8, 17],Color = RGB::Green):</span>
+      G14 <span class="string">:=</span> <span class="string">plot::Cone(1, [-8, -8, 0], 1,[-8, -8, 6],Color = RGB::DarkRed):</span>
+
+      G21 <span class="string">:=</span> <span class="string">plot::Cone(6, [-13,-4, 6], [-13, -4, 12],Color = RGB::Green):</span>
+      G22 <span class="string">:=</span> <span class="string">plot::Cone(3, [-13, -4, 11], [-13, -4, 15],Color = RGB::Green):</span>
+      G23 <span class="string">:=</span> <span class="string">plot::Cone(1.5, [-13, -4, 14], [-13, -4, 17],Color = RGB::Green):</span>
+      G24 <span class="string">:=</span> <span class="string">plot::Cone(1, [-13, -4, 0], 1,[-13, -4, 6],Color = RGB::DarkRed):</span>
+
+      G31 <span class="string">:=</span> <span class="string">plot::Cone(8, [-10,5,8], [-10,5, 16],Color = RGB::Green):</span>
+      G32 <span class="string">:=</span> <span class="string">plot::Cone(5, [-10, 5, 15], [-10,5, 19],Color = RGB::Green):</span>
+      G33 <span class="string">:=</span> <span class="string">plot::Cone(3, [-10, 5, 18], [-10,5, 23],Color = RGB::Green):</span>
+      G34 <span class="string">:=</span> <span class="string">plot::Cone(2, [-10, 5, 0], 2,[-10,5, 8],Color = RGB::DarkRed):</span>
+
+      G41 <span class="string">:=</span> <span class="string">plot::Cone(6, [30,30, 6], [30,30, 12],Color = RGB::Green):</span>
+      G42 <span class="string">:=</span> <span class="string">plot::Cone(3, [30,30, 11], [30,30, 15],Color = RGB::Green):</span>
+      G43 <span class="string">:=</span> <span class="string">plot::Cone(1.5, [30,30, 14], [30,30, 17],Color = RGB::Green):</span>
+      G44 <span class="string">:=</span> <span class="string">plot::Cone(1, [30,30, 0], 1,[30,30, 6],Color = RGB::DarkRed):</span>
+
+     toy1 <span class="string">:=</span> <span class="string">plot::Hexahedron</span>  <span class="string">(Radius = 1.0, Center = [30, 0, 0]):</span>
+     toy2 <span class="string">:=</span> <span class="string">plot::Tetrahedron</span> <span class="string">(Radius = 1.5, Center = [30, 4, 0]):</span>
+     toy3 <span class="string">:=</span> <span class="string">plot::Octahedron</span>  <span class="string">(Radius = 2.0, Center = [30, 8, 0]):</span>
+
+
+plot(W1[j] $ j=0..6,W2[j] $ j=0..6,
+     WL1[j] $ j=0..6, WL2[j] $ j=0..6,WL3[j] $ j=0..6,WL4[j] $ j=0..6,
+     WR1[j] $ j=0..6,WR2[j] $ j=0..6,
+     WF1[j] $ j=0..6,D1,
+     R1[j] $ j=0..2,R2[j] $ j=0..2,R3[j] $ j=0..2,R4[j] $ j=0..2,
+     T1,T2,T3,T4,T5,
+     G11,G12,G13,G14,     G21,G22,G23,G24,  G31,G32,G33,G34,   G41,G42,G43,G44, toy1 ,toy2,toy3,
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% 3D House
+% It's a VR project. Although it's better to do it by other softwares, I attempt to make it by Mupad. 
+% It's a good opportunity to enhance my skills and explore as many
+% interesting things as I can.
+
+%% House
+%%
+% 
+% <<house\house.gif>>
+% 
+% We can change the view or even walk into the house. 
+%%
+% 
+% <<house\house3.gif>>
+% 
+%%
+% 
+% <<house\house4.gif>>
+% 
+%% House with Trees
+% Besides, I add some trees and toys around the house. Very cute, isn't it? 
+
+%%
+% 
+% <<house\greenhouse2.gif>>
+% 
+%% Code
+
+////////////////////wall//////////////////////////////////////
+
+for j from 0 to 6 do
+
+      WL1[j] := plot::Group3d(plot::Box(0..1, 2*j..2*j+1, n..n+1,Color = RGB::VioletRedPale) $ n=1..10):
+      WL2[j] := plot::Group3d(plot::Box(0..1, 2*j+1..2*j+2, n-0.5..n+0.5,Color = RGB::VioletRedPale) $ n=1..10):
+      WL3[j] := plot::Group3d(plot::Box(0..1, 2*j..2*j+1, n..n+1) $ n=15..20,Color = RGB::VioletRedPale):
+      WL4[j] := plot::Group3d(plot::Box(0..1, 2*j+1..2*j+2, n-0.5..n+0.5,Color = RGB::Yellow) $ n=15..20):
+      
+      
+      
+
+end_for:
+
+
+for j from 0 to 6 do
+
+      WR1[j] := plot::Group3d(plot::Box(14..15, 2*j..2*j+1, n..n+1,Color = RGB::VioletRedPale) $ n=1..20):
+      WR2[j] := plot::Group3d(plot::Box(14..15, 2*j+1..2*j+2, n-0.5..n+0.5,Color = RGB::OrangeRed) $ n=1..20):
+      
+
+end_for:
+for j from 0 to 6 do
+
+      W1[j] := plot::Group3d(plot::Box(2*j..2*j+1, 13..14, n..n+1,Color = RGB::VioletRedPale) $ n=1..20):
+      W2[j] := plot::Group3d(plot::Box(2*j+1..2*j+2, 13..14, n-0.5..n+0.5) $ n=1..20):
+      
+
+end_for:
+
+for j from 0 to 6 do
+
+      WF1[j] := plot::Group3d(plot::Box(1+3*j..3*j+4, 0..1, 2*n..2*n+4,Color = RGB::VioletRedPale) $ n=4..8):
+      
+      
+
+end_for:
+
+
+      D1 := plot::Group3d(plot::Box(1..9.5, 0..1, 0.5+4*n..4*n+4,Color= RGB::PaleBlue) $ n=0..1):
+/////////Roof//////////
+for j from 0 to 2 do
+
+      R1[j] := plot::Group3d(plot::Box(1+j..j+3, 2*n..2*n+2, 20+3*j..3*j+23, Color = RGB::Green) $ n=0..6):
+      R2[j] := plot::Group3d(plot::Box(4+j..j+12, 2*n..2*n+2, 29..30) $ n=0..6):
+      R3[j] := plot::Group3d(plot::Box(6+j..j+12, 0..2, 20+n..n+24,Color = RGB::Yellow) $ n=0..5):
+      R4[j] := plot::Group3d(plot::Box(6+j..j+12, 12..14, 20+n..n+24,Color = RGB::Yellow) $ n=0..5):
+      
+      
+
+end_for:
+
+
+
+
+      T1 := plot::Group3d(plot::Box(15..23, 1..2, 5*n..5*n+5, Color = RGB::Grey) $ n=0..6):
+      T2 := plot::Group3d(plot::Box(15..23, 13..14, 5*n..5*n+5,Color = RGB::VioletRedPale) $ n=0..6):
+      T3 := plot::Group3d(plot::Box(22..23, 1..14, 5*n..5*n+5, Color = RGB::Grey) $ n=0..6):
+      T4 := plot::Group3d(plot::Box(14..15, 1..14, 5*n..5*n+5) $ n=0..6):
+      T5 := plot::Prism(5, [19, 1,38], [19, 14, 38], Color = RGB::Green):
+      
+/////////////tree////////////////////
+
+      G11 := plot::Cone(6, [-8,-8, 6], [-8, -8, 12],Color = RGB::Green):
+      G12 := plot::Cone(3, [-8, -8, 11], [-8, -8, 15],Color = RGB::Green):
+      G13 := plot::Cone(1.5, [-8, -8, 14], [-8, -8, 17],Color = RGB::Green):
+      G14 := plot::Cone(1, [-8, -8, 0], 1,[-8, -8, 6],Color = RGB::DarkRed):
+
+      G21 := plot::Cone(6, [-13,-4, 6], [-13, -4, 12],Color = RGB::Green):
+      G22 := plot::Cone(3, [-13, -4, 11], [-13, -4, 15],Color = RGB::Green):
+      G23 := plot::Cone(1.5, [-13, -4, 14], [-13, -4, 17],Color = RGB::Green):
+      G24 := plot::Cone(1, [-13, -4, 0], 1,[-13, -4, 6],Color = RGB::DarkRed):
+
+      G31 := plot::Cone(8, [-10,5,8], [-10,5, 16],Color = RGB::Green):
+      G32 := plot::Cone(5, [-10, 5, 15], [-10,5, 19],Color = RGB::Green):
+      G33 := plot::Cone(3, [-10, 5, 18], [-10,5, 23],Color = RGB::Green):
+      G34 := plot::Cone(2, [-10, 5, 0], 2,[-10,5, 8],Color = RGB::DarkRed):
+
+      G41 := plot::Cone(6, [30,30, 6], [30,30, 12],Color = RGB::Green):
+      G42 := plot::Cone(3, [30,30, 11], [30,30, 15],Color = RGB::Green):
+      G43 := plot::Cone(1.5, [30,30, 14], [30,30, 17],Color = RGB::Green):
+      G44 := plot::Cone(1, [30,30, 0], 1,[30,30, 6],Color = RGB::DarkRed):
+
+     toy1 := plot::Hexahedron  (Radius = 1.0, Center = [30, 0, 0]):
+     toy2 := plot::Tetrahedron (Radius = 1.5, Center = [30, 4, 0]):
+     toy3 := plot::Octahedron  (Radius = 2.0, Center = [30, 8, 0]):
+     
+     
+plot(W1[j] $ j=0..6,W2[j] $ j=0..6,
+     WL1[j] $ j=0..6, WL2[j] $ j=0..6,WL3[j] $ j=0..6,WL4[j] $ j=0..6,
+     WR1[j] $ j=0..6,WR2[j] $ j=0..6,
+     WF1[j] $ j=0..6,D1,
+     R1[j] $ j=0..2,R2[j] $ j=0..2,R3[j] $ j=0..2,R4[j] $ j=0..2,
+     T1,T2,T3,T4,T5,
+     G11,G12,G13,G14,     G21,G22,G23,G24,  G31,G32,G33,G34,   G41,G42,G43,G44, toy1 ,toy2,toy3,
+     ViewingBox = [-18..40,-18..40, -1..60])
+##### SOURCE END #####
+--></body></html>

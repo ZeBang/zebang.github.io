@@ -1,0 +1,322 @@
+<!DOCTYPE html><!--[if IE]>  <html class="ie"> <![endif]-->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>
+		</title>
+		<link rel="stylesheet" type="text/css" href="matlab稿子_files/style.css" />
+	</head>
+	<body>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_01.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_01.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:10.405em; left:11.1475em;"><span class="stl_06 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:10.2743em; left:13.165em;"><span class="stl_09 stl_10 stl_08">导言 &nbsp;</span></div>
+					<div style="position:absolute; top:12.7057em; left:12.8075em;"><span class="stl_11 stl_10 stl_08">有些图像难以想象，故画图辅助理解 &nbsp;</span></div>
+					<div style="position:absolute; top:15.3445em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:15.2355em; left:11.7079em;"><span class="stl_12 stl_07 stl_13" style="word-spacing:0.5249em;">.1 </span><span class="stl_14 stl_10 stl_13" style="word-spacing:0.5249em;">三叶玫瑰线 &nbsp;</span></div>
+					<div style="position:absolute; top:19.9236em; left:34.7143em;"><span class="stl_15 stl_16 stl_17">θ</span><span class="stl_18 stl_19 stl_17">=180.00</span><sup><span class="stl_20 stl_16 stl_21">° &nbsp;</span></sup></div>
+					<div style="position:absolute; top:47.4598em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:48.7548em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">t = linspace(0, pi, 1000); % </span><span class="stl_22 stl_10 stl_08" style="word-spacing:-0.0751em;">将（</span><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">0~pi</span><span class="stl_22 stl_10 stl_08" style="word-spacing:-0.0751em;">）</span><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">1000</span><span class="stl_22 stl_10 stl_08" style="word-spacing:-0.0751em;">等分 &nbsp;</span></div>
+					<div style="position:absolute; top:50.1855em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">r = cos(3*t); &nbsp;</span></div>
+					<div style="position:absolute; top:51.4813em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">x = r .* cos(t); y = r .* sin(t); &nbsp;</span></div>
+					<div style="position:absolute; top:54.0713em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">h1 = plot(x(1), y(1)); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">1</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_02.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_02.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:11.4038em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h2 = plot(x(1), y(1), ’o’); &nbsp;</span></div>
+					<div style="position:absolute; top:12.6988em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">axis([-1 1.2 -1 1]); &nbsp;</span></div>
+					<div style="position:absolute; top:15.2896em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">for i = 10 : 10: 1000 &nbsp;</span></div>
+					<div style="position:absolute; top:16.5846em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">set(h1, ’xdata’, x(1:i), ’ydata’, y(1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:17.8796em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">set(h2, ’xdata’, x(i), ’ydata’, y(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:19.1746em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">drawnow; pause(0.03); &nbsp;</span></div>
+					<div style="position:absolute; top:20.4696em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:25.8462em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:25.7372em; left:11.7079em;"><span class="stl_12 stl_07 stl_26" style="word-spacing:0.5246em;">.2 </span><span class="stl_14 stl_10 stl_26" style="word-spacing:0.5246em;">摆线 &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">2</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_03.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_03.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:12.1965em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:13.6271em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">t = linspace(0,4*pi, 1000); &nbsp;</span></div>
+					<div style="position:absolute; top:14.9222em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">X = t - sin(t); Y = 1 - cos(t); &nbsp;</span></div>
+					<div style="position:absolute; top:17.5121em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">h1 = plot(X(1), Y(1)); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:18.8072em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h2 = plot(X(1), Y(1), ’o’); &nbsp;</span></div>
+					<div style="position:absolute; top:21.398em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">axis([0 4*pi -2 3]); &nbsp;</span></div>
+					<div style="position:absolute; top:23.988em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">for i= 10 : 10 : 1000 &nbsp;</span></div>
+					<div style="position:absolute; top:25.283em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">set(h1, ’xdata’, X(1:i), ’ydata’, Y(1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:26.5788em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">set(h2, ’xdata’, X(i), ’ydata’, Y(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:27.8738em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">drawnow; pause(0.05); &nbsp;</span></div>
+					<div style="position:absolute; top:29.1688em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">3</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_04.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_04.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:10.4087em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:10.2997em; left:11.7079em;"><span class="stl_12 stl_07 stl_26" style="word-spacing:0.5248em;">.3 </span><span class="stl_14 stl_10 stl_26" style="word-spacing:0.5248em;">螺旋线 &nbsp;</span></div>
+					<div style="position:absolute; top:42.5248em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:43.9555em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">Z = linspace(0,10*pi,1000); &nbsp;</span></div>
+					<div style="position:absolute; top:45.2505em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">X = sin(Z); Y = cos(Z); &nbsp;</span></div>
+					<div style="position:absolute; top:47.8405em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">h1 = plot3(X(1), Y(1), Z(1)); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:49.1363em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">h2 = plot3(X(1), Y(1), Z(1), ’o’); &nbsp;</span></div>
+					<div style="position:absolute; top:50.4313em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">axis([-1 1 -1 1 0 40]); &nbsp;</span></div>
+					<div style="position:absolute; top:53.0213em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">for i = 10 : 10 : 1000 &nbsp;</span></div>
+					<div style="position:absolute; top:54.3163em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">set(h1, ’xdata’, X(1:i), ’ydata’, Y(1:i), ’zdata’, Z(1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">4</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_05.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_05.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:11.4038em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">set(h2, ’xdata’, X(i), ’ydata’, Y(i), ’zdata’, Z(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:12.6988em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">drawnow; pause(0.02); &nbsp;</span></div>
+					<div style="position:absolute; top:13.9947em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:19.3703em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:19.2613em; left:11.7079em;"><span class="stl_12 stl_07 stl_13" style="word-spacing:0.5249em;">.4 </span><span class="stl_14 stl_10 stl_13" style="word-spacing:0.5249em;">摆线的形成 &nbsp;</span></div>
+					<div style="position:absolute; top:51.4857em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:52.7807em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画底 &nbsp;</span></div>
+					<div style="position:absolute; top:54.2121em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">plot([-2 15],[0 0]); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:52.9163em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">5</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_06.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_06.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:12.123em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:11.9873em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画圆 &nbsp;</span></div>
+					<div style="position:absolute; top:13.418em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">t = linspace(0,2*pi,10000); &nbsp;</span></div>
+					<div style="position:absolute; top:14.713em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">X1 = cos(t); Y1 = 1 + sin(t); &nbsp;</span></div>
+					<div style="position:absolute; top:16.008em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h1 = plot(X1, Y1); &nbsp;</span></div>
+					<div style="position:absolute; top:18.598em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:18.4623em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画摆线 &nbsp;</span></div>
+					<div style="position:absolute; top:19.8938em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">t = linspace(0,4*pi,10000); &nbsp;</span></div>
+					<div style="position:absolute; top:21.1888em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">X2 = t - sin(t); Y2 = 1 - cos(t); &nbsp;</span></div>
+					<div style="position:absolute; top:22.4838em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">h2 = plot(X2(1),Y2(1)); &nbsp;</span></div>
+					<div style="position:absolute; top:23.7788em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">h3 = plot(X2(1),Y2(1),’o’); &nbsp;</span></div>
+					<div style="position:absolute; top:26.3688em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:26.2332em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">连接圆心和点 &nbsp;</span></div>
+					<div style="position:absolute; top:27.6646em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h4 = plot([0 0],[1 0]); &nbsp;</span></div>
+					<div style="position:absolute; top:30.2546em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">axis([-2 15 -5 8]); &nbsp;</span></div>
+					<div style="position:absolute; top:32.8446em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">for i = 100 : 100 : 10000 &nbsp;</span></div>
+					<div style="position:absolute; top:34.1396em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">set(h1,’xdata’,X1+t(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:35.4355em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">set(h2,’xdata’,X2(1:i),’ydata’,Y2(1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:36.7305em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">set(h3,’xdata’,X2(i),’ydata’,Y2(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:38.0255em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">set(h4,’xdata’,[t(i) X2(i)],’ydata’,[1 Y2(i)]) &nbsp;</span></div>
+					<div style="position:absolute; top:39.3205em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">drawnow; pause(0.02); &nbsp;</span></div>
+					<div style="position:absolute; top:40.6155em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:45.992em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:45.883em; left:11.7079em;"><span class="stl_12 stl_07 stl_13" style="word-spacing:0.5249em;">.5 </span><span class="stl_14 stl_10 stl_13" style="word-spacing:0.5249em;">莫比乌斯带 &nbsp;</span></div>
+					<div style="position:absolute; top:47.8565em; left:12.8075em;"><span class="stl_11 stl_10 stl_08">有意思的不可定向曲面 &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">6</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_11.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_11.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:40.1657em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:41.4607em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画底 &nbsp;</span></div>
+					<div style="position:absolute; top:42.8913em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">plot([-2 15],[0 0]); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:41.5963em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:45.4813em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:45.3457em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画圆 &nbsp;</span></div>
+					<div style="position:absolute; top:46.7772em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">t = linspace(0,2*pi,10000); &nbsp;</span></div>
+					<div style="position:absolute; top:48.0721em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">X1 = cos(t); Y1 = 1 + sin(t); &nbsp;</span></div>
+					<div style="position:absolute; top:49.3671em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h1 = plot(X1, Y1); &nbsp;</span></div>
+					<div style="position:absolute; top:51.9571em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:51.8215em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画摆线 &nbsp;</span></div>
+					<div style="position:absolute; top:53.253em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">t = linspace(0,4*pi,10000); &nbsp;</span></div>
+					<div style="position:absolute; top:54.548em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">X2 = t - sin(t); Y2 = 1 - cos(t); &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">7</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_12.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_12.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:11.4038em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">h2 = plot(X2(1),Y2(1)); &nbsp;</span></div>
+					<div style="position:absolute; top:12.6988em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">h3 = plot(X2(1),Y2(1),’o’); &nbsp;</span></div>
+					<div style="position:absolute; top:15.2896em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:15.154em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">连接圆心和点 &nbsp;</span></div>
+					<div style="position:absolute; top:16.5846em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h4 = plot([0 0],[1 0]); &nbsp;</span></div>
+					<div style="position:absolute; top:19.1746em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">axis([-2 15 -5 8]); &nbsp;</span></div>
+					<div style="position:absolute; top:21.7655em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">for i = 100 : 100 : 10000 &nbsp;</span></div>
+					<div style="position:absolute; top:23.0605em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">set(h1,’xdata’,X1+t(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:24.3555em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">set(h2,’xdata’,X2(1:i),’ydata’,Y2(1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:25.6505em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">set(h3,’xdata’,X2(i),’ydata’,Y2(i)); &nbsp;</span></div>
+					<div style="position:absolute; top:26.9455em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0755em;">set(h4,’xdata’,[t(i) X2(i)],’ydata’,[1 Y2(i)]) &nbsp;</span></div>
+					<div style="position:absolute; top:28.2405em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">drawnow; pause(0.02); &nbsp;</span></div>
+					<div style="position:absolute; top:29.5363em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">8</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_15.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_15.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:10.4087em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:10.2997em; left:11.7079em;"><span class="stl_12 stl_07 stl_13" style="word-spacing:0.5249em;">.6 </span><span class="stl_14 stl_10 stl_13" style="word-spacing:0.5249em;">旋转体的形成 &nbsp;</span></div>
+					<div style="position:absolute; top:41.4223em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:42.7182em; left:11.1475em;"><span class="stl_23 stl_24 stl_27" style="word-spacing:-0.1803em;">n = 100-1; % </span><span class="stl_22 stl_10 stl_27" style="word-spacing:-0.1803em;">将圆</span><span class="stl_23 stl_24 stl_27" style="word-spacing:-0.1803em;">n-1 </span><span class="stl_22 stl_10 stl_27" style="word-spacing:-0.1803em;">等分 &nbsp;</span></div>
+					<div style="position:absolute; top:44.0132em; left:11.1475em;"><span class="stl_23 stl_24 stl_28" style="word-spacing:-0.2503em;">m = 100; % </span><span class="stl_22 stl_10 stl_28" style="word-spacing:-0.2503em;">将高</span><span class="stl_23 stl_24 stl_28" style="word-spacing:-0.2503em;">m </span><span class="stl_22 stl_10 stl_28" style="word-spacing:-0.2503em;">等分 &nbsp;</span></div>
+					<div style="position:absolute; top:46.7388em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">t = linspace(-1, 1, m); &nbsp;</span></div>
+					<div style="position:absolute; top:49.3288em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">r1 = 2 + sqrt(1 - t.^2); &nbsp;</span></div>
+					<div style="position:absolute; top:50.6246em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">[</span></div>
+					<div style="position:absolute; top:50.6246em; left:11.5834em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">X1 Y1 Z1] = cylinder(r1, n); &nbsp;</span></div>
+					<div style="position:absolute; top:51.9196em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">h1 = surf(X1(:,1:2), Y1(:,1:2), Z1(:,1:2)); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:54.5096em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">r2 = 2 - sqrt(1 - t.^2); &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.2608em;"><span class="stl_25 stl_10 stl_08">9</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_16.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_16.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:11.4038em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">[</span></div>
+					<div style="position:absolute; top:11.4038em; left:11.5834em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">X2 Y2 Z2] = cylinder(r2, n); &nbsp;</span></div>
+					<div style="position:absolute; top:12.6988em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">h2 = surf(X2(:,1:2), Y2(:,1:2), Z2(:,1:2)); &nbsp;</span></div>
+					<div style="position:absolute; top:15.2896em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">axis([-4 4 -4 4 0 2]); &nbsp;</span></div>
+					<div style="position:absolute; top:16.5846em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">shading interp &nbsp;</span></div>
+					<div style="position:absolute; top:17.8796em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">alpha(h1, 0.35); &nbsp;</span></div>
+					<div style="position:absolute; top:19.1746em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">alpha(h2, 0.35); &nbsp;</span></div>
+					<div style="position:absolute; top:21.7655em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">view(-60, 60); &nbsp;</span></div>
+					<div style="position:absolute; top:24.3555em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">for i = 2</span><span class="stl_23 stl_24 stl_08" style="word-spacing:0.45em;"> :</span><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;"> 100 &nbsp;</span></div>
+					<div style="position:absolute; top:25.6505em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">set(h1, ’xdata’, X1(:,1:i), ’ydata’, Y1(:,1:i), ’zdata’, Z1(:,1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:26.9455em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">set(h2, ’xdata’, X2(:,1:i), ’ydata’, Y2(:,1:i), ’zdata’, Z2(:,1:i)); &nbsp;</span></div>
+					<div style="position:absolute; top:28.2405em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">drawnow; &nbsp;</span></div>
+					<div style="position:absolute; top:29.5363em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.0533em;"><span class="stl_25 stl_10 stl_08">1</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.4685em;"><span class="stl_25 stl_10 stl_08">0</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_21.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_21.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:10.4087em; left:11.1475em;"><span class="stl_12 stl_07 stl_08">1</span></div>
+					<div style="position:absolute; top:10.2997em; left:11.7079em;"><span class="stl_12 stl_07 stl_13" style="word-spacing:0.5249em;">.7 </span><span class="stl_14 stl_10 stl_13" style="word-spacing:0.5249em;">曲面逼近 &nbsp;</span></div>
+					<div style="position:absolute; top:32.6973em; left:12.8075em;"><span class="stl_11 stl_10 stl_08">割面逼近不一定有效 &nbsp;</span></div>
+					<div style="position:absolute; top:36.2107em; left:11.1475em;"><span class="stl_22 stl_10 stl_08">代码： &nbsp;</span></div>
+					<div style="position:absolute; top:37.6413em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:38.9372em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">[</span></div>
+					<div style="position:absolute; top:37.5057em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画圆柱 &nbsp;</span></div>
+					<div style="position:absolute; top:38.9372em; left:11.5834em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">X Y Z] = cylinder(1, 50); &nbsp;</span></div>
+					<div style="position:absolute; top:40.2322em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">Z = Z * 2; &nbsp;</span></div>
+					<div style="position:absolute; top:41.5272em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0753em;">surf(X, Y, Z); hold on; &nbsp;</span></div>
+					<div style="position:absolute; top:42.8222em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.076em;">shading interp &nbsp;</span></div>
+					<div style="position:absolute; top:44.1172em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">alpha(0.25); &nbsp;</span></div>
+					<div style="position:absolute; top:48.003em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">%</span></div>
+					<div style="position:absolute; top:47.8673em; left:12.0192em;"><span class="stl_22 stl_10 stl_08">画割面 &nbsp;</span></div>
+					<div style="position:absolute; top:49.1623em; left:11.1475em;"><span class="stl_23 stl_24 stl_29" style="word-spacing:-0.3378em;">n = 5; % </span><span class="stl_22 stl_10 stl_29" style="word-spacing:-0.3378em;">将圆</span><span class="stl_23 stl_24 stl_29" style="word-spacing:-0.3378em;">n </span><span class="stl_22 stl_10 stl_29" style="word-spacing:-0.3378em;">等分 &nbsp;</span></div>
+					<div style="position:absolute; top:50.4573em; left:11.1475em;"><span class="stl_23 stl_24 stl_29" style="word-spacing:-0.3378em;">m = 6; % </span><span class="stl_22 stl_10 stl_29" style="word-spacing:-0.3378em;">将高</span><span class="stl_23 stl_24 stl_29" style="word-spacing:-0.3378em;">m </span><span class="stl_22 stl_10 stl_29" style="word-spacing:-0.3378em;">等分 &nbsp;</span></div>
+					<div style="position:absolute; top:53.1838em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">for i = 1 : m+1 &nbsp;</span></div>
+					<div style="position:absolute; top:54.4788em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">for j = 1 : n + 1 &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.0533em;"><span class="stl_25 stl_10 stl_08">1</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.4685em;"><span class="stl_25 stl_10 stl_08">1</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="stl_01">
+			<div class="stl_02">
+				<object data="matlab稿子_files/img_22.svg" type="image/svg+xml" class="stl_03" style="position:absolute; width:49.5833em; height:70.0833em;">
+					<embed src="matlab稿子_files/img_22.svg" type="image/svg+xml" class="stl_03" />
+				</object>
+			</div>
+			<div class="layer">
+				<div class="stl_04 stl_05">
+					<div style="position:absolute; top:11.4038em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">X(i,j) = cos((2 * j + mod(i,2)) * pi / n); &nbsp;</span></div>
+					<div style="position:absolute; top:12.6988em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">Y(i,j) = sin((2 * j + mod(i,2)) * pi / n); &nbsp;</span></div>
+					<div style="position:absolute; top:13.9947em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">Z(i,j) = 2 * (i-1) / m; &nbsp;</span></div>
+					<div style="position:absolute; top:15.2896em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:16.5846em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:19.1746em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">for i = 1 : m &nbsp;</span></div>
+					<div style="position:absolute; top:20.4696em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">for j = 1 : n &nbsp;</span></div>
+					<div style="position:absolute; top:21.7655em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">x = [X(i,j) X(i,j+1) X(i+1,j+mod(i,2))]; &nbsp;</span></div>
+					<div style="position:absolute; top:23.0605em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">y = [Y(i,j) Y(i,j+1) Y(i+1,j+mod(i,2))]; &nbsp;</span></div>
+					<div style="position:absolute; top:24.3555em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">z = [Z(i,j) Z(i,j+1) Z(i+1,j+mod(i,2))]; &nbsp;</span></div>
+					<div style="position:absolute; top:25.6505em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">fill3(x, y, z, ’g’); &nbsp;</span></div>
+					<div style="position:absolute; top:26.9455em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:28.2405em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:30.8313em; left:11.1475em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0751em;">for i = 2 : m + 1 &nbsp;</span></div>
+					<div style="position:absolute; top:32.1263em; left:12.8908em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.0752em;">for j = 1 : n &nbsp;</span></div>
+					<div style="position:absolute; top:33.4213em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">x = [X(i,j) X(i,j+1) X(i-1,j+mod(i,2))]; &nbsp;</span></div>
+					<div style="position:absolute; top:34.7163em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">y = [Y(i,j) Y(i,j+1) Y(i-1,j+mod(i,2))]; &nbsp;</span></div>
+					<div style="position:absolute; top:36.0122em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">z = [Z(i,j) Z(i,j+1) Z(i-1,j+mod(i,2))]; &nbsp;</span></div>
+					<div style="position:absolute; top:37.3072em; left:14.6342em;"><span class="stl_23 stl_24 stl_08" style="word-spacing:-0.075em;">fill3(x, y, z, ’y’); &nbsp;</span></div>
+					<div style="position:absolute; top:38.6022em; left:12.8908em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:39.8972em; left:11.1475em;"><span class="stl_23 stl_24 stl_08">end &nbsp;</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.0533em;"><span class="stl_25 stl_10 stl_08">1</span></div>
+					<div style="position:absolute; top:57.8565em; left:25.4685em;"><span class="stl_25 stl_10 stl_08">2</span></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
