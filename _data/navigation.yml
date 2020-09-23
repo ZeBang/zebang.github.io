@@ -3,11 +3,11 @@ main:
  
         
   - title: "Blog"
-    url: lizebang.com/blog
+    url: https://lizebang.com/blog/
   
-  # - title: "Learning"
-  #   url: /learning/
+  - title: "Learning"
+    url: /learning/index.html
 
-  # - title: "CV"
-  #   url: /cv/
+  - title: "CV"
+    url: /cv/
     
