@@ -39,7 +39,28 @@ isinstance(min, types.BuiltinFunctionType)
 ```
 Or just use `help()`
 
-References:
+## Mutable, Immutable and Pointer
+```
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+l1 = ListNode(1)
+l2 = ListNode(2)
+dummy = cur = ListNode(0)
+cur.next = l2
+
+dummy = cur = [1,2]
+cur[1] = 3
+```
+see [How to make an immutable object in python](https://stackoverflow.com/questions/4828080/how-to-make-an-immutable-object-in-python)
+
+##  [`itertools`](https://docs.python.org/3/library/itertools.html#module-itertools "itertools: Functions creating iterators for efficient looping.")  — Functions creating iterators for efficient looping[¶](https://docs.python.org/3/library/itertools.html#module-itertools "Permalink to this headline")
+see LeetCode example [38. Count and Say](https://leetcode.com/problems/count-and-say/discuss/15999/4-5-lines-Python-solutions) using "groupby".
+
+
+
+## References:
 [RUNOOB](https://www.runoob.com/python3/python3-tutorial.html)
 [Liaoxuefeng](https://www.liaoxuefeng.com/wiki/1016959663602400)
 [Python official Doc](https://docs.python.org/zh-cn/3/tutorial/index.html)
