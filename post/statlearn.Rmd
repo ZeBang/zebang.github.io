@@ -1,7 +1,12 @@
 ---
 title: "Statistical Learning"
-output: html_document
+date: 23 Sep 2020
+output:
+html_document:
+theme: cerulean
 ---
+<link rel="stylesheet" type="text/css" href="../style/style.css">
+<link rel="stylesheet" type="text/css" href="../style/github.css">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -13,12 +18,12 @@ knitr::opts_chunk$set(echo = TRUE)
 - For the problem (P), assume the functions $f_0,\cdots , f_m$ and $h_1,\cdots , h_p$ are
 all differentiable with open domains.
 
-- Suppose $x^∗$ is primal optimal, $(\lambda∗, v∗)$ is dual optimal, and there is zero
+- Suppose $x^∗$ is primal optimal, $(\lambda^∗, v^∗)$ is dual optimal, and there is zero
 duality gap, then
 	- $f_i(x^*) \le 0, i=1,\cdots,m$ and $h_i(x^*) = 0, i=1,\cdots,p$;
 	- $v^* \ge 0$;
 	- $\delta f_0(x^*) + \sum_{i=1}^{m} v_i^{*} \delta f_i(x^*) + \sum_{i=1}^{n} \lambda_i^{*} \delta h_i(x^*)=0$;
-	- v_i^{*} f_i(x^*) = 0, i=1,\cdots,m$.
+	- $v_i^{*} f_i(x^*) = 0, i=1,\cdots,m$.
 - These four conditions, combined together, are called the
 Karush-Kuhn-Tucker (KKT) conditions.
 
