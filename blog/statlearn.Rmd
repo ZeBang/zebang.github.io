@@ -1,0 +1,28 @@
+---
+title: "Statistical Learning"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Karush-Kuhn-Tucker (KKT) Conditions
+
+
+- For the problem (P), assume the functions $f_0,\cdots , f_m$ and $h_1,\cdots , h_p$ are
+all differentiable with open domains.
+
+- Suppose $x^∗$ is primal optimal, $(\lambda∗, v∗)$ is dual optimal, and there is zero
+duality gap, then
+	- $f_i(x^*) \le 0, i=1,\cdots,m$ and $h_i(x^*) = 0, i=1,\cdots,p$;
+	- $v^* \ge 0$;
+	- $\delta f_0(x^*) + \sum_{i=1}^{m} v_i^{*} \delta f_i(x^*) + \sum_{i=1}^{n} \lambda_i^{*} \delta h_i(x^*)=0$;
+	- v_i^{*} f_i(x^*) = 0, i=1,\cdots,m$.
+- These four conditions, combined together, are called the
+Karush-Kuhn-Tucker (KKT) conditions.
+
+- For the problem (cP), the converse is also true: for (cP), if $x^∗$ and $(\lambda^*,v^*)$ satisfy the KKT conditions, then $x^∗$ and $(\lambda^*, v^*)$ are primal and dual optimal, and the duality gap is zero.
+
+- Consider (cP), and assume Slater’s condition holds. Then the point $x^∗$ is primal optimal if and only if there exists some $(\lambda^*, v^*)$ that, together with $x^∗$, satisfy the KKT conditions. (Only need to think about the $\to$ direction.)
+
