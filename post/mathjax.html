@@ -1,65 +1,60 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
    <head>
-      <title>Zebang Li</title>
+      <title>MathJax</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <style type="text/css">
-         @import url('style/style.css');
+         @import url('../style/style.css');
          p.metadata {
          font-size: 100%;
          color: #999;
          margin: 0;
          }
       </style>
+      
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: { equationNumbers: {autoNumber: "all"} },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+		<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
    </head>
    <body>
-      <h1>Zebang Li</h1>
+      <h1>MathJax</h1>
       <div id="contact">
          <p>
             <br>
-            A Ph.D. student<br>
-            Department of Statistics  <br>
-            Rutgers, the State University of New Jersey <br>
-            <br>
-                                       <br>
-            Office: Hill 555 <br>
-            Email:
-          <span id="obf">
-               <a href="mailto:zl326@stat.rutgers.edu">zl326@stat.rutgers.edu</a>
-         </span>
+            I use MathJax for Latex display on my web. I collected all problems I met wrtting HTML using MathJax, especially for customized configuration. <br>
          </p>
       </div>
       <!-- contact -->
       <div id="photo">
         <br>
-         <img style="width: 121.5px;height: 162px;" alt="profile_pic.jpg" src="images/me.jpg" align="middle"/>
+         <img style="width: 220px;" alt="algorithm" src="../images/mathjax.png" align="middle"/>
       </div>
-      <div style="clear: both;" id="main">
-         <h2>About me</h2>
-         <p id="about">
-            I am a Ph.D. student of <a target="_blank" href="http://www.stat.rutgers.edu">Statistics</a> at Rutgers University, starting from September 2018. I received a B.Sc. in mathematics from Beijing Normal University in 2018.
-         </p>
-         <!--about-->
-         <div style="clear: both;" id="main">
-         
-         <h2 id="projects">Blog & Learning Notes</h2>
-  <br>
-  <p id="research">STAT & MATH</p>
-  <p><a href="post/cp">Some reviews on CP decomposition</a> <em>2020.09.24</em></p>
-  <p><a href="post/statlearn">Statistical Learning for Data Science</a> <em>2020.09.23</em></p>
-  <br>
-  <p id="research">ALGORITHM & CODING</p>
 
-  <p><a href="post/algo">Algorithm</a> <em>2020.09.23</em></p>
-  <p><a href="tensor">Tensor in R</a> <em>2019.10.09</em></p>
-  <p><a href="R_Intro.html">Introduction to R</a> <em></em></p>
-  <p><a href="https://adv-r.hadley.nz/">Advanced R</a> <em></em></p>
-  <p><a href="https://cran.r-project.org/web/views/Finance.html">Finance R</a> <em></em></p>
-  <p><a href="https://www.cs.princeton.edu/courses/archive/spring16/cos495/">Deep Learning</a> <em>
-</em></p>
-  <br>
-  <p id="research">OTEHR<a class="headerlink" href="#other" title="Permanent link"></a></p>
-  <p><a href="post/mathjax.html">Some notes about MathJax</a> <em>2020.09.24</em></p>
+      <div style="clear: both;" id="main">
+         <h3>FAQ</h3>
+         <p><b>Q:How to use "$\$...\$$" instead of "$\(...\)$" for inlineMath?</b></p>
+         <p>Ans: see [1].</p>
+         <p><b>Q:How to use \label and \ref for MathJax?</b></p>
+         <p>Ans: see [3].</p>
+
+
+      <div style="clear: both;" id="main">
+         <h3>References</h3>
+         <ul><li>[1] <a target="_blank" href="https://stackoverflow.com/questions/40610558/redefining-displaymath-delimiters-to-for-mathjax-does-not-work-using">Redefining MathJax inlineMath</a></li></ul>
+         <ul><li>[2] <a target="_blank" href="https://docs.mathjax.org/en/v1.0/index.html">MathJax Documentation</a></li></ul>
+         <ul><li>[3] <a target="_blank" href="https://www.tuhh.de/MathJax/test/sample-eqrefs.html">A test of Equation References</a></li></ul>
+
 
 
 

@@ -1,65 +1,67 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
    <head>
-      <title>Zebang Li</title>
+      <title>CP</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <style type="text/css">
-         @import url('style/style.css');
+         @import url('../style/style.css');
          p.metadata {
          font-size: 100%;
          color: #999;
          margin: 0;
          }
       </style>
+      
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: { equationNumbers: {autoNumber: "all"} },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+		<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
    </head>
    <body>
-      <h1>Zebang Li</h1>
+      <h1>CP decomposition</h1>
       <div id="contact">
          <p>
             <br>
-            A Ph.D. student<br>
-            Department of Statistics  <br>
-            Rutgers, the State University of New Jersey <br>
-            <br>
-                                       <br>
-            Office: Hill 555 <br>
-            Email:
-          <span id="obf">
-               <a href="mailto:zl326@stat.rutgers.edu">zl326@stat.rutgers.edu</a>
-         </span>
+            Some facts and properties of CP decomposition are collected. Since when dimention of data array goes larger than two things changed fundamentally from matrix, these facts and progress on tensor is necessary to be noticed. <br>
+            <ul><li>Low-rank approximation,</li></ul>
+            <ul><li>Identification of CP Decomposition, </li></ul>
+            <ul><li>Notions of orthogonality. </li></ul>
          </p>
       </div>
       <!-- contact -->
       <div id="photo">
         <br>
-         <img style="width: 121.5px;height: 162px;" alt="profile_pic.jpg" src="images/me.jpg" align="middle"/>
+         <img style="width: 200px;" alt="algorithm" src="../images/tensor.png" align="middle"/>
       </div>
       <div style="clear: both;" id="main">
-         <h2>About me</h2>
-         <p id="about">
-            I am a Ph.D. student of <a target="_blank" href="http://www.stat.rutgers.edu">Statistics</a> at Rutgers University, starting from September 2018. I received a B.Sc. in mathematics from Beijing Normal University in 2018.
-         </p>
-         <!--about-->
-         <div style="clear: both;" id="main">
-         
-         <h2 id="projects">Blog & Learning Notes</h2>
-  <br>
-  <p id="research">STAT & MATH</p>
-  <p><a href="post/cp">Some reviews on CP decomposition</a> <em>2020.09.24</em></p>
-  <p><a href="post/statlearn">Statistical Learning for Data Science</a> <em>2020.09.23</em></p>
-  <br>
-  <p id="research">ALGORITHM & CODING</p>
+         <h3>Notation</h3>
+<p>An \(K\)th-order rank-1 tensor \(\mathcal{X} \in \mathbb{C}^{I_1 \times \cdots \times I_K}\) is defined as the tensor product of nonzero vectors \(\textbf{a}^{(k)} \in \mathbb{C}^{I_k} , 1 \le k \le K\), such that \(\mathcal{X}_{i_1 \cdots i_K} =  \prod_{k=1}^{K} \textbf{a}_{i_k}^{k}\). We write \(\mathcal{X} = \textbf{a}^{(1)} \circ \textbf{a}^{(2)} \circ \cdots \circ \textbf{a}^{(K)}\). The rank of a tensor \(\mathcal{X}\) is equal to the minimal number of rank-1 tensors that yield \(\mathcal{X}\) in a linear combination. Assume that the rank of \(\mathcal{X}\) is \(R\); then it can be written as
+\begin{equation}\label{cp}
+    \mathcal{X} = \sum_{r=1}^{R} \textbf{a}_r^{(1)} \circ \cdots \circ \textbf{a}_r^{(K)}
+\end{equation}
+where $\textbf{a}_r^{(k)} \in \mathbb{C}^{I_k}$. Let us stack the vectors $\textbf{a}_{r}^{(k)}$ into the matrices
+\begin{equation}\label{factor}
+    \mathbf{A}^{(k)} = \Big[\mathbf{a}_1^{(k)}, \cdots, \mathbf{a}_R^{(k)} \Big] \in \mathbb{C}^{I_k \times R}, 1 \le k \le K
+\end{equation}
+The matrices \(\mathbf{A}^{(k)}\) will be denoted as factor matrices.</p>
 
-  <p><a href="post/algo">Algorithm</a> <em>2020.09.23</em></p>
-  <p><a href="tensor">Tensor in R</a> <em>2019.10.09</em></p>
-  <p><a href="R_Intro.html">Introduction to R</a> <em></em></p>
-  <p><a href="https://adv-r.hadley.nz/">Advanced R</a> <em></em></p>
-  <p><a href="https://cran.r-project.org/web/views/Finance.html">Finance R</a> <em></em></p>
-  <p><a href="https://www.cs.princeton.edu/courses/archive/spring16/cos495/">Deep Learning</a> <em>
-</em></p>
-  <br>
-  <p id="research">OTEHR<a class="headerlink" href="#other" title="Permanent link"></a></p>
-  <p><a href="post/mathjax.html">Some notes about MathJax</a> <em>2020.09.24</em></p>
+
+  <h3>Definition of Uniqueness</h3>
+<p>The CP Decomposition of a tensor is unique if all the factor matrices $\mathbf{\bar{A}}^{(1)},\cdots, \mathbf{\bar{A}}^{(K)}$ satisfying (\ref{factor}) are related via
+\begin{equation}
+    \mathbf{\bar{A}}^{(k)} = \mathbf{A}^{(k)} \mathbf{P} \Delta
+\end{equation}
+where $\Delta$ are diagonal matrices satisfying $\prod_{k=1}^{K} \Delta _{\mathbf{A}^{(k)}} = \mathbf{I}_{R}$ and $\mathbf{P}$ is a permutation matrix.</p>
 
 
 
