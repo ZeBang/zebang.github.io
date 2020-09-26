@@ -3,6 +3,7 @@
    <head>
       <title>CP</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
       <style type="text/css">
          @import url('../style/style.css');
          p.metadata {
@@ -28,7 +29,7 @@
 
    </head>
    <body>
-      <h1>CP decomposition</h1>
+      <h1><a target="_blank" href="https://lizebang.com">CP decomposition</a></h1>
       <div id="contact">
          <p>
             <br>
@@ -63,171 +64,161 @@ The matrices \(\mathbf{A}^{(k)}\) will be denoted as factor matrices.</p>
 \end{equation}
 where $\Delta$ are diagonal matrices satisfying $\prod_{k=1}^{K} \Delta _{\mathbf{A}^{(k)}} = \mathbf{I}_{R}$ and $\mathbf{P}$ is a permutation matrix.</p>
 
+  <h3>Summary</h3>
+
+<p>The uniqueness of CP decomposition is not fully understood yet and fundamentally different from matrices. Note that, contrary to singular value decomposition (SVD) in the matrix case, no orthogonality constraints are imposed to ensure uniqueness. Imposing orthogonality constraints yields a different decomposition that has different properties. Unlike matrices, the identifiability may not be guaranteed by the orthogonality for tensor decomposition. </p>
+
+    <p><li> Notions of orthogonality [2]: If every $1 \le k \le K$, $1 \le i,j \le R$, $\mathbf{a}_{i}^{(k)} \perp \mathbf{a}_{j}^{(k)}$, it is combinatorial orthogonal rank decomposition. And there are many other notions of orthogonality for tensors.</li>
+    <li> Combinatorial orthogonal rank decomposition may not even exist. For example, it is possible that the rank is greater than the largest dimension.  Matrices (i.e., tensors of order two) are special cases that always have a completely orthogonal decomposition.</li>
+    <li> Even if it exists, decompositions under the orthogonality constraints are not necessarily minimal in terms of $r$ [2]. For matrices, all three rank decompositions are equivalent to the SVD.</li>
+    <li> Even if it exists and meets minimal rank $r$. Orthogonal rank decomposition is NOT unique. See examples in [2]. </li></p>
 
 
-         <!-- <h2>Papers</h2>
-         <p id="publications">
+<p>Key to many applications are the uniqueness properties of the CPD; CPD may be unique without imposing constraints like orthogonality.</p>
+
+<div class="theorem" text='Kruskal Condition'>
+If $\sum_{i=1}^{K} k_{\mathbf{A}^{(i)}} \ge 2R + K - 1$, then CP is unique.
+</div>
+ Remarks:
 
 
-        <ul>
-            <li>
-               H. Deng, Q. Han and C.-H. Zhang  (2020)  Confidence intervals for multiple isotonic regression and other monotone models. [<a target="_blank" href="https://arxiv.org/abs/2001.07064">arXiv</a>]
-
-            </li>
-         </ul>
-
+<p>
+    <li> $k_{\mathbf{A}} = 0$ if and only if the matrix $\mathbf{A}$ has an all-zero column.</li>
+    <li> $k_{\mathbf{A}} = 1$ if and only if $\mathbf{A}$ contains proportional columns.</li>
+    <li> It is reasonable to assume $\min_{i} k_{\mathbf{A}^{(i)}} = 2$. In high dimensions, assume $\min_{i} k_{\mathbf{A}^{(i)}} = 2$, meaning that one extra dimension increases the left-hand side by at least 2 but the right-hand side by only 1.</li>
+    <li> If all matrices involved are full k-rank, then unique [1].</li></p>
 
 
-        <ul>
-            <li>
-               Q. Han and K. Kato  (2019)  Berry-Esseen bounds for Chernoff-type non-standard asymptotics in isotonic regression.  [<a target="_blank" href="https://arxiv.org/abs/1910.09662">arXiv</a>]
+<p>It is known that Kruskal’s rank conditions are best possible [16], however other assumptions
+could also imply uniqueness.</p>
+<p>
+    <li> When at least one factor matrix $\mathbf{A}^{(i)}$ is full rank [6]; </li>
+    <li> When $I_K > R$ [9]; </li>
+    <li> When at least one of the matrix factors is constrained to be columnwise orthonormal [13], etc.</li>
+    <li> In random (generic) settings, it is unique with probability one [8].</li>
+</p>
 
-            </li>
-         </ul>
-
-
-
-         <ul>
-            <li>
-               Q. Han (2019)  Global empirical risk minimizers with “shape constraints” are rate optimal in general dimensions.  [<a target="_blank" href="https://arxiv.org/abs/1905.12823?context=math.ST">arXiv</a>]
-            </li>
-         </ul>
-
-        <ul>
-            <li>
-               Q. Han (2019)  Multiplier U-processes: sharp bounds and applications.  [<a target="_blank" href=pdf/multiplier_U_processes_v1.pdf>pdf</a>]
-            </li>
-         </ul>
+<h3>References</h3>
+<br><b>[1] Sidiropoulos, Bro. On the uniqueness of multilinear decomposition of N-way arrays. 2000.</b>
+<br>
+Some fasts discussed in Remark 3: (1) If all matrices involved are full k-rank (a matrix whose columns are drawn independently from absolutely continuous distributions is full k-rank with probability one), then unique. (2) F-component multilinear models are generically unique in higher dimensions}.
 
 
- 
-         <ul>
-            <li>
-               Q. Han and J. A. Wellner  (2019)  Complex sampling designs: uniform limit theorems and applications. [<a target="_blank" href="https://arxiv.org/abs/1905.12824?context=math.ST">arXiv</a>]
-            </li>
-         </ul>
+<br><b>[2] Tamara G. Kolda. Orthogonal Tensor Decompositions. 2001.</b>
+<br>
+Definitions of orthogonality: rank decomposition, orthogonal rank decomposition, strong orthogonal rank decomposition. All "orthogonal rank decomposition is NOT unique." Given a definition such that "decomposition is unique in the sense that the weights are unique".
 
 
-         <ul>
-            <li>
-               Q. Han and C.-H. Zhang  (2019+)  Limit distribution theory for block estimators in multiple isotonic regression. <i>Ann. Statist.</i>, to appear. [<a target="_blank" href="https://arxiv.org/abs/1905.12825">arXiv</a>]
-            </li>
-         </ul>
-
-
-
-         <ul>
-            <li>
-               Q. Han and J. A. Wellner  (2018)  Robustness of shape-restricted regression estimators: an envelope perspective.   [<a target="_blank" href="https://arxiv.org/abs/1805.02542">arXiv</a>]
-            </li>
-         </ul>
-
-
-         <ul>
-            <li>
-              Q. Han*, T. Wang*, S. Chatterjee and R. J. Samworth  (2019)  Isotonic regression in general dimensions. <i>Ann. Statist.</i>, <b>47</b>, 2440-2471. [<a target="_blank" href="https://arxiv.org/abs/1708.09468">arXiv</a>] (*=equal contribution)
-            </li>
-         </ul>
-
-
-         <ul>
-            <li>
-               Q. Han and J. A. Wellner  (2019)  Convergence rates of least squares regression estimators with heavy-tailed errors. <i>Ann. Statist.</i>, <b>47</b>, 2286&ndash;2319. [<a target="_blank" href="https://arxiv.org/abs/1706.02410">arXiv</a>] <br/>
-<small> (Presented in the Annals of Statistics special invited session at JSM 2019) </small>
-            </li>
-         </ul>
-
-         <ul>
-            <li>
-               Q. Han (2017)  Oracle posterior contraction rates under hierarchical priors.  [<a target="_blank" href="https://arxiv.org/abs/1704.07513">arXiv</a>]             </li>
-         </ul>         
-         <ul>
-            <li>
-           Q. Han and J. A. Wellner  (2016)  Multivariate convex regression: global risk bounds and adaptation.  
-               [<a target="_blank" href="https://arxiv.org/abs/1601.06844">arXiv</a>]
-            </li>
-         </ul>
-
-   <ul>
-   <li>
-          Q. Han and J. A. Wellner  (2016)  Approximation and estimation of s-concave densities via R&eacutenyi divergences. <i>Ann. Statist.</i>, <b>44</b>, 1332&ndash;1359.  [<a target="_blank" href="https://arxiv.org/abs/1505.00379">arXiv</a>]
-   </li>
-   </ul> 
-
-   <ul>
-   <li>  A. Jalali, Q. Han, I. Dumitriu and M. Fazel (2016) Relative density and exact recovery in general stochastic block models. <i> NIPS 2016.</i> [<a target="_blank" href="https://arxiv.org/abs/1512.04937">arXiv</a>]
-
-   </li>
-   </ul>
-         </p>
-
-
-         <h2>Upcoming travel</h2>
-         <p id="teaching">
-         <ul>
-            <li>
-              Statistics seminar. Mar 5, 2020. Department of Statistics, University of Minnesota, USA.  
-            </li>
-         </ul>
-         <ul>
-            <li>
-              Statistics seminar. May 21, 2020. Department of Statistics, University of California Davis, USA.  
-            </li>
-         </ul>
-         <ul>
-            <li>
-              2020 ICSA Conference. Jun 26-Jun 29, 2020. Wuhan, China. 
-            </li>
-         </ul>
-        <ul>
-            <li>
-              Mathematical and Statistical Challenges in Uncertainty Quantification. Jul 13-16, 2020. Cambridge, UK.
-            </li>
-         </ul>
-        <ul>
-            <li>
-              2020 IMS/Bernoulli World Congress of Probability and Statistics. Aug 17-21, 2020, Seoul, South Korea.
-            </li>
-         </ul>
-        <ul>
-            <li>
-              2020 Workshop New Developments in Econometrics and Time Series. Oct 1-2, 2020, Renne, France.
-            </li>
-         </ul>
-
-            </p>
+<br><b>[3] Xiangqian Liu, Nicholas D. Sidiropoulo. Cramér–Rao Lower Bounds for Low-Rank
+Decomposition of Multidimensional Arrays. 2001.</b>
+<br>
+Simple-to-check necessary conditions for a unique low-rank decomposition are provided.
 
 
 
-       <h2>Teaching</h2>
-         <p id="teaching">
-
-       <ul>
-            <li>
-              Instructor, <a target="_blank" href=STAT652/STAT652.html>STAT 652-653</a>, Rutgers, Fall 2019/Spring 2020.
-            </li>
-         </ul>
-
-         <ul>
-            <li>
-              Instructor, STAT 653, Rutgers, Spring 2019.
-            </li>
-         </ul>
-         <ul>
-            <li>
-              Instructor, STAT 593, Rutgers, Fall 2018.
-            </li>
-         </ul>
-         <ul>
-            <li>
-              Instructor, STAT/MATH 491, UW, Fall 2017.
-            </li>
-         </ul>
-            </p>
+<br><b>[4] Jos M.F. Ten Berge, Nicholas D. Sidiropoulos. On Uniqueness In CANDECOMP/PARAFAC. 2007.</b>
+<br>
+the sufficient condition is also necessary for tensors of rank $R = 2$ and $R = 3$, but not for $R > 3$. It has been shown that, in cases of small $k$-rank, the particular pattern of zeros, after pre-transformations to have identity submatrices in A, B, and C, may have a decisive impact on uniqueness. This implies that attempts to derive necessary and sufficient conditions for uniqueness are doomed to fail unless they take that very pattern into account. 
 
 
+<br><b>[5] Tamara G. Kolda. A Counterexample to The Possibility of an Extension of The ECKART–YOUNG Low-Rank Approximation Therorem for The Orthogonal Rank Tensor Decomposition. 2003.</b>
+<br>
+The first term in orthogonal rank tensor decomposition is NOT the best rank-1 approximation.
 
-      </div> -->
-      <!--main-->
+
+<br><b>[6] Tao Jiang, Nicholas D. Sidiropoulos. Kruskal’s Permutation Lemma and the Identification
+of CANDECOMP/PARAFAC. 2004.</b>
+<br>
+Two equivalent necessary and sufficient conditions for unique decomposition of restricted CP models where at least one of the component matrices is full column rank.
+
+<br><b>[7] Alwin Stegeman, Nicholas D. Sidiropoulos. On Kruskal’s uniqueness condition for the Candecomp/Parafac decomposition. 2006.</b>
+<br>
+Provide an accessible and intuitive proof of Kruskal’s condition.
+
+
+<br><b>[8]  A. Stegeman, J.M.F. Ten Berge, L. De Lathauwer. Sufficient conditions for uniqueness in Candecomp/Parafac and Indscal with random component matrices. 2006.</b>
+<br>
+A link between the deterministic approach of Jiang and Sidiropoulos and the random setting of De Lathauwer is provided.
+
+
+<br><b>[9]  Lieven De Lathauwer. A Link Between The CANONICAL DECOMPOSITION in Multilinear Algebra And Simultaneous Matrix Diagonalization. 2006.</b>
+<br>
+This paper derive a new sufficient condition for uniqueness in the case that $I_N \ge R$.
+
+
+<br><b>[10] Evrim Acar, Bulent Yener. Unsupervised Multiway Data Analysis: A Literature Survey. 2009.</b>
+<br>
+The motivation behind PARAFAC is to obtain a unique solution such that component matrices are determined
+uniquely up to a permutation, i.e., rank-one tensors can be arbitrarily reordered, and scaling of columns. It is this uniqueness property that makes PARAFAC a popular
+technique in various fields.
+
+
+<br><b>[11] T. G. Kolda and B. W. Bader, Tensor decompositions and applications. 2009.</b>
+<br>
+A claasic review paper. Some sufficient and necessary conditions for uniqueness are mentioned.
+
+
+<br><b>[12] Evrim Acar, Daniel M. Dunlavy, Tamara G. Kolda. A Scalable Optimization Approach for Fitting Canonical Tensor. 2011.</b>
+<br>
+CP factors are not orthonormal in each mode. In fact, it is possible that the rank is greater than the largest dimension. CP is known to be unique when it satisfies, e.g., the Kruskal conditions. Proposed a Regularizing the optimization formulation of CP.
+
+
+
+
+<br><b>[13] Mikael Sorensen, Lieven de Lathauwer, Pierre Comon, etc. CANONICAL POLYADIC Decomposition with a Columnwise Orthonormal Factor Matrix. 2012.</b>
+<br>
+In many applications at least one of the matrix factors is
+constrained to be columnwise orthonormal. We first derive a relaxed condition that guarantees
+uniqueness of the CPD under this constraint. Second, we give a simple proof of the existence of
+the optimal low-rank approximation of a tensor in the case that a factor matrix is columnwise orthonormal.
+
+
+<br><b>[14] Bocci, Chiantint, etc. Refined Methods For The Identifiability Of Tensors. 2013.</b>
+<br>
+It shows that for a nonnegative tensor, a best nonnegative rankr approximation is almost always unique. Also some good reviews about uniqueness are mentioned in this paper.
+
+
+<br><b>[15] IGNAT DOMANOV, LIEVEN DE LATHAUWER. ON THE UNIQUENESS OF THE CANONICAL POLYADIC
+DECOMPOSITION OF THIRD-ORDER TENSORS — PART I. 2013.</b>
+<br>
+The uniqueness fails if the inequality is weakened. 
+
+
+<br><b>[16] Harm Derksen. Kruskal’s uniqueness inequality is sharp. 2013.</b>
+<br>
+A good review paper. Found sufficient conditions on the factor matrices which guarantee "partially uniqueness".
+
+
+
+
+<br><b>[17] IGNAT DOMANOV, LIEVEN DE LATHAUWER. ON THE UNIQUENESS OF THE CANONICAL POLYADIC
+DECOMPOSITION OF THIRD-ORDER TENSORS — PART II. 2014.</b>
+<br>
+A good review paper. Establishing overall CPD uniqueness in cases where none of the factor matrices has full column rank..
+
+
+<br><b>[18] Andrzej Cichocki, Danilo P. Mandic, etc. Tensor Decompositions for Signal Processing Applications. 2015.</b>
+<br>
+CP decomposition is unique under more natural and relaxed conditions, which only require the components to be sufficiently different and their number not unreasonably large.
+
+
+
+<br><b>[19] Yang Qi, Pierre Comon. Uniqueness of Nonnegative Tensor Approximations. 2016.</b>
+<br>
+It shows that for a nonnegative tensor, a best nonnegative rankr approximation is almost always unique. Also some good reviews about uniqueness are mentioned in this paper.
+
+
+
+<br><b>[20] Jérémy Cohen, Konstantin Usevich, Pierre Comon. A Tour of Constrained Tensor Canonical Polyadic Decomposition. 2016.</b>
+<br>
+This paper surveys the use of constraints in tensor decomposition models.
+
+
+<br><b>[21] Nicholas D. Sidiropoulos,etc. Tensor Decomposition for Signal Processing and Machine Learning. 2017.</b>
+<br>
+A good review paper. 
+
+
+</div>
    </body>
 </html>
