@@ -1,0 +1,68 @@
+<!--
+说明：股票看盘
+作者：黑桃A
+时间：2014-04-14
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8" />
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+<script type="text/javascript">
+var stockCode="600804";
+$(document).ready(function(){
+    getNewData();
+     var tg=self.setInterval("getNewData()",2000);//N毫秒刷新一次，1000毫秒＝1秒
+});
+//获取新数据
+function getNewData()
+{
+    if(getQueryString('c')!=undefined)
+    {
+        stockCode=getQueryString('c');
+    }
+    var type=stockCode[0]==6?1:2;
+    var durl="http://flashquote.stock.hexun.com/Stock_Combo.ASPX?mc="+type+"_"+stockCode+"&dt=T&t="+Math.random();
+    $.getScript(durl,function(data){
+        //加载脚本并执行
+    });
+}
+//刷新显示
+function refreshData(code,type,tip,data)
+{ 
+ 
+     
+    var result="";
+    result+=code;
+    result+="<br/>";
+    result+= data[1]+'\t'+data[2]+'\t'+data[3]+'\t'+data[4]+'\t　　'+data[5]+'\t'+percent+'%';
+    
+    result+='<div style="height:10px;width:100px;"></div>'   
+     
+    result+=''+data[24]+'\t\t'+data[25];
+    result+='<br/>'+data[22]+'\t\t'+data[23];
+    result+='<br/>'+data[20]+'\t\t'+data[21];
+    result+='<br/>'+data[18]+'\t\t'+data[19];
+    result+='<br/>'+data[16]+'\t\t'+data[17];
+          
+    result+='<div style="height:1px;width:100px; border-top:dashed 1px #CCCCCC"></div>'             
+    result+=''+data[6] +'\t\t'+data[7];
+    result+='<br/>'+data[8] +'\t\t'+data[9];
+    result+='<br/>'+data[10]+'\t\t'+data[11];
+    result+='<br/>'+data[12]+'\t\t'+data[13];
+    result+='<br/>'+data[14]+'\t\t'+data[15];
+ 
+    $("#result").html(result);
+}
+//getQueryString获取url参数
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+</script>
+</head>
+<body>
+    <div id="result" style="color:#CCCCCC;"></div>
+</body>
+</html>
