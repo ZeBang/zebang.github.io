@@ -1,98 +1,12 @@
 <html> 
 <head> 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script> 
-<script src="http://www.skulpt.org/js/skulpt.min.js" type="text/javascript"></script> 
-<script src="http://www.skulpt.org/js/skulpt-stdlib.js" type="text/javascript"></script> 
 
 </head> 
 
 <body onload="runit()"> 
 
-<script type="text/javascript"> 
-// output functions are configurable.  This one just appends some text
-// to a pre element.
-function outf(text) { 
-    var mypre = document.getElementById("output"); 
-    mypre.innerHTML = mypre.innerHTML + text; 
-} 
-function builtinRead(x) {
-    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-            throw "File not found: '" + x + "'";
-    return Sk.builtinFiles["files"][x];
-}
-
-// Here's everything you need to run a python program in skulpt
-// grab the code from your textarea
-// get a reference to your pre element for output
-// configure the output function
-// call Sk.importMainWithBody()
-function runit() { 
-   var prog = document.getElementById("yourcode").value; 
-   var mypre = document.getElementById("output"); 
-   mypre.innerHTML = ''; 
-   Sk.pre = "output";
-   Sk.configure({output:outf, read:builtinRead}); 
-   (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
-   var myPromise = Sk.misceval.asyncToPromise(function() {
-       return Sk.importMainWithBody("<stdin>", false, prog, true);
-   });
-   myPromise.then(function(mod) {
-       console.log('success');
-   },
-       function(err) {
-       console.log(err.toString());
-   });
-}
-
-function change() // no ';' here
-{
-    var x = document.getElementById("myButton");
-    var y = document.getElementById("code");
-    if (y.style.visibility === 'hidden') {
-      y.style.visibility = 'visible';
-      x.innerHTML = "hideCode"
-    } else {
-      y.style.visibility = 'hidden';
-      x.innerHTML = "showCode"
-    }
-}
-</script> 
-
-
-<button type="button" id="myButton" onclick="change()">showCode</button> 
-<div id="code" style="visibility: hidden">
-<h3>Try This</h3> 
-<form> 
-<textarea id="yourcode" cols="40" rows="10">import turtle
-import turtle
-tina = turtle.Turtle()
-tina.shape('turtle')
-tina.penup()
-
-def line(words, horiz_pos = -50):
-    x,y = tina.pos()
-    tina.goto(max(horiz_pos, -190), y)
-    tina.write(words)
-    x,y = tina.pos()
-    tina.goto(x, y - 25)
-
-def by(author):
-    x,y = tina.pos()
-    tina.goto(x + 70, max( -190, y -30))
-    tina.write(author)
-    x,y = tina.pos()
-    tina.goto(0, y)
-
-tina.goto(-50, 190)
-line("Hi, I'm bang! Glad to meet you.")
-line("You can run Python on my web directly.")
-line("Use showCode button to edit your own code.")
-by("bang")
-</textarea><br /> 
-<button type="button" onclick="runit()">Run</button>
-</form>
-</div>
-<pre id="output" ></pre>
+<iframe src="https://trinket.io/embed/python/c896117fb8" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
 <!-- If you want turtle graphics include a canvas -->
 <div id="mycanvas">
