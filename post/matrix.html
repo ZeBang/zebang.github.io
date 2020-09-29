@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
+   <head>
+      <title>matrix</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+      <style type="text/css">
+         @import url('../style/style.css');
+         p.metadata {
+         font-size: 100%;
+         color: #999;
+         margin: 0;
+         }
+      </style>
+      
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: { equationNumbers: {autoNumber: "AMS"} },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+   </head>
+   <body>
+      <h1><a href="https://lizebang.com">Notes about matrix</a></h1>
+
+      <div style="clear: both;" id="main">
+
+        
+
+<p>$M_{m,n}(\mathbf{F})$: $m\times n$ matrices on the field $\mathbf{F}$ (e.g. $\mathbb{R}$, $\mathbb{C}$). </p>
+
+<p>$M_{n}(\mathbf{F})$: $n\times n$ square matrices.</p>
+
+<p>Hermitian matrices: $A\in M_n$, $A=A^*$, where $A^{*}=\bar{A^{'}}$. If $A\in M_n(\mathbb{R})$, Hermitian $\Leftrightarrow$ symmetric.</p>
+
+<p>Unitary matrices: $U\in M_n$ is unitary if $UU^{*}=U^{*}U=I_n$. If $U\in M_n(\mathbb{R})$ unitary $\Leftrightarrow$ orthogonal.</p>
+
+
+<h6>(01).</h6>
+
+<b>Spectral theorem for Hermitian Matrices</b>: <br>
+
+<p>$A\in M_n$ is Hermitian iff $\exists$ a unitary $U\in M_n$ and real diagonal $\Lambda\in M_n$ s.t. $A=U\Lambda U^{*}$.</p>
+
+<p>$A\in M_n$ is real and symmetric iff $\exists$ a real orthogonal $P\in M_n$ and real diagonal $\Lambda\in M_n$ s.t. $A=P\Lambda P^{'}$.</p>
+
+<h6>(02).</h6>
+
+<p><div class="theorem" text='Courant-Fischer'>(Courant-Fischer)
+Let $A\in M_n$ be a Hermitian matrix with eigenvalues $\lambda_1 \le \lambda_2 \le \cdots \le \lambda_n$, and let $k$ be a given integer with $1\le k \le n$. Then
+\begin{equation*}
+\min\limits_{\substack{w_1,w_2,\cdots,w_{n-k} \in \mathbb{C}^n}} \max\limits_{\substack{x \ne 0, x \in \mathbb{C}^n \\ x \perp w_1,w_2,\cdots,w_{n-k}}} \frac{x^{*}Ax}{x^{*}x}=\lambda_{k}    
+\end{equation*}
+\begin{equation*}
+\max\limits_{\substack{w_1,w_2,\cdots,w_{n-k} \in \mathbb{C}^n}} \min\limits_{\substack{x \ne 0, x \in \mathbb{C}^n \\ x \perp w_1,w_2,\cdots,w_{k-1}}} \frac{x^{*}Ax}{x^{*}x}=\lambda_{k}    
+\end{equation*}
+</div>
+Remarks: when $k=1$ or $k=n$ (Rayleigh-Ritz theorem),
+$$\lambda_1=\min\limits_{x\ne 0, x \in \mathbb{C}^n}\frac{x^{*}Ax}{x^{*}x}$$
+$$\lambda_n=\max\limits_{x\ne 0, x \in \mathbb{C}^n}\frac{x^{*}Ax}{x^{*}x}$$</p>
+
+<h6>(03).</h6>
+
+<div class="theorem" text='Weyl'>(Weyl)
+   Let $A,B \in M_n$ be Hermitian and let the eigenvalues $\lambda_i(A)$,$\lambda_i(B)$, and $\lambda_i(A+B)$ be arranged in increasing order. For each $k=1,2,\cdots,n$ we have
+\begin{equation*}
+\lambda_k(A)+\lambda_1(B) \le \lambda_k(A+B) \le \lambda_k(A) + \lambda_n(B)   
+\end{equation*}
+<b>Corollary</b>. If $B$ is positive semidefinite, then $\lambda_k(A)\le \lambda_k(A+B)$ for all $k=1,2,\cdots,n$.</div>
+
+<h6>(04).</h6>
+
+
+<div class="theorem" text='Interlacing'>(Interlacing)
+Let $A \in M_n$ be Hermitian and let $z\in \mathbb{C}^n$ be a given vector. If the eigenvalues of $A$ and $A \pm zz^{*}$ are arranged in increasing order, we have <br>
+
+(a) $\lambda_k(A \pm zz^{*}) \le \lambda_{k+1}(A) \le \lambda_{k+2} (A \pm zz^{*})$, $k=1,2,\cdots,n-2$ <br>
+
+(b) $\lambda_k(A) \le \lambda_{k+1}(A \pm zz^{*}) \le \lambda_{k+2} (A)$, $k=1,2,\cdots,n-2$ <br>
+
+It can be extended to rank $r$ case.</div>
+
+<p><div class="theorem" text=''>
+Let $A,B \in M_n$ be Hermitian and suppose that $B$ has rank at most $r$. Then <br>
+
+(a) $\lambda_k(A + B) \le \lambda_{k+r}(A) \le \lambda_{k+2r} (A + B)$, $k=1,2,\cdots,n-2r$ <br>
+
+(b) $\lambda_k(A) \le \lambda_{k+r}(A + B) \le \lambda_{k+2r} (A)$, $k=1,2,\cdots,n-2r$</p></div>
+
+
+<h6>(05).</h6>
+
+<div class="theorem" text='Weyl'>
+Let $A,B \in M_n$ be Hermitian, and let the eigenvalues of $A$,$B$, and $A+B$ be arranged in increasing order. Then for every pair of integers $j,k$ such that $1\le j,k \le n$ and $j+k \ge n+1$ we have
+\begin{equation*}
+\lambda_{j+k-n}(A+B) \le \lambda_j(A)+\lambda_k(B)
+\end{equation*}
+Equivalent form, let $\eta_i$ be eigrnvalues in deceasing order $1\le j,k \le n$ and $j+k \le n+1$ then
+\begin{equation*}
+\eta_{j+k-1}(A+B) \le \eta_j(A)+\eta_k(B)
+\end{equation*}</div>
+
+<h6>(06).</h6>
+
+<b>Definition</b>. Let $\alpha = \{\alpha_1,\alpha_2,\cdots,\alpha_n\} \in \mathbb{R}^{n}$ and $\beta = \{\beta_1,\beta_2,\cdots,\beta_n\} \in \mathbb{R}^{n}$. Arranged them in increasing order $\alpha_{j_1} \le \alpha_{j_2} \le \cdots \le \alpha_{j_n}$, $\beta_{m_1} \le \beta_{m_2} \le \cdots \le \beta_{m_n}$. Say $\beta$ majorize $\alpha$ if: $\sum\limits_{i=1}^{k}\beta_{m_i} \ge \sum\limits_{i=1}^{k}\alpha_{j_i}$ for all $k=1,2,\cdots,n$, with equality for $k=n$.
+
+<div class="theorem" text=''> Let $A\in M_n$ be Hermitian. The vector of diagonal entries of $A$ majorizes the vector of eigenvalues of $A$.</div>
+
+
+<h6>(07).</h6>
+
+<p>Call a function $\| \cdot\| \to \mathbb{R}$ a matrix norm if for all $A,B \in M_n$ it satisfies the following five axioms:
+\begin{align*}
+&(1) \| A \| \ge 0  &\text{Nonnegtive}\\
+&(2) \| A \| = 0 \quad\text{iff}\quad A=0  &\text{Positive}\\
+&(3) \| c A \| = |c| \| A \| \quad\text{for all}\quad c \in \mathbb{C}  &\text{Homogeneous}\\
+&(4) \| A + B \| \le  \| A \| + \| B \| &\text{Triangle inequality}\\
+&(5) \| AB \| \le \| A \| \| B \| &\text{Submultiplicative}
+\end{align*}
+
+Remarks: 
+
+(1) You can always rescale the vector norm but you can NOT always rescale the matrix norm. <br>
+
+(2) $\| A^{-1} \| \ge \frac{\| I \|}{\| A \|}$ <br>
+
+(3) $\| I \| \ge 1$ for any matrix norm. <br>
+
+(4) How about vector norm on $M_n$: <br>
+
+ $l_1$-norm: $\|A\|_1 := \sum\limits_{i,j=1}^{n}|a_{ij}|$ is matrix norm. <br>
+
+ $l_2$-norm: $\|A\|_2 := (\sum\limits_{i,j=1}^{n}|a_{ij}|^{2})^{\frac{1}{2}}$ is matrix norm. <br>
+
+ $l_\infty$-norm: $\|A\|_\infty := \max\limits_{i,j} \{|a_{ij}|\}$ is NOT matrix norm. <br></p>
+
+<div class="theorem" text='Induced Matrix Norm'>(Induced Matrix Norm)
+Let $\|\cdot\|$ be a vector norm on $\mathbb{C}^n$. Define $\| \cdot \|$ on $M_n$ by $$\| A \|=\max\limits_{\|x\|=1}\|Ax\|$$
+
+(1) $\| \cdot \|$ is a matrix norm. <br>
+
+(2) $\| A x \| \le \| A \| \|x\| \quad \forall A \in M_n, x\in \mathbb{C}^n$ <br>
+
+(3) $\| I \| =1$ </div>
+
+Remarks:
+
+(1) $\| A\|_1 = \max\limits_{1\le i\le n}\sum\limits_{i=1}^{n}|a_{ij}|$ induced by $l_1$ norm.<br>
+
+(2) $\| A\|_\infty = \max\limits_{1\le i\le n}\sum\limits_{J=1}^{n}|a_{ij}|$ induced by $l_\infty$ norm.<br>
+
+(3) $\| A\|_2 = \max\{\sqrt{\lambda}: \lambda \; \text{is an eigenvalue of}\; A^{*}A\}$ induced by the Euclidean norm. Also known as spectral norm, operator norm $\| A\|_2 = \max\limits_{\|x\|=1}\|Ax\|_{2}$.<br>
+
+(4) Spectral $p$ norms $\| A\|_{2}=\big[ \sum\limits_{i} \sigma_{i}(A)^2\big]^{\frac{1}{2}}$ induced by $\|x\|_{p}=\sum\limits_{i=1}^{n}(|x_i|^{p})^{\frac{1}{p}}$,$1 \le p < \infty$.<br>
+
+(5) They are unitarily invariant matrix norm, i.e. $\|UAV\|=\|A\|$ for any $A\in M_n$ and any unitary matrices $U,V \in M_n$.<br>
+
+(6) The spectral radius $\rho(A)$ of a matrix $A\in M_n$ is $\rho(A) := \max\{|\lambda|: \lambda \;\text{is an eigenvalue of} \;$A$\}$<br>
+
+<h6>(08).</h6>
+
+<div class="theorem" text=''>If $\| \cdot \|$ is any matrix norm and if $A\in M_n$, then $\rho(A)\le \| A \|$.</div>
+
+<b>Lemma</b>. Let $A \in M_n$ and $\epsilon >0$ be given. There is at least one matrix norm $\| \cdot \|$ such that $\rho(A) \le \| A \| \le \rho(A) + \epsilon$
+
+<h6>(09).</h6>
+
+<div class="theorem" text=''>Let $A \in M_n$ . Then $\lim_{k \to \infty} A^{k}=0$ if and only if $\rho(A)<1$.</div>
+
+<b>Corollary</b>. Let $A \in M_n$ be a given matrix,and let $\epsilon >0$ be given. There is a constant $C=C(A,\epsilon)$ such that
+$$|(A^{k})_{ij}| \le C(A + \epsilon)^{k}$$
+for all $k=1,2,3,\cdots$ and all $i,j=1,2,3,\cdots,n$.
+
+<h6>(10).</h6>
+
+<b>Corollary</b>. Let $\| \cdot \|$ be a matrix norm on $M_n$. Then
+$$\rho(A)=\lim_{k \to \infty}\| A^{k}\| ^{\frac{1}{k}}$$ for all $A \in M_n$.
+
+<h6>(11).</h6>
+<div class="theorem" text='Convergence Criterion'>(Convergence Criterion)
+
+(i) If $\sum\limits_{k=0}^{\infty}\|A_k\|$ converges for some vector norm $\|\cdot\|$ on $M_n$, then $\sum\limits_{k=0}^{\infty} A_k$ converges to some matrix in $M_n$. <br>
+
+(ii) Let $A \in M_n$. If $\exists$ a matrix norm $\| \cdot\|$ such that $\sum\limits_{k=0}^{\infty}|a_k| \| A_k\|^{k}$ converges. Then $\sum\limits_{k=0}^{\infty} a_k A^k$ converges.</div>
+
+<b>Corollary</b>. A matrix $A\in M_n$ is invertible if there is a matrix norm $\| \cdot \|$ such that $\| I-A \| < 1$. If this condition is satisfied,
+$$A^{-1}=\sum\limits_{k=0}^{\infty} (I-A)^{k}$$
+
+<b>Corollary</b>. If $\rho(A) < 1$, then
+$$(I-A)^{-1}=\sum\limits_{k=0}^{\infty} A^{k}$$
+
+<div class="theorem" text='Levy-Desplanques'>(Levy-Desplanques)
+Let $A=[a_{ij}] \in M_n$, and suppose that (strictly diagonally dominant)
+$$|a_{ii}| > \sum\limits_{\substack{j=1 \\ j\ne i}}^{n} |a_{ij}| \quad \text{for all} \quad i=1,2,3,\cdots,n$$ Then $A$ is invertible.</div>
+
+<h6>(12).</h6>
+<div class="theorem" text='Minimality of Induced Norm'>(Minimality of Induced Norm)
+(a) Let $\| \cdot\|$ be a given matrix norm on $M_n$. There is an induced matrix norm $\|\cdot\|_{\alpha}$ on $M_n$ such that $\| A\|_{\alpha} \le \| A\|$ for every $A \in M_n$<br>
+
+(b) Let $\| \cdot\|_{\alpha}$ be a given induced matrix norm on $M_n$. Then $\| A \| \le \| A \|_{\alpha} $ for every $A\in M_n$ if and only if $\| A\| = \| A\|_{\alpha}$ for every $A \in M_n$.</div>
+
+<h6>(13) (Location and Perturbation of Eigenvalues).</h6>
+<div class="theorem" text='Ger\v sgorin'>(Gersgorin)
+Let $A=[a_{ij}]\in M_n$, and let $${R_{i}^{'}}(A) \equiv \sum\limits_{\substack{j=1 \\ j \ne i}}^{n} |a_{ij}|, \quad 1\le i\le n$$
+denote the deleted absolute row sums of $A$. Then all the eigenvalues of $A$ are located in the union of $n$ discs
+$$\bigcup_{i=1}^{n} \{z \in \mathbb{C}: |z-a_{ii}| \le R_{i}^{'}(A)\} \equiv G(A) \qquad \text{(Gersgorin region)}$$ Furthermore, if a union of k of these $n$ discs forms a connected region that is disjoint from all the remaining $n-k$ discs, then there are precisely $k$ eigenvalues of $A$ in this region.</div>
+
+<b>Corollary</b>. Let $A=[a_{ij}]\in M_n$, and let $${C_{j}^{'}}(A) \equiv \sum\limits_{\substack{i=1 \\ i \ne j}}^{n} |a_{ij}|, \quad 1\le j\le n$$
+denote the deleted absolute column sums of $A$. Then all the eigenvalues of $A$ are located in the union of $n$ discs
+$$\bigcup_{j=1}^{n} \{z \in \mathbb{C}: |z-a_{jj}| \le C_{j}^{'}(A)\} \equiv G(A^{T})$$ Furthermore, if a union of k of these $n$ discs forms a connected region that is disjoint from all the remaining $n-k$ discs, then there are precisely $k$ eigenvalues of $A$ in this region.
+
+<b>Corollary</b>. If $A=[a_{ij}]\in M_n$, then, $$\rho(A) \le \min\big\{\max_{i} \sum\limits_{j=1}^{n}|a_{ij}|, \max_{j}\sum\limits_{i=1}^{n}|a_{ij}|\big\}$$($\rho(A) \le \| A\|_{\infty}$ and $\rho(A) \le \| A\|_{1}$) <br>
+
+Since $S^{-1}AS$ has the same eigenvalues as $A$ whenever $S$ is invertible, we can apply Ger\v sgorin theorem to $S^{-1}AS$; perhaps for some choice of $S$ the bounds obtained may be sharper. A particularly convenient choice is $S=D=diag(p_1,p_2,\cdots,p_n)$ with all $p_i >0$
+
+<div class="theorem" text=''>Let $A=[a_{ij}]\in M_n$ and let $_1,p_2,\cdots,p_n$ be positive real numbers. Then all eigenvalues of $A$ lie in the region
+$$\bigcup_{i=1}^{n} \Big\{z \in \mathbb{C}: |z-a_{ii}| \le \frac{1}{p_i} \sum\limits_{\substack{j=1 \\ j\ne i}}^{n} p_j |a_{ij}|\Big\} \equiv G(D^{-1}AD)$$
+as well as in the region
+
+$$\bigcup_{j=1}^{n} \Big\{z \in \mathbb{C}: |z-a_{jj}| \le p_j \sum\limits_{\substack{i=1 \\ i\ne j}}^{n} \frac{1}{p_i} |a_{ij}|\Big\} \equiv G[(D^{-1}AD)^{T}]$$</div>
+
+We can get a more general form of upper bounds of spectral radius. <br>
+
+<b>Corollary.</b> Let $A=[a_{ij}] \in M_n$. Then $$\rho(A) \le \min_{p_1,\cdots,p_n >0} \quad \max_{1 \le i \le n} \frac{1}{p_i} \sum\limits_{j=1}^{n} p_j |a_{ij}|$$ and $$\rho(A) \le \min_{p_1,\cdots,p_n >0} \quad \max_{1 \le j \le n} p_j \sum\limits_{i=1}^{n} \frac{1}{p_i} |a_{ij}|$$
+
+<div class="theorem" text=''> Let $A=[a_{ij}] \in M_n$ be strictly diagonally dominant. Then <br>
+
+(a) $A$ is invertible. (Levy-Dasplanques) <br>
+
+(b) If all main diagonal entries of $A$ are positive, then all the eigenvalues of $A$ have positive real part. <br>
+
+(c) If $A$ is Hermitian and all main diagonal entries of $A$ are positive, then all eigenvalues of $A$ are real and positive.</div>
+
+<h6>(14).</h6>
+
+<b>SVD decomposition</b>. Let $A \in M_{m,n}$, rank$(A)=k$, $q = \min \{m,n\}$. There exists orthonormal set $\{u_1,\cdots,u_k\} \in \mathbb{C}^{m}$, $\{v_1,\cdots,v_k\} \in \mathbb{C}^{n}$, $s_1 \ge s_2 \ge \cdots \ge s_k >0$ such that $$A=\sum\limits_{j=1}^{k}s_j u_j v_j^{*}$$ Let $U=\{u_1,\cdots,u_k\}$, $D=diag\{s_1,\cdots,s_k\}$, $V=\{v_1,\cdots,v_k\}$, then $$A=UDV^{*}$$
+
+$\{s_1^2,s_2^2,\cdots,s_k^2\}$ are positive eigenvalues of $AA^{*}$, $\{u_1,u_2,\cdots,u_k\}$ are corresponding eigenvectors. <br>
+
+$\{s_1^2,s_2^2,\cdots,s_k^2\}$ are also positive eigenvalues of $A^{*}A$, $\{v_1,v_2,\cdots,v_k\}$ are corresponding eigenvectors. <br>
+
+If $A$ is real then $U,D,V$ are real.<br>
+
+If $A$ is real and $s_1,s_2,\cdots,s_k$ are distinct, then $u_1,u_2,\cdots,u_k$ and $v_1,v_2,\cdots,v_k$ are uniquely determined up to a sign change.<br>
+
+If $A \in M_{m,n}$ and rank$(A) = k \le q$. Then we can define $s_{k+1},s_{k+2},s_{q} = 0$.
+
+<h6>(15).</h6>
+
+<div class="theorem" text=''> Let $A \in M_{m,n}$, let $q = \min\{m,n\}$, let $s_1 \ge s_2 \ge \cdots \ge s_q$ be the ordered singular values of $A$, and let $k$ be a given integer with $1 \le k \le q$. Then
+\begin{equation*}
+\min\limits_{\substack{w_1,w_2,\cdots,w_{n-k} \in \mathbb{C}^n}} \max\limits_{\substack{x \ne 0, x \in \mathbb{C}^n \\ x \perp w_1,w_2,\cdots,w_{k-1}}} \frac{\|Ax\|_2}{\|x\|_2}=s_{k}    
+\end{equation*}
+and
+\begin{equation*}
+\max\limits_{\substack{w_1,w_2,\cdots,w_{n-k} \in \mathbb{C}^n}} \min\limits_{\substack{x \ne 0, x \in \mathbb{C}^n \\ x \perp w_1,w_2,\cdots,w_{n-k}}} \frac{\||Ax\|_2}{\|x\|_2}=s_{k}    
+\end{equation*}</div>
+
+<h6>(16).</h6>
+
+<div class="theorem" text='Perturbation Inequality'>(Perturbation Inequality)
+Let $A,B \in M_{m,n}$, let $q = \min\{m,n\}$. If $s_1 \ge s_2 \ge \cdots \ge s_q$ are singular values of $A$ and $r_1 \ge r_2 \ge \cdots \ge r_q $ are the singular values of $B$, then<br>
+
+(i) $|s_i - r_i| \le \| A-B \|_2$ for all $i=1,2,\cdots,q$; (Weyl)<br>
+
+(ii) $[|\sum_{i=1}^{q}(s_i - r_i)^2|]^{1/2} \le \|A-B\|_2$. (Hoffman-Wielandt)</div>
+
+<h6>(17).</h6>
+<div class="theorem" text='Interlacing'>(Interlacing)
+Let $A \in M_{m,n}$ be a given matrix and let $\hat{A}$ be the matrix obtained by deleting any one column from $A$. Let $\{s_i\}$ and $\{\hat{s}_i\}$ denote the singular values of $A$ and $\hat{A}$, both arranged in nonincreasing order. <br>
+
+(i) If $m \ge n$, then $$s_1 \ge \hat{s}_1 \ge s_2 \ge \hat{s}_2 \ge \cdots \ge \hat{s}_{n-1} \ge s_n \ge 0$$ 
+
+(ii) If $m < n$, then $$s_1 \ge \hat{s}_1 \ge s_2 \ge \hat{s}_2 \ge \cdots \ge s_{m} \ge \hat{s}_m \ge 0$$</div>
+
+<h6>(18).</h6>
+<div class="theorem" text='Wielandt's Inequality'>(Wielandt's Inequality)
+Let $B \in M_n$ be a given positive definite matrix with eigenvalues $0<\lambda_1\le\lambda_2\le\cdots\le\lambda_n$. Then $$|x^{*}By|^{2} \le \Big(\frac{\lambda_n -\lambda_1}{\lambda_n + \lambda_1}\Big)^{2} (x^{*}Bx)(y^{*}By) $$ for every pair of orthogonal vectors $x,y \in \mathbb{C}^{n}$.</div>
+
+<h6>(19).</h6>
+ 
+ The $l_p$ norm $\|x\| = \Big(\sum\limits_{i=1}^{n}|x_i|^{p}\Big)^{1/p}$, $1 \le p \le \infty$, when applied to the singular values of a matrix, generate unitarily invariant norms on $M_{m,n}$ known as Schatten $p$ norms.<br>
+ 
+ (i) $p=2$, Frobenius (Euclidean) norm, $\|A\|_2=\Big[\sum\limits_i \sigma_i (A)^2\Big]^{1/2}$.<br>
+ 
+ (ii) $p=\infty$, Spectral norm, $\| A \|_2 = \max\{\sigma_i(A)\}$.<br>
+ 
+ (iii) $p=1$, trace norm, $\| A\|_{tr} = \sum\limits_{i} \sigma_i (A)$
+
+<h6>(20).</h6>
+
+If $A$ is a $p \times n$ matrix of complex entries, then its singular values $s_1 \ge \cdots \ge s_q \ge 0$, $q = \min(p, n)$, are defined as the square roots of the $q$ largest eigenvalues of the nonnegative definite Hermitian matrix $AA^{*}$. <br>
+If $A\in \mathbb{C}^{n \times n}$ is Hermitian, then let $\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_n$ denote its eigenvalues. The following results are well known and are referred to as the singular decomposition and spectral decomposition, respectively<br>
+
+<div class="theorem" text=''> Let $A$ and $C$ be two $p \times n$ complex matrices. Then, for any nonnegative integers $i$ and $j$, we have $$s_{i+j+1}(A+C) \le s_{i+1}(A) + s_{j+1}(C)$$</div>
+
+In the language of functional analysis, the largest singular value is referred to as the operator norm of the linear operator (matrix) in a Hilbert space. The following theorem states that the norm of the product of linear transformations is not greater than the product of the norms of the linear transformations.<br>
+
+<div class="theorem" text=''> Let $A$ and $C$ be complex matrices of order $p \times n$ and $n \times m$. We have $$s_1(AC) \le s_1(A)s_1(C)$$</div>
+
+There are some extensions to above Theorem that are very useful in the theory of spectral analysis of large dimensional random matrices.<br>
+
+<div class="theorem" text=''> Let $A$ and $C$ be complex matrices of order $p\times n$ and $n \times m$. For any $i, j \ge 0$, we have
+$$s_{i+j+1}(AC) \le s_{i+1}(A)s_{j+1}(C),$$ where when $i > \text{rank}(A)$, define $s_i(A)=0$.</div>
+
+<div class="theorem" text=''> Let $A$ and $C$ be complex matrices of order $p\times n$ and $n \times m$. We have
+$$\sum\limits_{j=1}^{k}s_j(AC) \le \sum\limits_{j=1}^{k}s_j(A)s_j(C)$$</div>
+
+We have an important special case of above Theorem as follows. <br>
+
+<div class="theorem" text=''>  Let $A$ and $C$ be two $p \times n$ complex matrices. We have 
+$$\sum\limits_{j=1}^{p \land n}s_j(A^{*}C) \le \sum\limits_{j=1}^{p \land n}s_j(A)s_j(C)$$</div>
+
+
+<h6>(21).</h6>
+
+<b>Definition</b> (Wigner matrix). $A \in M_n$ is \textit{Wigner matrix} if $A$ is Hermitian random matrix whose entries on or above the diagonal are
+independent.  <br>
+
+<b>Definition</b> (ESD).Suppose $A \in M_n$ is an $n \times n$ matrix with eigenvalues $\lambda_j$ , $j = 1, 2, \cdots , m$. If all these eigenvalues are real (e.g., if $A$ is Hermitian), we can define a one-dimensional distribution function
+$$F^{A}(x) = \frac{1}{M}\# \{j \le n: \lambda_j \le x\}$$
+called the \textit{empirical spectral distribution (ESD)} of the matrix $A$. Here $\# E$ denotes the cardinality of the set $E$. <br>
+
+<b>Definition</b> (semicircular law). The semicircular law $F(x)$, whose density is given by 
+\begin{equation*}
+f(x)=
+\begin{cases}
+\frac{1}{2 \pi} \sqrt{4-x^2}& |x| \le 2\\
+0& \text{otherwise}
+\end{cases}
+\end{equation*}
+
+<div class="theorem" text=''>Suppose that $\textbf{X}_n$ is an $n \times n$ Hermitian matrix whose diagonal entries are iid real random variables and those above the diagonal are iid complex random variables with variance $\sigma^2 =1$. Then, with probability $1$, the ESD of $\textbf{W}_n = \frac{1}{\sqrt{n}} \textbf{X}_n$ tends to the semicircular law.</div>
+
+<b>Definition</b> (Marvcenko-Pastur law). The M-P law $F_{y}(x)$, whose density is given by 
+\begin{equation*}
+f_{y}(x)=
+\begin{cases}
+\frac{1}{2 \pi xy \sigma^2} \sqrt{(b-x)(x-a)}& a \le x \le b\\
+0& \text{otherwise}
+\end{cases}
+\end{equation*}
+and has a point mass $1 - 1/y$ at the origin if $y > 1$, where $a = \sigma^2 (1-\sqrt{y})^{2}$ and $b = \sigma^2 (1+\sqrt{y})^{2}$. Here, the constant $y$ is the dimension to sample size ratio index and $\sigma^2$ is the scale parameter. If $\sigma^2 = 1$, the M-P law is said to
+be the standard M-P law.<br>
+
+
+<div class="theorem" text=''> Suppose that $\{x_{ij}\}$ are iid complex random variables with variance $\sigma^2$. Also assume that $p/n \to y \in (0, \infty)$. Then, with probability
+one, $F^{S}$ tends to the M-P law, where $S$ denotes sample covariance matrix of $\{x_{ij}\}$.</div>
+
+<h6>References:</h6>
+
+[1] Roger Horn, Charlie Johnson, <i>"Matrix Analysis", second edition.</i> <br>
+
+[2] Zhidong Bai, Jack W. Silverstein, <i>"Spectral Analysis of Large Dimensional Random Matrices", second edition.</i>
+
+
+
+   </body>
+</html>
