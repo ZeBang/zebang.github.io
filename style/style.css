@@ -88,6 +88,16 @@ p {
     font-weight: bold;
     font-style: normal;
 }
+.corollary {
+    display: block;
+    margin: 12px 0;
+    font-style: italic;
+}
+.corollary:before {
+    content: "Corollary.";
+    font-weight: bold;
+    font-style: normal;
+}
 .lemma {
     display: block;
     margin: 12px 0;

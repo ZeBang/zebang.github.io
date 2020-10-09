@@ -33,6 +33,7 @@
       <div style="clear: both;" id="main">
 
         
+Notations:<br>
 
 <p>$M_{m,n}(\mathbf{F})$: $m\times n$ matrices on the field $\mathbf{F}$ (e.g. $\mathbb{R}$, $\mathbb{C}$). </p>
 
@@ -43,9 +44,7 @@
 <p>Unitary matrices: $U\in M_n$ is unitary if $UU^{*}=U^{*}U=I_n$. If $U\in M_n(\mathbb{R})$ unitary $\Leftrightarrow$ orthogonal.</p>
 
 
-<h6>(01).</h6>
-
-<b>Spectral theorem for Hermitian Matrices</b>: <br>
+<h6>(01). <b>Spectral theorem for Hermitian Matrices</b></h6>
 
 <p>$A\in M_n$ is Hermitian iff $\exists$ a unitary $U\in M_n$ and real diagonal $\Lambda\in M_n$ s.t. $A=U\Lambda U^{*}$.</p>
 
@@ -65,15 +64,6 @@ Let $A\in M_n$ be a Hermitian matrix with eigenvalues $\lambda_1 \le \lambda_2 \
 Remarks: when $k=1$ or $k=n$ (Rayleigh-Ritz theorem),
 $$\lambda_1=\min\limits_{x\ne 0, x \in \mathbb{C}^n}\frac{x^{*}Ax}{x^{*}x}$$
 $$\lambda_n=\max\limits_{x\ne 0, x \in \mathbb{C}^n}\frac{x^{*}Ax}{x^{*}x}$$</p>
-
-<h6>(03).</h6>
-
-<div class="theorem" text='Weyl'>(Weyl)
-   Let $A,B \in M_n$ be Hermitian and let the eigenvalues $\lambda_i(A)$,$\lambda_i(B)$, and $\lambda_i(A+B)$ be arranged in increasing order. For each $k=1,2,\cdots,n$ we have
-\begin{equation*}
-\lambda_k(A)+\lambda_1(B) \le \lambda_k(A+B) \le \lambda_k(A) + \lambda_n(B)   
-\end{equation*}
-<b>Corollary</b>. If $B$ is positive semidefinite, then $\lambda_k(A)\le \lambda_k(A+B)$ for all $k=1,2,\cdots,n$.</div>
 
 <h6>(04).</h6>
 
@@ -97,7 +87,7 @@ Let $A,B \in M_n$ be Hermitian and suppose that $B$ has rank at most $r$. Then <
 
 <h6>(05).</h6>
 
-<div class="theorem" text='Weyl'>
+<div class="theorem" text='Weyl'>(Weyl inequalities)
 Let $A,B \in M_n$ be Hermitian, and let the eigenvalues of $A$,$B$, and $A+B$ be arranged in increasing order. Then for every pair of integers $j,k$ such that $1\le j,k \le n$ and $j+k \ge n+1$ we have
 \begin{equation*}
 \lambda_{j+k-n}(A+B) \le \lambda_j(A)+\lambda_k(B)
@@ -107,6 +97,23 @@ Equivalent form, let $\eta_i$ be eigrnvalues in deceasing order $1\le j,k \le n$
 \eta_{j+k-1}(A+B) \le \eta_j(A)+\eta_k(B)
 \end{equation*}</div>
 
+<div class="theorem" text='Weyl'>(Weyl inequalities)
+If $A, B \in  M_n$ are Hermitian, then for each $1 \le k \le n$,
+$$\lambda_k(A + B) \le \lambda_{k+j} (A) + \lambda_{n−j} (B)$$
+for $j = 0, \cdots , n − k$, and
+$$\lambda_{k−j+1}(A) + \lambda_j (B) ≤ \lambda_k(A + B)$$
+for $j = 1, \cdots , k$.
+
+<div class="corollary">
+Let $A,B \in M_n$ be Hermitian and let the eigenvalues $\lambda_i(A)$,$\lambda_i(B)$, and $\lambda_i(A+B)$ be arranged in increasing order. For each $k=1,2,\cdots,n$ we have
+\begin{equation*}
+\lambda_k(A)+\lambda_1(B) \le \lambda_k(A+B) \le \lambda_k(A) + \lambda_n(B)   
+\end{equation*}
+</div>
+
+<div class="corollary">
+If $B$ is positive semidefinite, then $\lambda_k(A)\le \lambda_k(A+B)$ for all $k=1,2,\cdots,n$.
+</div>
 <h6>(06).</h6>
 
 <b>Definition</b>. Let $\alpha = \{\alpha_1,\alpha_2,\cdots,\alpha_n\} \in \mathbb{R}^{n}$ and $\beta = \{\beta_1,\beta_2,\cdots,\beta_n\} \in \mathbb{R}^{n}$. Arranged them in increasing order $\alpha_{j_1} \le \alpha_{j_2} \le \cdots \le \alpha_{j_n}$, $\beta_{m_1} \le \beta_{m_2} \le \cdots \le \beta_{m_n}$. Say $\beta$ majorize $\alpha$ if: $\sum\limits_{i=1}^{k}\beta_{m_i} \ge \sum\limits_{i=1}^{k}\alpha_{j_i}$ for all $k=1,2,\cdots,n$, with equality for $k=n$.
@@ -114,7 +121,7 @@ Equivalent form, let $\eta_i$ be eigrnvalues in deceasing order $1\le j,k \le n$
 <div class="theorem" text=''> Let $A\in M_n$ be Hermitian. The vector of diagonal entries of $A$ majorizes the vector of eigenvalues of $A$.</div>
 
 
-<h6>(07).</h6>
+<h6>(07). <b>Matrix Norm</b></h6>
 
 <p>Call a function $\| \cdot\| \to \mathbb{R}$ a matrix norm if for all $A,B \in M_n$ it satisfies the following five axioms:
 \begin{align*}
