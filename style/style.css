@@ -571,10 +571,12 @@ time {
   display: none;
 }
 
+
 .theorem {
     display: block;
     margin: 12px 0;
     font-style: italic;
+    color: #c9cacc
 }
 .theorem:before {
     content: "Theorem.";
@@ -585,42 +587,51 @@ time {
     display: block;
     margin: 12px 0;
     font-style: italic;
+    color: #c9cacc;
 }
 .corollary:before {
     content: "Corollary.";
     font-weight: bold;
     font-style: normal;
+    color: #c9cacc;
 }
 .lemma {
     display: block;
     margin: 12px 0;
     font-style: italic;
+    color: #c9cacc;
 }
 .lemma:before {
     content: "Lemma.";
     font-weight: bold;
     font-style: normal;
+    color: #c9cacc;
 }
 .proof {
     display: block;
     margin: 12px 0;
     font-style: normal;
+    color: #c9cacc;
 }
 .proof:before {
     content: "Proof.";
     font-style: italic;
+    color: #c9cacc;
 }
 .proof:after {
     content: "\25FC";
     float:right;
+    color: #c9cacc;
 }
 .definition {
     display: block;
     margin: 12px 0;
     font-style: normal;
+    color: #c9cacc;
 }
 .definition:before {
     content: "Definition.";
     font-weight: bold;
     font-style: normal;
+    color: #c9cacc;
 }
