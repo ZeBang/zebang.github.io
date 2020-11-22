@@ -375,6 +375,70 @@ time {
   display: none;
 }
 
+#footer {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+  width: 100%;
+  color: #666;
+  vertical-align: top;
+  text-align: center;
+  font-size: 11px;
+}
+#footer ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#footer li {
+  display: inline-block;
+  margin-right: 15px;
+  border-right: 1px solid;
+  border-color: #666;
+  vertical-align: middle;
+}
+#footer li a {
+  margin-right: 15px;
+}
+#footer li:last-child {
+  margin-right: 0;
+  border-right: 0;
+}
+#footer li:last-child a {
+  margin-right: 0;
+}
+#footer a {
+  color: #666;
+  text-decoration: underline;
+  background-image: none;
+}
+#footer a:hover {
+  color: #858585;
+}
+#footer .footer-left {
+  height: 20px;
+  vertical-align: middle;
+  line-height: 20px;
+}
+
+@media (min-width: 39rem) {
+  #footer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 20px;
+  }
+  #footer .footer-left {
+    align-self: flex-start;
+    margin-right: 20px;
+  }
+  #footer .footer-right {
+    align-self: flex-end;
+  }
+}
+
 #footer-post {
   position: fixed;
   right: 0;
