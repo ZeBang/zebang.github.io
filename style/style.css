@@ -74,7 +74,7 @@ dt { font-weight: bold; }
 a       { text-decoration: underline; color: #c9cacc }
 a:hover { text-decoration: underline; }
 
-p {
+p, li, b {
     color: #c9cacc;
     hyphens: auto;
     -moz-hyphens: auto;
