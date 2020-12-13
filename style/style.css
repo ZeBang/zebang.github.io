@@ -89,6 +89,14 @@ time {
     font-size: 14px;
 }
 
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 2.5rem;    /* Footer height */
+}
 
 #contact {
     float: left;
