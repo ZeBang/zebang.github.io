@@ -1,3 +1,11 @@
+Table of contents
+
+- [1. Two Sum](#1-two-sum)
+- [11. Container With Most Water](#11-container-with-most-water)
+- [15. 3Sum](#15-3sum)
+- [16. 3Sum Closeat](#16-3sum-closeat)
+- [18. 4Sum](#18-4sum)
+
 #### 1. Two Sum
 
 Algorithm: Hash-Map.  
@@ -130,19 +138,79 @@ def threeSumCloseat(nums, target):
     return target - diff
 ```
 
+#### 18. 4Sum
+
+Algorithm: Two-Pointer.  
+Time: O(n^3)  
+Space: O(n)
+
+Algorithm: Hash-Map.  
+Time: O(n^3)  
+Space: O(n)
+
 
 ```python
+# Two Pointer
+def fourSum(nums, target):
+    def kSum(nums, target, k):
+        res = []
+        if len(nums) == 0 or nums[0] * k > target or nums[-1] * k < target:
+            return res
+        if k == 2:
+            return twoSum(nums, target)
+        for i in range(len(nums)):
+            if i == 0 or nums[i - 1] != nums[i]: # no duplicate nums[i]
+                 for set in kSum(nums[i + 1:], target - nums[i], k - 1):
+                    res.append([nums[i]] + set)
+        return res
 
+    def twoSum(nums, target):
+            res = []
+            lo, hi = 0, len(nums) - 1
+            while (lo < hi):
+                sum = nums[lo] + nums[hi]
+                if sum < target or (lo > 0 and nums[lo] == nums[lo - 1]):
+                    lo += 1
+                elif sum > target or (hi < len(nums) - 1 and nums[hi] == nums[hi + 1]):
+                    hi -= 1
+                else:
+                    res.append([nums[lo], nums[hi]])
+                    lo += 1
+                    hi -= 1
+            return res
+
+    nums.sort()
+    return kSum(nums, target, 4)
 ```
 
 
 ```python
+# Hash Map
+def fourSum(nums, target):
+    def kSum(nums, target, k):
+        if len(nums) == 0 or nums[0] * k > target or nums[-1] * k < target:
+            return []
+        if k == 2:
+            return twoSum(nums, target)
+        res = []
+        for i in range(len(nums)):
+            if i == 0 or nums[i - 1] != nums[i]: # no duplicate nums[i]
+                 for set in kSum(nums[i + 1:], target - nums[i], k - 1):
+                    res.append([nums[i]] + set)
+        return res
 
-```
+    def twoSum(nums, target):
+        res = []
+        s = set()
+        for i in range(len(nums)):
+            if len(res) == 0 or res[-1][1] != nums[i]:
+                if target - nums[i] in s:
+                    res.append([target - nums[i], nums[i]])
+            s.add(nums[i])
+        return res
 
-
-```python
-
+    nums.sort()
+    return kSum(nums, target, 4)
 ```
 
 * https://books.halfrost.com/leetcode/

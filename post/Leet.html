@@ -2,14 +2,15 @@
 <html>
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>Leet</title><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+<title>leet</title><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; --title-bar-height:20px; }
+.mac-os-11 { --title-bar-height:28px; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
 iframe { margin: auto; }
 a.url { word-break: break-all; }
 a:active, a:hover { outline: 0px; }
 .in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
-#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
 #write.first-line-indent p { text-indent: 2em; }
 #write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
 #write.first-line-indent li { margin-left: 2em; }
@@ -77,6 +78,7 @@ div.hr:focus { cursor: none; }
 li div { padding-top: 0px; }
 blockquote { margin: 1rem 0px; }
 li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
 li { margin: 0px; position: relative; }
 blockquote > :last-child { margin-bottom: 0px; }
 blockquote > :first-child, li > :first-child { margin-top: 0px; }
@@ -86,7 +88,6 @@ blockquote > :first-child, li > :first-child { margin-top: 0px; }
   body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
   #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
   .typora-export * { -webkit-print-color-adjust: exact; }
-  html.blink-to-pdf { font-size: 13px; }
   .typora-export #write { break-after: avoid; }
   .typora-export #write::after { height: 0px; }
   .is-mac table { break-inside: avoid; }
@@ -100,6 +101,7 @@ p > .md-image:only-child { display: inline-block; width: 100%; }
 #write .MathJax_Display { margin: 0.8em 0px 0px; }
 .md-math-block { width: 100%; }
 .md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
 [contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
 .md-task-list-item { position: relative; list-style-type: none; }
 .task-list-item.md-task-list-item { padding-left: 0px; }
@@ -150,13 +152,16 @@ table tr th { border-bottom: 0px; }
 video { max-width: 100%; display: block; margin: 0px auto; }
 iframe { max-width: 100%; width: 100%; border: none; }
 .highlight td, .highlight tr { border: 0px; }
-svg[id^="mermaidChart"] { line-height: 1em; }
 mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
 .md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
 mark .md-meta { color: rgb(0, 0, 0); opacity: 0.3 !important; }
 @media print {
   .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
 }
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-require-zoom-fix foreignobject { font-size: var(--mermaid-font-zoom); }
 
 
 .CodeMirror { height: auto; }
@@ -232,533 +237,13 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
 }
 
 
-/* Flowchart variables */
-/* Sequence Diagram variables */
-/* Gantt chart variables */
-/* state colors */
-.label {
-  
-  color: #333; }
-
-.label text {
-  fill: #333; }
-
-.node rect,
-.node circle,
-.node ellipse,
-.node polygon {
-  fill: #BDD5EA;
-  stroke: #9370DB;
-  stroke-width: 1px; }
-
-.node .label {
-  text-align: center; }
-
-.node.clickable {
-  cursor: pointer; }
-
-.arrowheadPath {
-  fill: lightgrey; }
-
-.edgePath .path {
-  stroke: lightgrey;
-  stroke-width: 1.5px; }
-
-.edgeLabel {
-  background-color: #e8e8e8;
-  text-align: center; }
-
-.cluster rect {
-  fill: #6D6D65;
-  stroke: rgba(255, 255, 255, 0.25);
-  stroke-width: 1px; }
-
-.cluster text {
-  fill: #F9FFFE; }
-
-div.mermaidTooltip {
-  position: absolute;
-  text-align: center;
-  max-width: 200px;
-  padding: 2px;
-  
-  font-size: 12px;
-  background: #6D6D65;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 2px;
-  pointer-events: none;
-  z-index: 100; }
-
-.actor {
-  stroke: #81B1DB;
-  fill: #BDD5EA; }
-
-text.actor {
-  fill: black;
-  stroke: none; }
-
-.actor-line {
-  stroke: lightgrey; }
-
-.messageLine0 {
-  stroke-width: 1.5;
-  stroke-dasharray: '2 2';
-  stroke: lightgrey; }
-
-.messageLine1 {
-  stroke-width: 1.5;
-  stroke-dasharray: '2 2';
-  stroke: lightgrey; }
-
-#arrowhead {
-  fill: lightgrey; }
-
-.sequenceNumber {
-  fill: white; }
-
-#sequencenumber {
-  fill: lightgrey; }
-
-#crosshead path {
-  fill: lightgrey !important;
-  stroke: lightgrey !important; }
-
-.messageText {
-  fill: lightgrey;
-  stroke: none; }
-
-.labelBox {
-  stroke: #81B1DB;
-  fill: #BDD5EA; }
-
-.labelText {
-  fill: #323D47;
-  stroke: none; }
-
-.loopText {
-  fill: lightgrey;
-  stroke: none; }
-
-.loopLine {
-  stroke-width: 2;
-  stroke-dasharray: '2 2';
-  stroke: #81B1DB; }
-
-.note {
-  stroke: rgba(255, 255, 255, 0.25);
-  fill: #fff5ad; }
-
-.noteText {
-  fill: black;
-  stroke: none;
-  
-  font-size: 14px; }
-
-.activation0 {
-  fill: #f4f4f4;
-  stroke: #666; }
-
-.activation1 {
-  fill: #f4f4f4;
-  stroke: #666; }
-
-.activation2 {
-  fill: #f4f4f4;
-  stroke: #666; }
-
-/** Section styling */
-.section {
-  stroke: none;
-  opacity: 0.2; }
-
-.section0 {
-  fill: rgba(255, 255, 255, 0.3); }
-
-.section2 {
-  fill: #EAE8B9; }
-
-.section1,
-.section3 {
-  fill: white;
-  opacity: 0.2; }
-
-.sectionTitle0 {
-  fill: #F9FFFE; }
-
-.sectionTitle1 {
-  fill: #F9FFFE; }
-
-.sectionTitle2 {
-  fill: #F9FFFE; }
-
-.sectionTitle3 {
-  fill: #F9FFFE; }
-
-.sectionTitle {
-  text-anchor: start;
-  font-size: 11px;
-  text-height: 14px;
-   }
-
-/* Grid and axis */
-.grid .tick {
-  stroke: lightgrey;
-  opacity: 0.3;
-  shape-rendering: crispEdges; }
-
-.grid path {
-  stroke-width: 0; }
-
-/* Today line */
-.today {
-  fill: none;
-  stroke: #DB5757;
-  stroke-width: 2px; }
-
-/* Task styling */
-/* Default task */
-.task {
-  stroke-width: 2; }
-
-.taskText {
-  text-anchor: middle;
-   }
-
-.taskText:not([font-size]) {
-  font-size: 11px; }
-
-.taskTextOutsideRight {
-  fill: #323D47;
-  text-anchor: start;
-  font-size: 11px;
-   }
-
-.taskTextOutsideLeft {
-  fill: #323D47;
-  text-anchor: end;
-  font-size: 11px; }
-
-/* Special case clickable */
-.task.clickable {
-  cursor: pointer; }
-
-.taskText.clickable {
-  cursor: pointer;
-  fill: #003163 !important;
-  font-weight: bold; }
-
-.taskTextOutsideLeft.clickable {
-  cursor: pointer;
-  fill: #003163 !important;
-  font-weight: bold; }
-
-.taskTextOutsideRight.clickable {
-  cursor: pointer;
-  fill: #003163 !important;
-  font-weight: bold; }
-
-/* Specific task settings for the sections*/
-.taskText0,
-.taskText1,
-.taskText2,
-.taskText3 {
-  fill: #323D47; }
-
-.task0,
-.task1,
-.task2,
-.task3 {
-  fill: #BDD5EA;
-  stroke: rgba(255, 255, 255, 0.5); }
-
-.taskTextOutside0,
-.taskTextOutside2 {
-  fill: lightgrey; }
-
-.taskTextOutside1,
-.taskTextOutside3 {
-  fill: lightgrey; }
-
-/* Active task */
-.active0,
-.active1,
-.active2,
-.active3 {
-  fill: #81B1DB;
-  stroke: rgba(255, 255, 255, 0.5); }
-
-.activeText0,
-.activeText1,
-.activeText2,
-.activeText3 {
-  fill: #323D47 !important; }
-
-/* Completed task */
-.done0,
-.done1,
-.done2,
-.done3 {
-  stroke: grey;
-  fill: lightgrey;
-  stroke-width: 2; }
-
-.doneText0,
-.doneText1,
-.doneText2,
-.doneText3 {
-  fill: #323D47 !important; }
-
-/* Tasks on the critical line */
-.crit0,
-.crit1,
-.crit2,
-.crit3 {
-  stroke: #E83737;
-  fill: #E83737;
-  stroke-width: 2; }
-
-.activeCrit0,
-.activeCrit1,
-.activeCrit2,
-.activeCrit3 {
-  stroke: #E83737;
-  fill: #81B1DB;
-  stroke-width: 2; }
-
-.doneCrit0,
-.doneCrit1,
-.doneCrit2,
-.doneCrit3 {
-  stroke: #E83737;
-  fill: lightgrey;
-  stroke-width: 2;
-  cursor: pointer;
-  shape-rendering: crispEdges; }
-
-.milestone {
-  transform: rotate(45deg) scale(0.8, 0.8); }
-
-.milestoneText {
-  font-style: italic; }
-
-.doneCritText0,
-.doneCritText1,
-.doneCritText2,
-.doneCritText3 {
-  fill: #323D47 !important; }
-
-.activeCritText0,
-.activeCritText1,
-.activeCritText2,
-.activeCritText3 {
-  fill: #323D47 !important; }
-
-.titleText {
-  text-anchor: middle;
-  font-size: 18px;
-  fill: #323D47;
-   }
-
-g.classGroup text {
-  fill: #9370DB;
-  stroke: none;
-  
-  font-size: 10px; }
-  g.classGroup text .title {
-    font-weight: bolder; }
-
-g.classGroup rect {
-  fill: #BDD5EA;
-  stroke: #9370DB; }
-
-g.classGroup line {
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-.classLabel .box {
-  stroke: none;
-  stroke-width: 0;
-  fill: #BDD5EA;
-  opacity: 0.5; }
-
-.classLabel .label {
-  fill: #9370DB;
-  font-size: 10px; }
-
-.relation {
-  stroke: #9370DB;
-  stroke-width: 1;
-  fill: none; }
-
-#compositionStart {
-  fill: #9370DB;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#compositionEnd {
-  fill: #9370DB;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#aggregationStart {
-  fill: #BDD5EA;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#aggregationEnd {
-  fill: #BDD5EA;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#dependencyStart {
-  fill: #9370DB;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#dependencyEnd {
-  fill: #9370DB;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#extensionStart {
-  fill: #9370DB;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-#extensionEnd {
-  fill: #9370DB;
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-.commit-id,
-.commit-msg,
-.branch-label {
-  fill: lightgrey;
-  color: lightgrey;
-   }
-
-.pieTitleText {
-  text-anchor: middle;
-  font-size: 25px;
-  fill: #eee;
+:root {
+  --mermaid-theme: night;
+  --node-fill: #BDD5EA;
 }
 
-g.stateGroup text {
-  stroke: none;
-  font-size: 10px;
-}
-
-g.stateGroup circle {
-  fill: white !important;
-  stroke: white !important;
-}
-
-g.stateGroup .state-title {
-  font-weight: bolder;
-  fill: black; }
-
-g.stateGroup rect {
-  fill: #ececff;
-  stroke: #9370DB; }
-
-g.stateGroup line {
-  stroke: #9370DB;
-  stroke-width: 1; }
-
-.transition {
-  stroke: #9370DB;
-  stroke-width: 1;
-  fill: none; }
-
-.stateGroup .composit {
-  fill: #555;
-  border-bottom: 1px; }
-
-.state-note {
-  stroke: rgba(255, 255, 255, 0.25);
-  fill: #fff5ad; }
-  .state-note text {
-    fill: black;
-    stroke: none;
-    font-size: 10px; }
-
-.stateLabel .box {
-  stroke: none;
-  stroke-width: 0;
-  fill: #BDD5EA;
-  opacity: 0.5; }
-
-.stateLabel text {
-  fill: black;
-  font-size: 10px;
-  font-weight: bold;
-}
-
-.cluster-label {
-  color:black;
-}
-
-.statediagram-cluster rect {
-  fill: #BDD5EA;
-  stroke: #9370DB; 
-  stroke-width: 1px;
-}
-.statediagram-cluster rect.outer {
-  rx: 5px;
-  ry: 5px;
-}
-.statediagram-state .divider {
-  stroke: #9370DB; 
-}
-
-.statediagram-state .title-state {
-  rx: 5px;
-  ry: 5px;
-}
-.statediagram-cluster.statediagram-cluster .inner {
-  fill: white;
-}
-.statediagram-cluster.statediagram-cluster-alt .inner {
-  fill: #e0e0e0;
-}
-
-.statediagram-cluster .inner {
-  rx:0;
-  ry:0;
-}
-
-.statediagram-state rect.basic {
-  rx: 5px;
-  ry: 5px;
-}
-.statediagram-state rect.divider {
-  stroke-dasharray: 10,10;
-  fill: #efefef;
-}
-
-.note-edge {
-  stroke-dasharray: 5;
-}
-
-.statediagram-note rect {
-  stroke: var(--cluster-border);
-  fill: #fff5ad;
-  stroke-width: 1px;
-  rx: 0;
-  ry: 0;
-}
-
-.node circle.state-start {
-  fill: black;
-  stroke: black;
-}
-.node circle.state-end {
-  fill: black;
-  stroke: white;
-  stroke-width: 1.5
-}
-#statediagram-barbEnd {
-  fill: #9370DB; 
+[lang='mermaid'] .label {
+  color: #333;
 }
 
 /* CSS Document */
@@ -1161,10 +646,6 @@ iframe,
     margin-top: 0;
     margin-bottom: 1.5rem;
     /* 24px */
-}
-
-li > blockquote {
-	margin-bottom: 0;
 }
 
 audio:not([controls]) {
@@ -1656,6 +1137,10 @@ footer {
     border-color: transparent;
 }
 
+.btn-primary {
+    color: white;
+}
+
 .btn-default:hover, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     color: white;
     border: 1px solid #ddd;
@@ -1916,10 +1401,19 @@ footer.ty-footer {
     background: #d6d6d4
 }
 
+.modal-backdrop.in {
+    opacity: 1;
+    backdrop-filter: blur(1px);
+}
+.md-toc{
+    position: fixed; 
+    left: 50px;
+    top: 50px;
+}
 
 </style>
 </head>
 <body class='typora-export os-windows'>
-<div id='write'  class=''><h4><a name="1-two-sum" class="md-header-anchor"></a><span>1. Two Sum</span></h4><p><span>Algorithm: Hash-Map.</span><br/><span>Time: O(n)</span><br/><span>Space: O(n)</span><br/><span>Description: Look up in hash table should be amortized O(1) time as long as the hash function was chosen carefully.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">twoSum</span>(<span class="cm-variable-2">self</span>, <span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">h</span> = {}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span>, <span class="cm-variable">num</span> <span class="cm-keyword">in</span> <span class="cm-builtin">enumerate</span>(<span class="cm-variable">nums</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">complement</span> = <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">num</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">complement</span> <span class="cm-keyword">not</span> <span class="cm-keyword">in</span> <span class="cm-variable">h</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">h</span>[<span class="cm-variable">num</span>] = <span class="cm-variable">i</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> [<span class="cm-variable">h</span>[<span class="cm-variable">complement</span>], <span class="cm-variable">i</span>]</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 208px;"></div><div class="CodeMirror-gutters" style="display: none; height: 208px;"></div></div></div></pre><h4><a name="11-container-with-most-water" class="md-header-anchor"></a><span>11. Container With Most Water</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n)</span><br/><span>Space: O(1)</span><br/><span>Description: Move longer line will not increase the volumn. So we start from most left and right then move shorter line towards middle.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">maxArea</span>(<span class="cm-variable-2">self</span>, <span class="cm-variable">height</span>: <span class="cm-variable">List</span>[<span class="cm-builtin">int</span>]) <span class="cm-operator">-&gt;</span> <span class="cm-builtin">int</span>:</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">left</span>, <span class="cm-variable">right</span> = <span class="cm-number">0</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">height</span>) <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">ans</span> = <span class="cm-number">0</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">while</span> <span class="cm-variable">left</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">right</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">water</span> = <span class="cm-builtin">min</span>(<span class="cm-variable">height</span>[<span class="cm-variable">left</span>], <span class="cm-variable">height</span>[<span class="cm-variable">right</span>]) <span class="cm-operator">*</span> (<span class="cm-variable">right</span> <span class="cm-operator">-</span> <span class="cm-variable">left</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">ans</span> = <span class="cm-builtin">max</span>(<span class="cm-variable">ans</span>, <span class="cm-variable">water</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">height</span>[<span class="cm-variable">left</span>] <span class="cm-operator">&lt;</span>= <span class="cm-variable">height</span>[<span class="cm-variable">right</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">left</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">right</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">ans</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 312px;"></div><div class="CodeMirror-gutters" style="display: none; height: 312px;"></div></div></div></pre><h4><a name="15-3sum" class="md-header-anchor"></a><span>15. 3Sum</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n^2)</span><br/><span>Space: O(1)</span><br/><span>Description: Sort and Two-Pointer.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">threeSum</span>(<span class="cm-variable">nums</span>):</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">n</span> = <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">ans</span> = <span class="cm-builtin">list</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">first</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-variable">n</span> <span class="cm-operator">-</span> <span class="cm-number">2</span>): <span class="cm-comment"># 取 n -2 防止指针溢出</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">nums</span>[<span class="cm-variable">first</span>] <span class="cm-operator">&gt;</span> <span class="cm-number">0</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">ans</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">first</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span> <span class="cm-keyword">and</span> <span class="cm-variable">nums</span>[<span class="cm-variable">first</span>] == <span class="cm-variable">nums</span>[<span class="cm-variable">first</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">continue</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> = <span class="cm-variable">first</span> <span class="cm-operator">+</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">third</span> = <span class="cm-variable">n</span> <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">target</span> = <span class="cm-operator">-</span><span class="cm-variable">nums</span>[<span class="cm-variable">first</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">while</span> <span class="cm-variable">second</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">third</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">second</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">first</span> <span class="cm-operator">+</span> <span class="cm-number">1</span> <span class="cm-keyword">and</span> <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>] == <span class="cm-variable">nums</span>[<span class="cm-variable">second</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">continue</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">second</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">n</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">break</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">third</span>] <span class="cm-operator">&gt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">third</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">elif</span> <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">third</span>] <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">ans</span>.<span class="cm-property">append</span>([<span class="cm-variable">nums</span>[<span class="cm-variable">first</span>], <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>], <span class="cm-variable">nums</span>[<span class="cm-variable">third</span>]])</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">third</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">ans</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 780px;"></div><div class="CodeMirror-gutters" style="display: none; height: 780px;"></div></div></div></pre><h4><a name="16-3sum-closeat" class="md-header-anchor"></a><span>16. 3Sum Closeat</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n^2)</span><br/><span>Space: O(n) or O(logn) depends on which sort algorithm been used.</span><br/><span>Description: Now we just return smallest diff.  </span></p><p><span>Algorithm: Binary Search.</span><br/><span>Time: O(n^2 logn)</span><br/><span>Space: O(n) or O(logn) depends on which sort algorithm been used.</span><br/><span>Description: bisect_right().</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Two Pointer</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">threeSumClosest</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-builtin">float</span>(<span class="cm-string">'inf'</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span>, <span class="cm-variable">hi</span> = <span class="cm-variable">i</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">while</span> (<span class="cm-variable">lo</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">hi</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-builtin">sum</span> = <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-builtin">sum</span>) <span class="cm-operator">&lt;</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">diff</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-builtin">sum</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">sum</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">hi</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">diff</span> == <span class="cm-number">0</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">break</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">diff</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 442px;"></div><div class="CodeMirror-gutters" style="display: none; height: 442px;"></div></div></div></pre><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Binary Search</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">threeSumCloseat</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-builtin">float</span>(<span class="cm-string">'inf'</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">j</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-variable">i</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">complement</span> = <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>] <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">j</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">hi</span> = <span class="cm-variable">bisect_right</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">complement</span>, <span class="cm-variable">j</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span> = <span class="cm-variable">hi</span> <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">hi</span> <span class="cm-operator">&lt;</span> <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) <span class="cm-keyword">and</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]) <span class="cm-operator">&lt;</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">diff</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">lo</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">j</span> <span class="cm-keyword">and</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>]) <span class="cm-operator">&lt;</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">diff</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">diff</span> == <span class="cm-number">0</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">break</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">diff</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 468px;"></div><div class="CodeMirror-gutters" style="display: none; height: 468px;"></div></div></div></pre><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre><ul><li><a href='https://books.halfrost.com/leetcode/' target='_blank' class='url'>https://books.halfrost.com/leetcode/</a></li></ul><p>&nbsp;</p></div>
+<div id='write'  class=''><p><span>Table of contents</span></p><ul><li><a href='#1-two-sum'><span>1. Two Sum</span></a></li><li><a href='#11-container-with-most-water'><span>11. Container With Most Water</span></a></li><li><a href='#15-3sum'><span>15. 3Sum</span></a></li><li><a href='#16-3sum-closeat'><span>16. 3Sum Closeat</span></a></li><li><a href='#18-4sum'><span>18. 4Sum</span></a></li></ul><h4><a name="1-two-sum" class="md-header-anchor"></a><span>1. Two Sum</span></h4><p><span>Algorithm: Hash-Map.</span><br/><span>Time: O(n)</span><br/><span>Space: O(n)</span><br/><span>Description: Look up in hash table should be amortized O(1) time as long as the hash function was chosen carefully.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">twoSum</span>(<span class="cm-variable-2">self</span>, <span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">h</span> = {}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span>, <span class="cm-variable">num</span> <span class="cm-keyword">in</span> <span class="cm-builtin">enumerate</span>(<span class="cm-variable">nums</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">complement</span> = <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">num</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">complement</span> <span class="cm-keyword">not</span> <span class="cm-keyword">in</span> <span class="cm-variable">h</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">h</span>[<span class="cm-variable">num</span>] = <span class="cm-variable">i</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> [<span class="cm-variable">h</span>[<span class="cm-variable">complement</span>], <span class="cm-variable">i</span>]</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 208px;"></div><div class="CodeMirror-gutters" style="display: none; height: 208px;"></div></div></div></pre><h4><a name="11-container-with-most-water" class="md-header-anchor"></a><span>11. Container With Most Water</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n)</span><br/><span>Space: O(1)</span><br/><span>Description: Move longer line will not increase the volumn. So we start from most left and right then move shorter line towards middle.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">maxArea</span>(<span class="cm-variable-2">self</span>, <span class="cm-variable">height</span>: <span class="cm-variable">List</span>[<span class="cm-builtin">int</span>]) <span class="cm-operator">-&gt;</span> <span class="cm-builtin">int</span>:</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">left</span>, <span class="cm-variable">right</span> = <span class="cm-number">0</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">height</span>) <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">ans</span> = <span class="cm-number">0</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">while</span> <span class="cm-variable">left</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">right</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">water</span> = <span class="cm-builtin">min</span>(<span class="cm-variable">height</span>[<span class="cm-variable">left</span>], <span class="cm-variable">height</span>[<span class="cm-variable">right</span>]) <span class="cm-operator">*</span> (<span class="cm-variable">right</span> <span class="cm-operator">-</span> <span class="cm-variable">left</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">ans</span> = <span class="cm-builtin">max</span>(<span class="cm-variable">ans</span>, <span class="cm-variable">water</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">height</span>[<span class="cm-variable">left</span>] <span class="cm-operator">&lt;</span>= <span class="cm-variable">height</span>[<span class="cm-variable">right</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">left</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">right</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">ans</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 286px;"></div><div class="CodeMirror-gutters" style="display: none; height: 286px;"></div></div></div></pre><h4><a name="15-3sum" class="md-header-anchor"></a><span>15. 3Sum</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n^2)</span><br/><span>Space: O(1)</span><br/><span>Description: Sort and Two-Pointer.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">threeSum</span>(<span class="cm-variable">nums</span>):</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">n</span> = <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">ans</span> = <span class="cm-builtin">list</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">first</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-variable">n</span> <span class="cm-operator">-</span> <span class="cm-number">2</span>): <span class="cm-comment"># 取 n -2 防止指针溢出</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">nums</span>[<span class="cm-variable">first</span>] <span class="cm-operator">&gt;</span> <span class="cm-number">0</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">ans</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">first</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span> <span class="cm-keyword">and</span> <span class="cm-variable">nums</span>[<span class="cm-variable">first</span>] == <span class="cm-variable">nums</span>[<span class="cm-variable">first</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">continue</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> = <span class="cm-variable">first</span> <span class="cm-operator">+</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">third</span> = <span class="cm-variable">n</span> <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">target</span> = <span class="cm-operator">-</span><span class="cm-variable">nums</span>[<span class="cm-variable">first</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">while</span> <span class="cm-variable">second</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">third</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">second</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">first</span> <span class="cm-operator">+</span> <span class="cm-number">1</span> <span class="cm-keyword">and</span> <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>] == <span class="cm-variable">nums</span>[<span class="cm-variable">second</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">continue</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">second</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">n</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">break</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">third</span>] <span class="cm-operator">&gt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">third</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">elif</span> <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">third</span>] <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">ans</span>.<span class="cm-property">append</span>([<span class="cm-variable">nums</span>[<span class="cm-variable">first</span>], <span class="cm-variable">nums</span>[<span class="cm-variable">second</span>], <span class="cm-variable">nums</span>[<span class="cm-variable">third</span>]])</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">third</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">second</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">ans</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 702px;"></div><div class="CodeMirror-gutters" style="display: none; height: 702px;"></div></div></div></pre><h4><a name="16-3sum-closeat" class="md-header-anchor"></a><span>16. 3Sum Closeat</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n^2)</span><br/><span>Space: O(n) or O(logn) depends on which sort algorithm been used.</span><br/><span>Description: Now we just return smallest diff.  </span></p><p><span>Algorithm: Binary Search.</span><br/><span>Time: O(n^2 logn)</span><br/><span>Space: O(n) or O(logn) depends on which sort algorithm been used.</span><br/><span>Description: bisect_right().</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Two Pointer</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">threeSumClosest</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-builtin">float</span>(<span class="cm-string">'inf'</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span>, <span class="cm-variable">hi</span> = <span class="cm-variable">i</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">while</span> (<span class="cm-variable">lo</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">hi</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-builtin">sum</span> = <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-builtin">sum</span>) <span class="cm-operator">&lt;</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">diff</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-builtin">sum</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">sum</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">hi</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">diff</span> == <span class="cm-number">0</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">break</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">diff</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 442px;"></div><div class="CodeMirror-gutters" style="display: none; height: 442px;"></div></div></div></pre><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Binary Search</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">threeSumCloseat</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-builtin">float</span>(<span class="cm-string">'inf'</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">j</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-variable">i</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">complement</span> = <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>] <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">j</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">hi</span> = <span class="cm-variable">bisect_right</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">complement</span>, <span class="cm-variable">j</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span> = <span class="cm-variable">hi</span> <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">hi</span> <span class="cm-operator">&lt;</span> <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) <span class="cm-keyword">and</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]) <span class="cm-operator">&lt;</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">diff</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">lo</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">j</span> <span class="cm-keyword">and</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>]) <span class="cm-operator">&lt;</span> <span class="cm-builtin">abs</span>(<span class="cm-variable">diff</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">diff</span> = <span class="cm-variable">complement</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">diff</span> == <span class="cm-number">0</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">break</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">diff</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 416px;"></div><div class="CodeMirror-gutters" style="display: none; height: 416px;"></div></div></div></pre><h4><a name="18-4sum" class="md-header-anchor"></a><span>18. 4Sum</span></h4><p><span>Algorithm: Two-Pointer.</span><br/><span>Time: O(n^3)</span><br/><span>Space: O(n)</span></p><p><span>Algorithm: Hash-Map.</span><br/><span>Time: O(n^3)</span><br/><span>Space: O(n)</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Two Pointer</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">fourSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">def</span> <span class="cm-def">kSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>, <span class="cm-variable">k</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span> = []</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) == <span class="cm-number">0</span> <span class="cm-keyword">or</span> <span class="cm-variable">nums</span>[<span class="cm-number">0</span>] <span class="cm-operator">*</span> <span class="cm-variable">k</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">target</span> <span class="cm-keyword">or</span> <span class="cm-variable">nums</span>[<span class="cm-operator">-</span><span class="cm-number">1</span>] <span class="cm-operator">*</span> <span class="cm-variable">k</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">res</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">k</span> == <span class="cm-number">2</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">twoSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">i</span> == <span class="cm-number">0</span> <span class="cm-keyword">or</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>] <span class="cm-operator">!</span>= <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>]: <span class="cm-comment"># no duplicate nums[i]</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">for</span> <span class="cm-builtin">set</span> <span class="cm-keyword">in</span> <span class="cm-variable">kSum</span>(<span class="cm-variable">nums</span>[<span class="cm-variable">i</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>:], <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>], <span class="cm-variable">k</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span>.<span class="cm-property">append</span>([<span class="cm-variable">nums</span>[<span class="cm-variable">i</span>]] <span class="cm-operator">+</span> <span class="cm-builtin">set</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">res</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">def</span> <span class="cm-def">twoSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span> = []</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span>, <span class="cm-variable">hi</span> = <span class="cm-number">0</span>, <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) <span class="cm-operator">-</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">while</span> (<span class="cm-variable">lo</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">hi</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-builtin">sum</span> = <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>] <span class="cm-operator">+</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">sum</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span> <span class="cm-keyword">or</span> (<span class="cm-variable">lo</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span> <span class="cm-keyword">and</span> <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>] == <span class="cm-variable">nums</span>[<span class="cm-variable">lo</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>]):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">elif</span> <span class="cm-builtin">sum</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">target</span> <span class="cm-keyword">or</span> (<span class="cm-variable">hi</span> <span class="cm-operator">&lt;</span> <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) <span class="cm-operator">-</span> <span class="cm-number">1</span> <span class="cm-keyword">and</span> <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>] == <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>]):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">hi</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">else</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span>.<span class="cm-property">append</span>([<span class="cm-variable">nums</span>[<span class="cm-variable">lo</span>], <span class="cm-variable">nums</span>[<span class="cm-variable">hi</span>]])</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">lo</span> += <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">hi</span> -= <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">res</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">kSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>, <span class="cm-number">4</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 806px;"></div><div class="CodeMirror-gutters" style="display: none; height: 806px;"></div></div></div></pre><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="python" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Hash Map</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">def</span> <span class="cm-def">fourSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">def</span> <span class="cm-def">kSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>, <span class="cm-variable">k</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>) == <span class="cm-number">0</span> <span class="cm-keyword">or</span> <span class="cm-variable">nums</span>[<span class="cm-number">0</span>] <span class="cm-operator">*</span> <span class="cm-variable">k</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">target</span> <span class="cm-keyword">or</span> <span class="cm-variable">nums</span>[<span class="cm-operator">-</span><span class="cm-number">1</span>] <span class="cm-operator">*</span> <span class="cm-variable">k</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">target</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> []</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">k</span> == <span class="cm-number">2</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">twoSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span> = []</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">i</span> == <span class="cm-number">0</span> <span class="cm-keyword">or</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>] <span class="cm-operator">!</span>= <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>]: <span class="cm-comment"># no duplicate nums[i]</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">for</span> <span class="cm-builtin">set</span> <span class="cm-keyword">in</span> <span class="cm-variable">kSum</span>(<span class="cm-variable">nums</span>[<span class="cm-variable">i</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>:], <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>], <span class="cm-variable">k</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span>.<span class="cm-property">append</span>([<span class="cm-variable">nums</span>[<span class="cm-variable">i</span>]] <span class="cm-operator">+</span> <span class="cm-builtin">set</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">res</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">def</span> <span class="cm-def">twoSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span> = []</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">s</span> = <span class="cm-builtin">set</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">for</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-builtin">range</span>(<span class="cm-builtin">len</span>(<span class="cm-variable">nums</span>)):</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-builtin">len</span>(<span class="cm-variable">res</span>) == <span class="cm-number">0</span> <span class="cm-keyword">or</span> <span class="cm-variable">res</span>[<span class="cm-operator">-</span><span class="cm-number">1</span>][<span class="cm-number">1</span>] <span class="cm-operator">!</span>= <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>]:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> <span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>] <span class="cm-keyword">in</span> <span class="cm-variable">s</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">res</span>.<span class="cm-property">append</span>([<span class="cm-variable">target</span> <span class="cm-operator">-</span> <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>], <span class="cm-variable">nums</span>[<span class="cm-variable">i</span>]])</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">s</span>.<span class="cm-property">add</span>(<span class="cm-variable">nums</span>[<span class="cm-variable">i</span>])</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">res</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">nums</span>.<span class="cm-property">sort</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">kSum</span>(<span class="cm-variable">nums</span>, <span class="cm-variable">target</span>, <span class="cm-number">4</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 676px;"></div><div class="CodeMirror-gutters" style="display: none; height: 676px;"></div></div></div></pre><ul><li><a href='https://books.halfrost.com/leetcode/' target='_blank' class='url'>https://books.halfrost.com/leetcode/</a></li></ul><p>&nbsp;</p></div>
 </body>
 </html>
