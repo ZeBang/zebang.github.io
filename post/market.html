@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
    <head>
-      <title>singular value</title>
+      <title>Trade</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
       <style type="text/css">
@@ -32,7 +32,12 @@
       
       <div style="clear: both;" id="main">
 
-        <h2></h2>
+        <h2>Interval Method</h2>
+         <li>Interval is a kind of Granulation method such that we only care about some range of prices instead of exact number.</li>
+         <li>If we treat prices as some random process, then the goal is to find the range which prices will hit with big probabilities.</li>
+         <li>Set loss floor and gain cap. We can think in this way: suppose the probability for gain is $p_1$ and loss is $p_2$; cap is $1 + r_1$ and floor is $1 - r_2$. Then $p_1 r_1 - p_2 r_2$ is our expect profit when assume principal is the same in every trade.
+         <li>Intuitively, the greater $r_1$ is the smaller $p_1$ would be, same as $r_2$ and $p_2$. Assume there is some rough gain constant $g = p_1 r_1$ and loss constant $l = p_2 r_2$. Or put another way, we want to find $p_1, p_2, r_1, r_2$ such that $g > l$.</li>
+         <li>The key is how we find $p_1$ and $p_2$. One way is by "backtesting" such that by looking at similar day in history. The term "similar" may be defined by some kind of combinations of quantitative indexes.
          <p>
             
          </p>
