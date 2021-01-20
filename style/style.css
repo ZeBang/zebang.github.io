@@ -100,12 +100,12 @@ time {
 
 #contact {
     float: left;
-    width: 50%
+    width: 55%
 }
 #photo {
     align: center;
     float: right;
-    width: 30%
+    width: 45%
 }
 
 #header {
@@ -584,64 +584,83 @@ time {
     display: block;
     margin: 12px 0;
     font-style: italic;
-    color: #c9cacc
+    color: #444444
 }
 .theorem:before {
     content: "Theorem.";
     font-weight: bold;
     font-style: normal;
 }
+.theorem[text]:before {
+content: "Theorem (" attr(text) ") ";
+}
+
+.proposition {
+    display: block;
+    margin: 12px 0;
+    font-style: italic;
+    color: #444444
+}
+.proposition:before {
+    content: "Proposition.";
+    font-weight: bold;
+    font-style: normal;
+}
+.proposition[text]:before {
+content: "Proposition"attr(text)".";
+}
+
 .corollary {
     display: block;
     margin: 12px 0;
     font-style: italic;
-    color: #c9cacc;
+    color: #444444;
 }
 .corollary:before {
     content: "Corollary.";
     font-weight: bold;
     font-style: normal;
-    color: #c9cacc;
+    color: #444444;
 }
 .lemma {
     display: block;
     margin: 12px 0;
     font-style: italic;
-    color: #c9cacc;
+    color: #444444;
 }
 .lemma:before {
     content: "Lemma.";
     font-weight: bold;
     font-style: normal;
-    color: #c9cacc;
+    color: #444444;
 }
 .proof {
     display: block;
     margin: 12px 0;
     font-style: normal;
-    color: #c9cacc;
+    color: #444444;
 }
 .proof:before {
     content: "Proof.";
     font-style: italic;
-    color: #c9cacc;
+    color: #444444;
 }
 .proof:after {
     content: "\25FC";
     float:right;
-    color: #c9cacc;
+    color: #444444;
 }
 .definition {
     display: block;
     margin: 12px 0;
     font-style: normal;
-    color: #c9cacc;
+    color: #444444;
 }
 .definition:before {
     content: "Definition.";
     font-weight: bold;
     font-style: normal;
-    color: #c9cacc;
+    color: #444444;
 }
 
 /* Create two unequal columns that floats next to each other */
