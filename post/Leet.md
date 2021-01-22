@@ -1,11 +1,3 @@
-Table of contents
-
-- [1. Two Sum](#1-two-sum)
-- [11. Container With Most Water](#11-container-with-most-water)
-- [15. 3Sum](#15-3sum)
-- [16. 3Sum Closeat](#16-3sum-closeat)
-- [18. 4Sum](#18-4sum)
-
 #### 1. Two Sum
 
 Algorithm: Hash-Map.  
@@ -211,6 +203,32 @@ def fourSum(nums, target):
 
     nums.sort()
     return kSum(nums, target, 4)
+```
+
+#### 26. Remove Duplicates from Sorted Array
+
+Algorithm: Two-Pointer.  
+Time: O(n)  
+Space: O(1)
+
+
+```python
+def removeDuplicates(nums):
+	nums[:] = sorted(set(nums))
+    return len(nums)
+```
+
+
+```python
+def removeDuplicates(nums):    
+    if len(nums) == 0 or len(nums) == 1:
+        return len(nums)
+    i = 0
+    for j in range(1, len(nums)):
+        if nums[j] != nums[i]:
+            i += 1
+            nums[i] = nums[j]
+    return i + 1
 ```
 
 * https://books.halfrost.com/leetcode/
