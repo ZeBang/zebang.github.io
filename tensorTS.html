@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The return of this function includes,</p>
 <ul>
 <li><code>A</code> (a list of estimated coefficient matrices <span class="math inline">\(A_k^{(ir)}\)</span>. It is a multi-layer list, the first layer for the lag <span class="math inline">\(1 \le i \le P\)</span>, the second the term <span class="math inline">\(1 \le r \le R\)</span>, and the third the mode <span class="math inline">\(1 \le k \le K\)</span>. See “Details”.)</li>
-<li><code>SIGMA</code> (only if <code>method</code>= “MLE”, a list of estimated <span class="math inline">\(\Sigma_1,\ldots,\Sigma_K}\)</span>).</li>
+<li><code>SIGMA</code> (only if <code>method</code>= “MLE”, a list of estimated <span class="math inline">\(\Sigma_1,\cdots,\Sigma_K\)</span>).</li>
 <li><code>res</code> (residuals)</li>
 <li><code>Sig</code> (covariance matrix <span class="math inline">\(\mathrm{cov}(\mathrm{vec}({E_t}))\)</span>).</li>
 <li><code>cov</code> (grand covariance matrix of all estimated entries of <span class="math inline">\(A_k^{(ir)}\)</span>).</li>
@@ -211,16 +211,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="tensor-factor-estimation" class="section level4">
 <h4>Tensor Factor Estimation</h4>
 <p>We use the same set of data in TenAR model, here we specify a rank r.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the same simulated data x as in tenAR part</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">as.tensor</span>(xx)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)  <span class="co"># Pre-specified rank</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dims <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">18</span>,<span class="dv">20</span>) <span class="co"># dimensions of tensor time series</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>)  <span class="co"># dimensions of factor series</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Ft <span class="ot">&lt;-</span> <span class="fu">tenAR.sim</span>(<span class="at">t=</span><span class="dv">100</span>, <span class="at">dim=</span>r, <span class="at">R=</span><span class="dv">1</span>, <span class="at">P=</span><span class="dv">1</span>, <span class="at">rho=</span><span class="fl">0.9</span>, <span class="at">cov=</span><span class="st">&#39;iid&#39;</span>)</span></code></pre></div>
 <p>To use estimation function <code>TenFM.est</code>, you need to specify the rank of factor and estimation method you want to use by parameter <code>method</code>, which can be</p>
 <ul>
 <li>“TIPUP” (Time series Inner-Product Unfolding Procedure)</li>
 <li>“TOPUP” (Time series Outer-Product Unfolding Procedure)</li>
 </ul>
 <p>You can also choose to do the estimation iteratively or not, by specifying the boolean variable <code>iter</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">TenFM.est</span>(xx, r, <span class="at">method=</span><span class="st">&quot;TIPUP&quot;</span>,<span class="at">iter=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">prod</span>(dims))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">tenFM.sim</span>(Ft,<span class="at">dims=</span>dims,<span class="at">lambda=</span>lambda,<span class="at">A=</span><span class="cn">NULL</span>,<span class="at">cov=</span><span class="st">&#39;iid&#39;</span>) <span class="co"># generate t*dims tensor time series</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">tenFM.est</span>(x,r,<span class="at">method=</span><span class="st">&#39;TIPUP&#39;</span>)  <span class="co"># Estimation</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Ft <span class="ot">&lt;-</span> result<span class="sc">$</span>Ft</span></code></pre></div>
 <p>The return of this function includes :</p>
 <ul>
 <li><code>Ft</code> (estimated factor),</li>
@@ -230,8 +234,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>norm.percent</code> (percentage of residual of the model, in Frobenius norm),</li>
 <li><code>niter</code> (iterations used before stopping).</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Ft <span class="ot">=</span> model<span class="sc">$</span>Ft</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Loading <span class="ot">=</span> model<span class="sc">$</span>Q</span></code></pre></div>
 </div>
 <div id="factor-rank-determination" class="section level4">
 <h4>Factor Rank determination</h4>
@@ -267,8 +269,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><code>delta1</code> Weakest factor strength, which is the tuning parameter <span class="math inline">\(\nu\)</span> in the penalty functions g above, used for BIC method only</p></li>
 <li><p>The function returns factor.num, which is the estimated rank.</p></li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>r.est <span class="ot">=</span> <span class="fu">TenFM.rank</span>(xx,r)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">=</span> <span class="fu">TenFM.est</span>(xx,r.est)  <span class="co"># Use estimated rank to estimate factor</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dims <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">18</span>,<span class="dv">20</span>) <span class="co"># dimensions of tensor time series</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>)  <span class="co"># dimensions of factor series</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Ft <span class="ot">&lt;-</span> <span class="fu">tenAR.sim</span>(<span class="at">t=</span><span class="dv">100</span>, <span class="at">dim=</span>r, <span class="at">R=</span><span class="dv">1</span>, <span class="at">P=</span><span class="dv">1</span>, <span class="at">rho=</span><span class="fl">0.9</span>, <span class="at">cov=</span><span class="st">&#39;iid&#39;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">prod</span>(dims))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">tenFM.sim</span>(Ft,<span class="at">dims=</span>dims,<span class="at">lambda=</span>lambda,<span class="at">A=</span><span class="cn">NULL</span>,<span class="at">cov=</span><span class="st">&#39;iid&#39;</span>) <span class="co"># generate t*dims tensor time series</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> <span class="fu">tenFM.rank</span>(x,<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>),<span class="at">h0=</span><span class="dv">1</span>,<span class="at">rank=</span><span class="st">&#39;ER&#39;</span>,<span class="at">method=</span><span class="st">&#39;TIPUP&#39;</span>)  <span class="co"># Estimate the rank</span></span></code></pre></div>
 </div>
 </div>
 <div id="discussion" class="section level2">
