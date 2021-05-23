@@ -1,6 +1,6 @@
-https://books.halfrost.com/leetcode/
-
 #### To do: Array 48
+
+[toc]
 
 
 
@@ -1718,3 +1718,8 @@ class Solution:
         return result
 ```
 
+
+
+#### References
+
+https://books.halfrost.com/leetcode/
