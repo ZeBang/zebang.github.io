@@ -6,6 +6,156 @@
 
 ### Binary Search
 
+#### 4. Median of Two Sorted Arrays
+
+Given two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively, return **the median** of the two sorted arrays.
+
+The overall run time complexity should be `O(log (m+n))`.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+```
+
+**Example 2:**
+
+```
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 2.50000
+Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+```
+
+
+        
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+
+        m, n = len(nums1), len(nums2)
+        totalLeft = (m + n + 1) // 2
+        left = 0
+        right = m
+
+        while (left < right):
+            i = left + (right - left + 1) // 2
+            j = totalLeft - i
+            if nums1[i - 1] > nums2[j]:
+                right = i - 1
+            else:
+                left = i
+
+        i = left
+        j = totalLeft - i
+
+        nums1LeftMax = -float('inf') if i==0 else nums1[i-1]
+        nums1RightMin = float('inf') if i==m else nums1[i]
+        nums2LeftMax = -float('inf') if j==0 else nums2[j-1]
+        nums2RightMin = float('inf') if j==n else nums2[j]
+
+        if (m + n) % 2 == 1:
+            return max(nums1LeftMax, nums2LeftMax)
+        else:
+            return (max(nums1LeftMax, nums2LeftMax) + min(nums1RightMin, nums2RightMin))/2
+```
+
+
+
+#### 33. Search in Rotated Sorted Array
+
+There is an integer array `nums` sorted in ascending order (with **distinct** values).
+
+Prior to being passed to your function, `nums` is **rotated** at an unknown pivot index `k` (`0 <= k < nums.length`) such that the resulting array is `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]` (**0-indexed**). For example, `[0,1,2,4,5,6,7]` might be rotated at pivot index `3` and become `[4,5,6,7,0,1,2]`.
+
+Given the array `nums` **after** the rotation and an integer `target`, return *the index of* `target` *if it is in* `nums`*, or* `-1` *if it is not in* `nums`.
+
+You must write an algorithm with `O(log n)` runtime complexity.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+```
+
+```python
+# Approach 1: Binary search
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+ 		def rotate_index_search(start, end, nums):
+            while start + 1 < end:
+                mid = start + (end - start) // 2
+                if nums[mid] > nums[end]:
+                    start = mid
+                else:
+                    end = mid
+            if nums[start] > nums[end]:
+                return end
+            else:
+                return start
+        
+        def bisearch(start, end, nums, target):
+            while start + 1 < end:
+                mid = start + (end - start) // 2
+                if nums[mid] < target:
+                    start = mid
+                else:
+                    end = mid
+            if nums[start] == target:
+                return start
+            if nums[end] == target:
+                return end
+            return -1
+        
+        start = 0
+        end = len(nums) - 1
+        rotate_index = rotate_index_search(start, end, nums)
+        
+        if rotate_index == 0:
+            return bisearch(start, end, nums, target)
+        if target >= nums[0]:
+            return bisearch(start, len(nums[0:rotate_index]) - 1, nums[0:rotate_index], target)
+        else:
+            ans = bisearch(start, len(nums[rotate_index:]) - 1 , nums[rotate_index:], target)
+            return -1 if ans == -1 else rotate_index + ans
+```
+
+```python
+# Approach 2: One-pass Binary Search
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start, end = 0, len(nums) - 1
+        while start <= end:
+            mid = start + (end - start) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] >= nums[start]:
+                if target >= nums[start] and target < nums[mid]:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            else:
+                if target <= nums[end] and target > nums[mid]:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+        return -1
+```
+
+
+
+
+
 #### 34. Find First and Last Position of Element in Sorted Array
 
 Given an array of integers `nums` sorted in ascending order, find the starting and ending position of a given `target` value.
@@ -66,6 +216,92 @@ def searchRange(self, nums: List[int], target: int) -> List[int]:
         
 ```
 
+
+
+#### 35. Search Insert Position
+
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+
+You must write an algorithm with `O(log n)` runtime complexity.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,3,5,6], target = 5
+Output: 2
+```
+
+```python
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        start = 0
+        end = len(nums) - 1
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            if nums[mid] < target:
+                start = mid + 1
+            elif nums[mid] > target:
+                end = mid - 1
+            else:
+                return mid
+        if nums[start] >= target:
+            return start
+        elif nums[start] < target and target <= nums[end]:
+            return end
+        else:
+            return end + 1
+```
+
+
+
+
+
+
+
+#### 69. Sqrt(x)
+
+Given a non-negative integer `x`, compute and return *the square root of* `x`.
+
+Since the return type is an integer, the decimal digits are **truncated**, and only **the integer part** of the result is returned.
+
+**Note:** You are not allowed to use any built-in exponent function or operator, such as `pow(x, 0.5)` or `x ** 0.5`.
+
+ 
+
+**Example 1:**
+
+```
+Input: x = 4
+Output: 2
+```
+
+```python
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        if x < 2:
+            return x
+        start = 1
+        end = x // 2
+        while start <= end:
+            
+            mid = start + (end - start) // 2
+            if mid*mid > x:
+                end = mid - 1
+            else:
+                start = mid + 1
+            
+        return start - 1
+        
+```
+
+
+
+
+
+
+
 #### 110. Balanced Binary Tree
 
 ```python
@@ -118,6 +354,42 @@ class Solution:
                 end = mid
         return min(nums[start], nums[end])
 
+```
+
+
+
+#### 162. Find Peak Element
+
+A peak element is an element that is strictly greater than its neighbors.
+
+Given an integer array `nums`, find a peak element, and return its index. If the array contains multiple peaks, return the index to **any of the peaks**.
+
+You may imagine that `nums[-1] = nums[n] = -∞`.
+
+You must write an algorithm that runs in `O(log n)` time.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3,1]
+Output: 2
+Explanation: 3 is a peak element and your function should return the index number 2.
+```
+
+```python
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            mid = left + (right - left)//2
+            if nums[mid] < nums[mid+1]:
+                left = mid + 1
+            else:
+                right = mid
+        return left
 ```
 
 
@@ -651,6 +923,44 @@ def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
 
 
 
+#### 167. Two Sum II - Input array is sorted
+
+Given an array of integers `numbers` that is already ***sorted in non-decreasing order\***, find two numbers such that they add up to a specific `target` number.
+
+Return *the indices of the two numbers (**1-indexed**) as an integer array* `answer` *of size* `2`*, where* `1 <= answer[0] < answer[1] <= numbers.length`.
+
+The tests are generated such that there is **exactly one solution**. You **may not** use the same element twice.
+
+ 
+
+**Example 1:**
+
+```
+Input: numbers = [2,7,11,15], target = 9
+Output: [1,2]
+Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
+```
+
+```python
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        start = 0
+        end = len(numbers) - 1
+        sum = 0
+        
+        while start <= end:
+            sum = numbers[start] + numbers[end]
+            if sum > target:
+                end = end - 1
+            elif sum < target:
+                start = start + 1
+            else:
+                return [start + 1, end + 1]
+        
+```
+
+
+
 
 
 ### Recursive
@@ -679,6 +989,45 @@ def permute(self, nums: List[int]) -> List[List[int]]:
 
     return output
 ```
+
+
+
+#### 50. Pow(x, n)
+
+Implement [pow(x, n)](http://www.cplusplus.com/reference/valarray/pow/), which calculates `x` raised to the power `n` (i.e., `xn`).
+
+ 
+
+**Example 1:**
+
+```
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+```
+
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        def quickMul(N):
+            ans = 1.0
+            # 贡献的初始值为 x
+            x_contribute = x
+            # 在对 N 进行二进制拆分的同时计算答案
+            while N > 0:
+                if N % 2 == 1:
+                    # 如果 N 二进制表示的最低位为 1，那么需要计入贡献
+                    ans *= x_contribute
+                # 将贡献不断地平方
+                x_contribute *= x_contribute
+                # 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可
+                N //= 2
+            return ans
+        
+        return quickMul(n) if n >= 0 else 1.0 / quickMul(-n)
+
+```
+
+
 
 
 
@@ -767,6 +1116,65 @@ class Solution:
 
 
 ### DP
+
+#### 5. Longest Palindromic Substring
+
+Given a string `s`, return *the longest palindromic substring* in `s`.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+```
+
+**Example 2:**
+
+```
+Input: s = "cbbd"
+Output: "bb"
+```
+
+**Example 3:**
+
+```
+Input: s = "a"
+Output: "a"
+```
+
+**Example 4:**
+
+```
+Input: s = "ac"
+Output: "a"
+```
+
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        Palindrome = ""
+        for i in range(len(s)):
+            temp1 = self.getlongestPalindrome(s, i, i)
+            if len(temp1) > len(Palindrome):
+                Palindrome = temp1
+            temp2 = self.getlongestPalindrome(s, i, i+1)
+            if len(temp2) > len(Palindrome):
+                Palindrome = temp2
+        return Palindrome
+    
+    def getlongestPalindrome(self, s, l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return s[l+1 : r]
+```
+
+
+
+
 
 #### 70. Climbing Stairs
 
@@ -860,6 +1268,52 @@ def dfs(self, digits, dic, index, path, result):
     for j in dic[digits[index]]:
         self.dfs(digits, dic, index+1, path+j, result)
 ```
+
+
+
+#### 22. Generate Parentheses
+
+Given `n` pairs of parentheses, write a function to *generate all combinations of well-formed parentheses*.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+```
+
+```python
+class Solution(object):
+    def generateParenthesis(self, n):
+        def generate(l, r, p, result=[]):
+            if l:
+                generate(l-1, r, p+"(")
+            if r > l:
+                generate(l, r-1, p+")")
+            if not r:
+                result.append(p) 
+            return result
+        
+        return generate(n, n, '')
+```
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n == 0:
+            return ['']
+        ans = []
+        for c in range(n):
+            for left in self.generateParenthesis(c):
+                for right in self.generateParenthesis(n-1-c):
+                    ans.append('({}){}'.format(left, right))
+        return ans
+
+```
+
+
 
 
 
@@ -1046,7 +1500,639 @@ def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
     return self.hasPathSum(root.left, targetSum - root.val) or self.hasPathSum(root.right, targetSum - root.val)
 ```
 
+
+
+
+
+### Strings
+
+#### 12. Integer to Roman
+
+Roman numerals are represented by seven different symbols: `I`, `V`, `X`, `L`, `C`, `D` and `M`.
+
+```
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+```
+
+For example, `2` is written as `II` in Roman numeral, just two one's added together. `12` is written as `XII`, which is simply `X + II`. The number `27` is written as `XXVII`, which is `XX + V + II`.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not `IIII`. Instead, the number four is written as `IV`. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as `IX`. There are six instances where subtraction is used:
+
+- `I` can be placed before `V` (5) and `X` (10) to make 4 and 9. 
+- `X` can be placed before `L` (50) and `C` (100) to make 40 and 90. 
+- `C` can be placed before `D` (500) and `M` (1000) to make 400 and 900.
+
+Given an integer, convert it to a roman numeral.
+
+ 
+
+**Example 1:**
+
+```
+Input: num = 3
+Output: "III"
+```
+
+**Example 2:**
+
+```
+Input: num = 4
+Output: "IV"
+```
+
+**Example 3:**
+
+```
+Input: num = 9
+Output: "IX"
+```
+
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+        numerals = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I']
+        result = ''
+        for i in range(0, len(values)):
+            while num >= values[i]:
+                num -= values[i]
+                result += numerals[i]
+        return result
+        
+```
+
+
+
+#### 13. Roman to Integer
+
+Roman numerals are represented by seven different symbols: `I`, `V`, `X`, `L`, `C`, `D` and `M`.
+
+```
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+```
+
+For example, `2` is written as `II` in Roman numeral, just two one's added together. `12` is written as `XII`, which is simply `X + II`. The number `27` is written as `XXVII`, which is `XX + V + II`.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not `IIII`. Instead, the number four is written as `IV`. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as `IX`. There are six instances where subtraction is used:
+
+- `I` can be placed before `V` (5) and `X` (10) to make 4 and 9. 
+- `X` can be placed before `L` (50) and `C` (100) to make 40 and 90. 
+- `C` can be placed before `D` (500) and `M` (1000) to make 400 and 900.
+
+Given a roman numeral, convert it to an integer.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "III"
+Output: 3
+```
+
+```python
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        res, prev = 0, 0
+        dict = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}
+        for i in s[::-1]:          # rev the s
+            if dict[i] >= prev:
+                res += dict[i]     # sum the value iff previous value same or more
+            else:
+                res -= dict[i]     # substract when value is like "IV" --> 5-1, "IX" --> 10-1 etc 
+            prev = dict[i]
+        return res
+```
+
+
+
+
+
+#### 14. Longest Common Prefix
+
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string `""`.
+
+ 
+
+**Example 1:**
+
+```
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+```
+
+```python
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:
+            return ""
+        
+        for i in range(len(strs[0])):
+            for string in strs[1:]:
+                if i >= len(string) or string[i] != strs[0][i]:
+                    return strs[0][:i]
+        
+        return strs[0]
+```
+
+```python
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        result = ""
+        i = 0
+        
+        while True:
+            try:
+                sets = set(string[i] for string in strs)
+                if len(sets) == 1:
+                    result += sets.pop()
+                    i += 1
+                else:
+                    break
+            except Exception as e:
+                break
+                
+        return result
+```
+
+
+
+
+
+#### 28. Implement strStr()
+
+Implement [strStr()](http://www.cplusplus.com/reference/cstring/strstr/).
+
+Return the index of the first occurrence of needle in haystack, or `-1` if `needle` is not part of `haystack`.
+
+**Clarification:**
+
+What should we return when `needle` is an empty string? This is a great question to ask during an interview.
+
+For the purpose of this problem, we will return 0 when `needle` is an empty string. This is consistent to C's [strstr()](http://www.cplusplus.com/reference/cstring/strstr/) and Java's [indexOf()](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#indexOf(java.lang.String)).
+
+ 
+
+**Example 1:**
+
+```
+Input: haystack = "hello", needle = "ll"
+Output: 2
+```
+
+**Example 2:**
+
+```
+Input: haystack = "aaaaa", needle = "bba"
+Output: -1
+```
+
+**Example 3:**
+
+```
+Input: haystack = "", needle = ""
+Output: 0
+```
+
+```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        for i in range(len(haystack) - len(needle) + 1):
+                    if haystack[i:(i + len(needle))] == needle:
+                        return i
+                return -1
+```
+
+```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        return haystack.find(needle)
+```
+
+
+
+
+
+#### 38. Count and Say
+
+The **count-and-say** sequence is a sequence of digit strings defined by the recursive formula:
+
+- `countAndSay(1) = "1"`
+- `countAndSay(n)` is the way you would "say" the digit string from `countAndSay(n-1)`, which is then converted into a different digit string.
+
+To determine how you "say" a digit string, split it into the **minimal** number of groups so that each group is a contiguous section all of the **same character.** Then for each group, say the number of characters, then say the character. To convert the saying into a digit string, replace the counts with a number and concatenate every saying.
+
+For example, the saying and conversion for digit string `"3322251"`:
+
+![img](https://assets.leetcode.com/uploads/2020/10/23/countandsay.jpg)
+
+Given a positive integer `n`, return *the* `nth` *term of the **count-and-say** sequence*.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 1
+Output: "1"
+Explanation: This is the base case.
+```
+
+**Example 2:**
+
+```
+Input: n = 4
+Output: "1211"
+Explanation:
+countAndSay(1) = "1"
+countAndSay(2) = say "1" = one 1 = "11"
+countAndSay(3) = say "11" = two 1's = "21"
+countAndSay(4) = say "21" = one 2 + one 1 = "12" + "11" = "1211"
+```
+
+```python
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        s = '1'
+        for _ in range(n-1):
+            strnum, temp, count = s[0], '', 0
+            for ch in s:
+                if strnum == ch:
+                    count += 1
+                else:
+                    temp += str(count) + strnum
+                    strnum = ch
+                    count = 1
+            temp += str(count) + strnum
+            s = temp
+        return s
+```
+
+
+
+
+
+#### 49. Group Anagrams
+
+Given an array of strings `strs`, group **the anagrams** together. You can return the answer in **any order**.
+
+An **Anagram** is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
+
+**Example 1:**
+
+```
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+```
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        solution = {}
+        for i in range(len(strs)):
+            reg = strs[i]
+            regsort = ''.join(sorted(reg))
+            if regsort in solution:
+                solution[regsort].append(reg)
+            else:
+                solution[regsort] = [reg]
+        return solution.values()
+        
+```
+
+
+
+#### 67. Add Binary
+
+Given two binary strings `a` and `b`, return *their sum as a binary string*.
+
+ 
+
+**Example 1:**
+
+```
+Input: a = "11", b = "1"
+Output: "100"
+```
+
+```python
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        return(bin(int(a, base=2) + int(b, base=2))[2:]) 
+```
+
+```python
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        result, carry, val = '', 0, 0
+        for i in range(max(len(a), len(b))):
+            val = carry
+            if i < len(a):
+                val += int(a[-i-1])
+            if i < len(b):
+                val += int(b[-i-1])
+            carry, val = val // 2, val % 2
+            result += str(val)
+        if carry:
+            result += str(1)
+        return result[::-1]
+```
+
+
+
+
+
+#### 71. Simplify Path
+
+Given a string `path`, which is an **absolute path** (starting with a slash `'/'`) to a file or directory in a Unix-style file system, convert it to the simplified **canonical path**.
+
+**Example 1:**
+
+```
+Input: path = "/home/"
+Output: "/home"
+Explanation: Note that there is no trailing slash after the last directory name.
+```
+
+**Example 2:**
+
+```
+Input: path = "/../"
+Output: "/"
+Explanation: Going one level up from the root directory is a no-op, as the root level is the highest level you can go.
+```
+
+**Example 3:**
+
+```
+Input: path = "/home//foo/"
+Output: "/home/foo"
+Explanation: In the canonical path, multiple consecutive slashes are replaced by a single one.
+```
+
+**Example 4:**
+
+```
+Input: path = "/a/./b/../../c/"
+Output: "/c"
+```
+
+```python
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        result = []
+        path_list = path.split('/')
+        for p in path_list:
+            if p:
+                if p == '..':
+                    if result:
+                        result.pop()
+                elif p == '.':
+                    continue
+                else:
+                    result.append(p)
+        res = '/' + '/'.join(result)
+        return res
+```
+
+
+
+#### 125. Valid Palindrome
+
+Given a string `s`, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "A man, a plan, a canal: Panama"
+Output: true
+Explanation: "amanaplanacanalpanama" is a palindrome.
+```
+
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+
+        left = 0
+        right = len(s) - 1
+        while left < right:
+            while left < right and not s[left].isalnum():
+                left += 1
+            while left < right and not s[right].isalnum():
+                right -= 1
+            if s[left].lower() != s[right].lower():
+                return False
+            left += 1
+            right -= 1
+            
+        return True
+```
+
+
+
+#### 151. Reverse Words in a String
+
+Given an input string `s`, reverse the order of the **words**.
+
+A **word** is defined as a sequence of non-space characters. The **words** in `s` will be separated by at least one space.
+
+Return *a string of the words in reverse order concatenated by a single space.*
+
+**Note** that `s` may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+```
+
+```python
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        return " ".join(s.split()[::-1])
+```
+
+
+
+#### 168. Excel Sheet Column Title
+
+Given an integer `columnNumber`, return *its corresponding column title as it appears in an Excel sheet*.
+
+For example:
+
+```
+A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28 
+...
+```
+
+**Example 1:**
+
+```
+Input: columnNumber = 1
+Output: "A"
+```
+
+```python
+class Solution:
+    def convertToTitle(self, n: int) -> str:
+        result = ""
+        while n:
+            result += chr((n - 1) % 26 + ord("A"))
+            n = (n - 1) //26
+        return result[::-1]
+        
+```
+
+
+
+#### 171. Excel Sheet Column Number
+
+Given a string `columnTitle` that represents the column title as appear in an Excel sheet, return *its corresponding column number*.
+
+For example:
+
+```
+A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28 
+...
+```
+
+**Example 1:**
+
+```
+Input: columnTitle = "A"
+Output: 1
+```
+
+```python
+class Solution:
+    def titleToNumber(self, s: str) -> int:
+        result = 0
+        
+        # Decimal 65 in ASCII corresponds to char 'A'
+        alpha_map = {chr(i + 65): i + 1 for i in range(26)}
+
+        n = len(s)
+        for i in range(n):
+            cur_char = s[n - 1 - i]
+            result += (alpha_map[cur_char] * (26 ** i))
+        return result
+```
+
+```python
+class Solution:
+    def titleToNumber(self, s: str) -> int:
+        result = 0
+        n = len(s)
+        for i in range(n):
+            result = result * 26
+            result += (ord(s[i]) - ord('A') + 1)
+        return result
+```
+
+
+
 ### Others
+
+#### 6. ZigZag Conversion
+
+The string `"PAYPALISHIRING"` is written in a zigzag pattern on a given number of rows=3 like this: 
+
+```
+P   A   H   N
+A P L S I I G
+Y   I   R
+```
+
+And then read line by line: `"PAHNAPLSIIGYIR"`
+
+Write the code that will take a string and make this conversion given a number of rows:
+
+```
+string convert(string s, int numRows);
+```
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+```
+
+**Example 2:**
+
+```
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+```
+
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1 or numRows >= len(s):
+            return s
+        
+        zigzag = ['' for x in range(numRows)]
+        
+        row, step = 0, 1
+        
+        for ch in s:
+            zigzag[row] += ch
+            if row == 0: 
+                step = 1
+            elif row == numRows - 1: 
+                step = -1
+            row += step
+        
+        return ''.join(zigzag)
+```
+
+
+
+
+
+
 
 #### 7. Reverse Integer
 
@@ -1080,6 +2166,60 @@ def reverse(self, x: int) -> int:
         rev = rev * 10 + x % 10
         x //= 10
     return 0 if rev > pow(2, 31) else rev * sigh
+```
+
+
+
+#### 48. Rotate Image
+
+You are given an `n x n` 2D `matrix` representing an image, rotate the image by **90** degrees (clockwise).
+
+You have to rotate the image [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm), which means you have to modify the input 2D matrix directly. **DO NOT** allocate another 2D matrix and do the rotation.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
+
+```
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [[7,4,1],[8,5,2],[9,6,3]]
+```
+
+```python
+# Approach 1: Rotate Groups of Four Cells
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        n = len(matrix[0])
+        for i in range(n // 2 + n % 2):
+            for j in range(n // 2):
+                tmp = matrix[n - 1 - j][i]
+                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - j - 1]
+                matrix[n - 1 - i][n - j - 1] = matrix[j][n - 1 - i]
+                matrix[j][n - 1 - i] = matrix[i][j]
+                matrix[i][j] = tmp
+```
+
+```python
+# Approach 2: Transpose and then Reverse Left to Right
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        self.transpose(matrix)
+        self.reflect(matrix)
+    
+    def transpose(self, matrix):
+        n = len(matrix)
+        for i in range(n):
+            for j in range(i, n):
+                matrix[j][i], matrix[i][j] = matrix[i][j], matrix[j][i]
+
+    def reflect(self, matrix):
+        n = len(matrix)
+        for i in range(n):
+            for j in range(n // 2):
+                matrix[i][j], matrix[i][-j - 1] = matrix[i][-j - 1], matrix[i][j]
+
 ```
 
 
@@ -1297,6 +2437,8 @@ Output: 5
                 break
         return length
 ```
+
+
 
 #### 73. Set Matrix Zeroes
 
@@ -1604,6 +2746,56 @@ class Solution:
                 return i
 ```
 
+#### 165. Compare Version Numbers
+
+Given two version numbers, `version1` and `version2`, compare them.
+
+**Example 1:**
+
+```
+Input: version1 = "1.01", version2 = "1.001"
+Output: 0
+Explanation: Ignoring leading zeroes, both "01" and "001" represent the same integer "1".
+```
+
+**Example 2:**
+
+```
+Input: version1 = "1.0", version2 = "1.0.0"
+Output: 0
+Explanation: version1 does not specify revision 2, which means it is treated as "0".
+```
+
+**Example 3:**
+
+```
+Input: version1 = "0.1", version2 = "1.1"
+Output: -1
+Explanation: version1's revision 0 is "0", while version2's revision 0 is "1". 0 < 1, so version1 < version2.
+```
+
+```python
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        version1 = version1.split('.')
+        version2 = version2.split('.')
+        
+        n = max(len(version1), len(version2))
+        
+        for i in range(n):
+            v1 = int(version1[i]) if i < len(version1) else 0
+            v2 = int(version2[i]) if i < len(version2) else 0
+            
+            if v1 > v2:
+                return 1
+            elif v1 < v2:
+                return -1
+            
+        return 0
+```
+
+
+
 
 
 #### 169. ! Majority Element
@@ -1631,95 +2823,133 @@ class Solution:
 
 
 
-#### 168. Excel Sheet Column Title
 
-Given an integer `columnNumber`, return *its corresponding column title as it appears in an Excel sheet*.
 
-For example:
+#### 189. Rotate Array
 
-```
-A -> 1
-B -> 2
-C -> 3
-...
-Z -> 26
-AA -> 27
-AB -> 28 
-...
-```
+Given an array, rotate the array to the right by `k` steps, where `k` is non-negative.
+
+ 
 
 **Example 1:**
 
 ```
-Input: columnNumber = 1
-Output: "A"
+Input: nums = [1,2,3,4,5,6,7], k = 3
+Output: [5,6,7,1,2,3,4]
+Explanation:
+rotate 1 steps to the right: [7,1,2,3,4,5,6]
+rotate 2 steps to the right: [6,7,1,2,3,4,5]
+rotate 3 steps to the right: [5,6,7,1,2,3,4]
 ```
 
 ```python
+# Approach 1:Brute Force
 class Solution:
-    def convertToTitle(self, n: int) -> str:
-        result = ""
-        while n:
-            result += chr((n - 1) % 26 + ord("A"))
-            n = (n - 1) //26
-        return result[::-1]
-        
+    def rotate(self, nums: List[int], k: int) -> None:
+        # speed up the rotation
+        k %= len(nums)
+
+        for i in range(k):
+            previous = nums[-1]
+            for j in range(len(nums)):
+                nums[j], previous = previous, nums[j]
+```
+
+```python
+# Approach 4:Using Reverse
+class Solution:
+    def reverse(self, nums: list, start: int, end: int) -> None:
+        while start < end:
+            nums[start], nums[end] = nums[end], nums[start]
+            start, end = start + 1, end - 1
+                
+    def rotate(self, nums: List[int], k: int) -> None:
+        n = len(nums)
+        k %= n
+
+        self.reverse(nums, 0, n - 1)
+        self.reverse(nums, 0, k - 1)
+        self.reverse(nums, k, n - 1)
 ```
 
 
 
-#### 171. Excel Sheet Column Number
 
-Given a string `columnTitle` that represents the column title as appear in an Excel sheet, return *its corresponding column number*.
 
-For example:
+------
 
-```
-A -> 1
-B -> 2
-C -> 3
-...
-Z -> 26
-AA -> 27
-AB -> 28 
-...
-```
+#### After 200
+
+| 278. First Bad Version | Easy | Binary Search | Standard binary search |
+| :--------------------- | :--- | ------------- | ---------------------- |
+
+
+
+------
+
+
+
+#### 278. First Bad Version
+
+You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
+
+You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+ 
 
 **Example 1:**
 
 ```
-Input: columnTitle = "A"
-Output: 1
+Input: n = 5, bad = 4
+Output: 4
+Explanation:
+call isBadVersion(3) -> false
+call isBadVersion(5) -> true
+call isBadVersion(4) -> true
+Then 4 is the first bad version.
 ```
 
 ```python
+# The isBadVersion API is already defined for you.
+# @param version, an integer
+# @return an integer
+# def isBadVersion(version):
+
 class Solution:
-    def titleToNumber(self, s: str) -> int:
-        result = 0
+    def firstBadVersion(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        start = 1
+        end = n
+        print([start, end])
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            if not isBadVersion(mid):
+                start = mid + 1
+            else:
+                end = mid - 1
+            print([start, end])
         
-        # Decimal 65 in ASCII corresponds to char 'A'
-        alpha_map = {chr(i + 65): i + 1 for i in range(26)}
-
-        n = len(s)
-        for i in range(n):
-            cur_char = s[n - 1 - i]
-            result += (alpha_map[cur_char] * (26 ** i))
-        return result
-```
-
-```python
-class Solution:
-    def titleToNumber(self, s: str) -> int:
-        result = 0
-        n = len(s)
-        for i in range(n):
-            result = result * 26
-            result += (ord(s[i]) - ord('A') + 1)
-        return result
+        if isBadVersion(start):
+            return start
+        elif isBadVersion(end):
+            return end
+        else:
+            return end + 1
 ```
 
 
 
 #### References
+
+https://runestone.academy/runestone/books/published/pythonds/index.html
+
+https://github.com/wisdompeak/LeetCode
+
+https://github.com/grandyang/leetcode
 
 https://books.halfrost.com/leetcode/
