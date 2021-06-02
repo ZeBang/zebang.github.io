@@ -31,7 +31,7 @@ Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
 ```
 
 
-        
+​        
 
 ```python
 class Solution:
