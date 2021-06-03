@@ -2066,6 +2066,446 @@ class Solution:
 
 
 
+### List
+
+#### 19. Remove Nth Node From End of List
+
+Given the `head` of a linked list, remove the `nth` node from the end of the list and return its head.
+
+**Follow up:** Could you do this in one pass?
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/remove_ex1.jpg)
+
+```
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+```
+
+**Example 2:**
+
+```
+Input: head = [1], n = 1
+Output: []
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head, n):
+        def remove(head):
+            if not head:
+                return 0, head
+            i, head.next = remove(head.next)
+            return i + 1, (head, head.next)[i + 1 == n]
+            
+        return remove(head)[1]
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head, n):
+        slow = fast = head
+        for _ in range(n):
+            fast = fast.next
+        if not fast:
+            return head.next
+        while fast.next:
+            slow = slow.next
+            fast = fast.next
+        slow.next = slow.next.next
+        return head
+```
+
+
+
+#### 24. Swap Nodes in Pairs
+
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
+
+```
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+```
+
+**Example 2:**
+
+```
+Input: head = []
+Output: []
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        dummyHead = ListNode(0)
+        dummyHead.next = head
+        temp = dummyHead
+        while temp.next and temp.next.next:
+            node1 = temp.next
+            node2 = temp.next.next
+            temp.next = node2
+            node1.next = node2.next
+            node2.next = node1
+            temp = node1
+        return dummyHead.next
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        newHead = head.next
+        head.next = self.swapPairs(newHead.next)
+        newHead.next = head
+        return newHead
+```
+
+
+
+#### 82. Remove Duplicates from Sorted List II
+
+Given the `head` of a sorted linked list, *delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list*. Return *the linked list **sorted** as well*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/linkedlist1.jpg)
+
+```
+Input: head = [1,2,3,3,4,4,5]
+Output: [1,2,5]
+```
+
+**Example 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/linkedlist2.jpg)
+
+```
+Input: head = [1,1,1,2,3]
+Output: [2,3]
+```
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+                    
+        prev = ListNode(0, head)
+        
+        curr = prev
+        while curr.next and curr.next.next:
+            if curr.next.val == curr.next.next.val:
+                x = curr.next.val
+                while curr.next and curr.next.val == x:
+                    curr.next = curr.next.next
+            else:
+                curr = curr.next
+        
+        return prev.next
+```
+
+
+
+#### 83. Remove Duplicates from Sorted List
+
+Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return *the linked list **sorted** as well*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/list1.jpg)
+
+```
+Input: head = [1,1,2]
+Output: [1,2]
+```
+
+**Example 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/list2.jpg)
+
+```
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+```
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head:
+            return head
+        curr = head.next
+        prev = head
+        
+        while curr:
+            if curr.val == prev.val:
+                prev.next = curr.next
+                curr = curr.next
+            else:
+                prev = curr
+                curr = curr.next
+                
+        return head
+```
+
+
+
+
+
+#### 86. Partition List
+
+Given the `head` of a linked list and a value `x`, partition it such that all nodes **less than** `x` come before nodes **greater than or equal** to `x`.
+
+You should **preserve** the original relative order of the nodes in each of the two partitions.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/partition.jpg)
+
+```
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+```
+
+**Example 2:**
+
+```
+Input: head = [2,1], x = 2
+Output: [1,2]
+```
+
+```python
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        # 1. two list
+        # 2. one pass
+        # 3. merge
+        
+        head1 = ListNode(0)
+        head2 = ListNode(0)
+        
+        curr = head
+        l1, l2 = head1, head2
+        while curr:
+            if curr.val < x:
+                l1.next = curr
+                l1 = curr
+            else:
+                l2.next = curr
+                l2 = curr
+            
+            curr = curr.next
+        l2.next = None
+        l1.next = head2.next
+        
+        return head1.next
+```
+
+
+
+#### 92. Reverse Linked List II
+
+Given the `head` of a singly linked list and two integers `left` and `right` where `left <= right`, reverse the nodes of the list from position `left` to position `right`, and return *the reversed list*.
+
+ **Note**: re-connect after reverse.
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg)
+
+```
+Input: head = [1,2,3,4,5], left = 2, right = 4
+Output: [1,4,3,2,5]
+```
+
+**Example 2:**
+
+```
+Input: head = [5], left = 1, right = 1
+Output: [5]
+```
+
+```python
+class Solution:
+    def reverseBetween(self, head: ListNode, left: int, right: int) -> ListNode:
+        dummyNode = ListNode(-1, head)
+        m_prev = self.findkth(dummyNode, left-1)
+        m = m_prev.next
+        n = self.findkth(m, right-left)
+        n_next = n.next
+        n.next = None
+        
+        self.reverse(m)
+        
+        m_prev.next = n
+        m.next = n_next
+        
+        return dummyNode.next
+    
+    def reverse(self, head):
+        prev = None
+        while head:
+            temp = head.next
+            head.next = prev
+            prev = head
+            head = temp
+        return prev
+    
+    def findkth(self, head, k):
+        for i in range(k):
+            if head is None:
+                return None
+            head = head.next
+        return head
+```
+
+
+
+
+
+#### *143. Reorder List
+
+You are given the head of a singly linked-list. The list can be represented as:
+
+```
+L0 → L1 → … → Ln - 1 → Ln
+```
+
+*Reorder the list to be on the following form:*
+
+```
+L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+```
+
+You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/04/reorder1linked-list.jpg)
+
+```
+Input: head = [1,2,3,4]
+Output: [1,4,2,3]
+```
+
+**Example 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/09/reorder2-linked-list.jpg)
+
+```
+Input: head = [1,2,3,4,5]
+Output: [1,5,2,4,3]
+```
+
+
+
+```python
+# 线性表
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        if not head:
+            return
+        vec = []
+        node = head
+        while node:
+            vec.append(node)
+            node = node.next
+            
+        i, j = 0, len(vec) - 1
+        while i < j:
+            vec[i].next = vec[j]
+            i += 1
+            if i == j:
+                break
+            vec[j].next = vec[i]
+            j -= 1
+            
+        vec[i].next = None
+```
+
+```python
+# 寻找链表中点 + 链表逆序 + 合并链表
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        if not head:
+            return 
+        mid = self.middleNode(head)
+        l1 = head
+        l2 = mid.next
+        mid.next = None
+        l2 = self.reverseList(l2)
+        self.mergeList(l1, l2)
+        
+    def middleNode(self, head):
+        slow = fast = head
+        while fast.next and fast.next.next:
+        	slow = slow.next
+        	fast = fast.next.next
+        return slow
+    
+    def reverList(self, head):
+        prev = None
+        while curr:
+            temp = head.next
+            head.next = prev
+            prev = head
+            head = temp
+        return prev
+    
+    def mergeList(self, l1, l2):
+        while l1 and l2:
+            l1_tmp = l1.next
+            l2_tmp = l2.next
+            
+            l1.next = l2
+            l1 = l1_tmp
+            
+            l2.next = l1
+            l2 = l2-tmp
+```
+
+
+
 ### Others
 
 #### 6. ZigZag Conversion
