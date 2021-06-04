@@ -1,4 +1,6 @@
-#### To do: Array 48
+## leetCode in Python
+
+Today Problem: 61, 2, 160, 141, 21, 148, 142, 147
 
 [toc]
 
@@ -2068,6 +2070,43 @@ class Solution:
 
 ### List
 
+#### 2. Add Two Numbers
+
+You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order**, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/02/addtwonumber1.jpg)
+
+```
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+```
+
+```python
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        dummy = tail = ListNode(0)
+        s = 0
+        while l1 or l2 or s:
+            s += (l1.val if l1 else 0) + (l2.val if l2 else 0)
+            tail.next = ListNode(s % 10)
+            tail = tail.next
+            s //= 10
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        return dummy.next
+```
+
+
+
+
+
 #### 19. Remove Nth Node From End of List
 
 Given the `head` of a linked list, remove the `nth` node from the end of the list and return its head.
@@ -2131,6 +2170,56 @@ class Solution:
 
 
 
+#### 21. Merge Two Sorted Lists
+
+Merge two sorted linked lists and return it as a **sorted** list. The list should be made by splicing together the nodes of the first two lists.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/merge_ex1.jpg)
+
+```
+Input: l1 = [1,2,4], l2 = [1,3,4]
+Output: [1,1,2,3,4,4]
+```
+
+```python
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        curr = dummy = ListNode(0)
+        
+        while l1 and l2:
+            if l1.val < l2.val:
+                curr.next = l1
+                l1 = l1.next
+            else:
+                curr.next = l2
+                l2 = l2.next
+            curr = curr.next
+        curr.next = l1 or l2
+        
+        return dummy.next
+```
+
+```python
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        if not l1 or not l2:
+            return l1 or l2
+        if l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+```
+
+
+
+
+
 #### 24. Swap Nodes in Pairs
 
 Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
@@ -2161,8 +2250,7 @@ Output: []
 #         self.next = next
 class Solution:
     def swapPairs(self, head: ListNode) -> ListNode:
-        dummyHead = ListNode(0)
-        dummyHead.next = head
+        dummyHead = ListNode(0, head)
         temp = dummyHead
         while temp.next and temp.next.next:
             node1 = temp.next
@@ -2189,6 +2277,87 @@ class Solution:
         newHead.next = head
         return newHead
 ```
+
+
+
+#### 61. Rotate List
+
+Given the `head` of a linked list, rotate the list to the right by `k` places.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/rotate1.jpg)
+
+```
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+```
+
+```python
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if not head or not head.next:
+            return head
+        n = 0
+        p = head
+        while p:
+            n += 1
+            p = p.next
+        k = k % n
+        
+        if k == 0:
+            return head
+        
+        p1, p2 = self.kthFromEnd(head, k)
+        newHead = p1.next
+        
+        p1.next = None
+        p2.next = head
+        
+        return newHead
+        
+    def kthFromEnd(self, head, k):
+        slow = fast = head
+        for _ in range(k):
+            fast = fast.next
+        if not fast:
+            return head.next
+        while fast.next:
+            slow = slow.next
+            fast = fast.next
+        return slow, fast
+```
+
+```python
+# 方法2： 闭合为环做剪切
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if k == 0 or not head or not head.next:
+            return head
+        
+        n = 1
+        cur = head
+        while cur.next:
+            cur = cur.next
+            n += 1
+        
+        if (add := n - k % n) == n:
+            return head
+        
+        cur.next = head
+        while add:
+            cur = cur.next
+            add -= 1
+        
+        ret = cur.next
+        cur.next = None
+```
+
+
+
+
 
 
 
@@ -2396,9 +2565,120 @@ class Solution:
 
 
 
+#### 141. Linked List Cycle
+
+Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
+
+Return `true` *if there is a cycle in the linked list*. Otherwise, return `false`.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+```
+
+```python
+# 方法一：哈希表
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        seen = set()
+        while head:
+            if head in seen:
+                return True
+            seen.add(head)
+            head = head.next
+        return False
+```
+
+```python
+# 方法二：快慢指针
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        if not head or not head.next:
+            return False
+        slow, fast = head, head.next
+        
+        while slow != fast:
+            if not fast or not fast.next:
+                return False
+            slow = slow.next
+            fast = fast.next.next
+        return True
+    
+ class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        fast = slow = head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            if slow == fast:
+                return True
+        return False
+        
+```
 
 
-#### *143. Reorder List
+
+#### 142. Linked List Cycle II
+
+Given a linked list, return the node where the cycle begins. If there is no cycle, return `null`.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
+
+**Notice** that you **should not modify** the linked list.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+```
+
+```python
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        seen = set()
+        while head:
+            if head not in seen:
+                seen.add(head)
+            else:
+                return head
+            head = head.next
+        return None
+```
+
+```python
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        slow = fast = head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            if slow == fast:
+                curr = head
+                while curr != slow:
+                    curr = curr.next
+                    slow = slow.next
+                return curr
+        return None 
+```
+
+
+
+
+
+#### 143*. Reorder List
 
 You are given the head of a singly linked-list. The list can be represented as:
 
@@ -2433,8 +2713,6 @@ Output: [1,4,2,3]
 Input: head = [1,2,3,4,5]
 Output: [1,5,2,4,3]
 ```
-
-
 
 ```python
 # 线性表
@@ -2503,6 +2781,203 @@ class Solution:
             l2.next = l1
             l2 = l2-tmp
 ```
+
+
+
+#### 147. Insertion Sort List
+
+Given the `head` of a singly linked list, sort the list using **insertion sort**, and return *the sorted list's head*.
+
+The steps of the **insertion sort** algorithm:
+
+1. Insertion sort iterates, consuming one input element each repetition and growing a sorted output list.
+2. At each iteration, insertion sort removes one element from the input data, finds the location it belongs within the sorted list and inserts it there.
+3. It repeats until no input elements remain.
+
+The following is a graphical example of the insertion sort algorithm. The partially sorted list (black) initially contains only the first element in the list. One element (red) is removed from the input data and inserted in-place into the sorted list with each iteration.
+
+![img](https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif)
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/04/sort1linked-list.jpg)
+
+```
+Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+```
+
+```python
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        if not head:
+            return head
+        
+        dummyHead = ListNode(0)
+        dummyHead.next = head
+        lastSorted = head
+        curr = head.next
+
+        while curr:
+            if lastSorted.val <= curr.val:
+                lastSorted = lastSorted.next
+            else:
+                prev = dummyHead
+                while prev.next.val <= curr.val:
+                    prev = prev.next
+                lastSorted.next = curr.next
+                curr.next = prev.next
+                prev.next = curr
+            curr = lastSorted.next
+        
+        return dummyHead.next
+```
+
+
+
+
+
+
+
+#### 148*. Sort List
+
+Given the `head` of a linked list, return *the list after sorting it in **ascending order***.
+
+**Follow up:** Can you sort the linked list in `O(n logn)` time and `O(1)` memory (i.e. constant space)?
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/09/14/sort_list_1.jpg)
+
+```
+Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+```
+
+```python 
+#归并排序
+class Solution:
+    def sortList(self, head):
+        if not head or not head.next:
+            return head
+        slow, fast = head, head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        head2 = slow.next
+        slow.next = None # 断开
+        return self.merge(self.sortList(head), self.sortList(head2))
+    
+    def merge(self, head1, head2):
+        dummyhead = curr = ListNode(0)
+        while head1 and head2:
+            if head1.val < head2.val:
+                curr.next = head1
+                head1 = head1.next
+            else:
+                curr.next = head2
+                head2 = head2.next
+            curr = curr.next
+        curr.next = head1 or head2
+        return dummyhead.next
+```
+
+```python
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        def merge(head1: ListNode, head2: ListNode) -> ListNode:
+            dummyhead = curr = ListNode(0)
+            while head1 and head2:
+                if head1.val < head2.val:
+                    curr.next = head1
+                    head1 = head1.next
+                else:
+                    curr.next = head2
+                    head2 = head2.next
+                curr = curr.next
+            curr.next = head1 or head2
+            return dummyhead.next
+        
+        if not head:
+            return head
+        
+        length = 0
+        node = head
+        while node:
+            length += 1
+            node = node.next
+        
+        dummyHead = ListNode(0, head)
+        subLength = 1
+        while subLength < length:
+            prev, curr = dummyHead, dummyHead.next
+            while curr:
+                head1 = curr
+                for i in range(1, subLength):
+                    if curr.next:
+                        curr = curr.next
+                    else:
+                        break
+                head2 = curr.next
+                curr.next = None
+                curr = head2
+                for i in range(1, subLength):
+                    if curr and curr.next:
+                        curr = curr.next
+                    else:
+                        break
+                
+                succ = None
+                if curr:
+                    succ = curr.next
+                    curr.next = None
+                
+                merged = merge(head1, head2)
+                prev.next = merged
+                while prev.next:
+                    prev = prev.next
+                curr = succ
+            subLength <<= 1
+        
+        return dummyHead.next
+```
+
+
+
+#### 160. Intersection of Two Linked List**s**
+
+**comment**: trick problem
+
+Given the heads of two singly linked-lists `headA` and `headB`, return *the node at which the two lists intersect*. If the two linked lists have no intersection at all, return `null`.
+
+For example, the following two linked lists begin to intersect at node `c1`:
+
+![img](https://assets.leetcode.com/uploads/2021/03/05/160_statement.png)
+
+It is **guaranteed** that there are no cycles anywhere in the entire linked structure.
+
+**Note** that the linked lists must **retain their original structure** after the function returns.
+
+```python
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        p1 = headA
+        p2 = headB
+        
+        while p1 != p2:
+            p1 = p1.next if p1 else headB
+            p2 = p2.next if p2 else headA
+        
+        return p1
+```
+
+
+
+
 
 
 
@@ -3147,7 +3622,7 @@ def maxProfit(self, prices: List[int]) -> int:
 
 
 
-#### 136. ! Single Number
+#### 136*. Single Number
 
 Given a **non-empty** array of integers `nums`, every element appears *twice* except for one. Find that single one.
 
@@ -3318,10 +3793,11 @@ class Solution:
 
 ------
 
-#### After 200
+### After 200
 
-| 278. First Bad Version | Easy | Binary Search | Standard binary search |
-| :--------------------- | :--- | ------------- | ---------------------- |
+| Problem                | Level | Type          | Comment                |
+| :--------------------- | :---- | ------------- | ---------------------- |
+| 278. First Bad Version | Easy  | Binary Search | Standard binary search |
 
 
 
