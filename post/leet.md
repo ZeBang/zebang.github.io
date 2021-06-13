@@ -1,12 +1,14 @@
 ## leetCode in Python
 
-Today Problem: 61, 2, 160, 141, 21, 148, 142, 147
+
 
 [toc]
 
 
 
 ### Binary Search
+
+Standard binary search: 704 - 35 - 34 - 69 - 367
 
 #### 4. Median of Two Sorted Arrays
 
@@ -270,7 +272,7 @@ Since the return type is an integer, the decimal digits are **truncated**, and o
 
 **Note:** You are not allowed to use any built-in exponent function or operator, such as `pow(x, 0.5)` or `x ** 0.5`.
 
- 
+
 
 **Example 1:**
 
@@ -299,6 +301,59 @@ class Solution:
 ```
 
 
+
+#### 74. Search a 2D Matrix
+
+Write an efficient algorithm that searches for a value in an `m x n` matrix. This matrix has the following properties:
+
+- Integers in each row are sorted from left to right.
+- The first integer of each row is greater than the last integer of the previous row.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/05/mat.jpg)
+
+```
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+Output: true
+```
+
+```python
+# two bisect
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        M, N = len(matrix), len(matrix[0])
+        col0 = [row[0] for row in matrix]
+        target_row = bisect.bisect_right(col0, target) - 1
+        if target_row < 0:
+            return False
+        target_col = bisect.bisect_left(matrix[target_row], target)
+        if target_col >= N:
+            return False
+        if matrix[target_row][target_col] == target:
+            return True
+        return False
+```
+
+```python
+# Global bisect
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        M, N = len(matrix), len(matrix[0])
+        left, right = 0, M * N - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            cur = matrix[mid // N][mid % N]
+            if cur == target:
+                return True
+            elif cur < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+```
 
 
 
@@ -397,6 +452,10 @@ class Solution:
 
 
 ### Two Pointer
+
+Slow and Fast two pointer: 26 - 27 - 283 - 844 - 977 
+
+
 
 #### 1. Two Sum
 
@@ -712,6 +771,59 @@ def removeDuplicates(nums):
 
 
 
+#### 27. Remove Element
+
+Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm). The relative order of the elements may be changed.
+
+Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the **first part** of the array `nums`. More formally, if there are `k` elements after removing the duplicates, then the first `k` elements of `nums` should hold the final result. It does not matter what you leave beyond the first `k` elements.
+
+Return `k` *after placing the final result in the first* `k` *slots of* `nums`.
+
+Do **not** allocate extra space for another array. You must do this by **modifying the input array [in-place](https://en.wikipedia.org/wiki/In-place_algorithm)** with O(1) extra memory.
+
+**Example 1:**
+
+```
+Input: nums = [3,2,2,3], val = 3
+Output: 2, nums = [2,2,_,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 2.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+```
+
+```python`
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        index = 1
+        n = len(nums)
+        j = 0
+        i = 0
+        while j <= n - 1:
+            if nums[i] == val:
+                nums[i], nums[n-index] = nums[n-index], nums[i]
+                index += 1
+            else:
+                i += 1
+            j += 1
+        return n - index + 1
+```
+
+```python
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        i = 0
+        for x in nums:
+            if x != val:
+                nums[i] = x
+                i += 1
+        return i
+```
+
+
+
+
+
+
+
 #### 75. Sort Colors
 
 Given an array `nums` with `n` objects colored red, white, or blue, sort them **[in-place](https://en.wikipedia.org/wiki/In-place_algorithm)** so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
@@ -963,34 +1075,40 @@ class Solution:
 
 
 
+#### 209. Minimum Size Subarray Sum
 
+Given an array of positive integers `nums` and a positive integer `target`, return the minimal length of a **contiguous subarray** `[numsl, numsl+1, ..., numsr-1, numsr]` of which the sum is greater than or equal to `target`. If there is no such subarray, return `0` instead.
 
-### Recursive
-
-#### 46. Permutations
-
-Given an array `nums` of distinct integers, return *all the possible permutations*. You can return the answer in **any order**.
+ 
 
 **Example 1:**
 
 ```
-Input: nums = [1,2,3]
-Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Input: target = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.
 ```
 
 ```python
-def permute(self, nums: List[int]) -> List[List[int]]:
-    if len(nums) == 1:
-        return [nums]
-    output = []
-    for i, num in enumerate(nums):
-        n = nums[:i] + nums[i+1:]
-
-        for y in self.permute(n):
-            output.append([num] + y)
-
-    return output
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        length = float("inf")
+        slow = 0
+        sum = 0
+        for fast in range(len(nums)):
+            sum += nums[fast]
+            while sum >= target:
+                length = min(length, fast - slow + 1)
+                sum -= nums[slow]
+                slow += 1
+        return 0 if length == float("inf") else length
 ```
+
+
+
+
+
+### Recursive
 
 
 
@@ -1117,114 +1235,31 @@ class Solution:
 
 
 
-### DP
 
-#### 5. Longest Palindromic Substring
 
-Given a string `s`, return *the longest palindromic substring* in `s`.
+### DFS/BFS/Backtracking
+
+#### 17. Letter Combinations of a Phone Number
+
+Given a string containing digits from `2-9` inclusive, return all possible letter combinations that the number could represent. Return the answer in **any order**.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png)
 
  
 
 **Example 1:**
 
 ```
-Input: s = "babad"
-Output: "bab"
-Note: "aba" is also a valid answer.
-```
-
-**Example 2:**
-
-```
-Input: s = "cbbd"
-Output: "bb"
-```
-
-**Example 3:**
-
-```
-Input: s = "a"
-Output: "a"
-```
-
-**Example 4:**
-
-```
-Input: s = "ac"
-Output: "a"
-```
-
-```python
-class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        Palindrome = ""
-        for i in range(len(s)):
-            temp1 = self.getlongestPalindrome(s, i, i)
-            if len(temp1) > len(Palindrome):
-                Palindrome = temp1
-            temp2 = self.getlongestPalindrome(s, i, i+1)
-            if len(temp2) > len(Palindrome):
-                Palindrome = temp2
-        return Palindrome
-    
-    def getlongestPalindrome(self, s, l, r):
-        while l >= 0 and r < len(s) and s[l] == s[r]:
-            l -= 1
-            r += 1
-        return s[l+1 : r]
-```
-
-
-
-
-
-#### 70. Climbing Stairs
-
-You are climbing a staircase. It takes `n` steps to reach the top.
-
-Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?
-
-**Example 1:**
-
-```
-Input: n = 2
-Output: 2
-Explanation: There are two ways to climb to the top.
-1. 1 step + 1 step
-2. 2 steps
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
 ```
 
 
 
 ```python
-def climbStairs(self, n):
-    a,b = 1,0
-    for _ in range(n):
-        a,b = a+b,a
-    return a
-```
-
-```python
-def climbStairs(self, n: int) -> int:
-    dp = [0]*(n+1)
-    dp[0] = 1
-    dp[1] = 2
-    for i in range(2,n):
-        dp[i] = dp[i-1] + dp[i-2]
-    return dp[n-1]
-```
-
-
-
-
-
-### Backtracking
-
-#### 17. Letter Combinations of a Phone Number
-
-Algorithm: Greedy
-
-```python
+# Algorithm: Greedy
 def letterCombinations(self, digits: str) -> List[str]:
     if len(digits) == 0:
         return []
@@ -1251,25 +1286,91 @@ def letterCombinations(self, digits: str) -> List[str]:
     return result
 ```
 
-Algorithm: DFS
+```python
+# Algorithm: DFS
+class Solution:
+    def letterCombinations(self, digits):
+        if len(digits) == 0:
+            return []
+        dic = {"2":"abc", '3':"def", '4':"ghi", '5':"jkl", '6':"mno", '7':"pqrs", '8':"tuv", '9':"wxyz"}
+        result = []
+        self.dfs(digits, dic, 0, "", result)
+        return result
+
+    def dfs(self, digits, dic, index, path, result):
+        if len(path) == len(digits):
+            result.append(path)
+            return
+
+        for j in dic[digits[index]]:
+            path = path + j
+            self.dfs(digits, dic, index+1, path, result)
+            path = path[:-1]
+```
+
+
+
+#### 37. Sudoku Solver
+
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy **all of the following rules**:
+
+1. Each of the digits `1-9` must occur exactly once in each row.
+2. Each of the digits `1-9` must occur exactly once in each column.
+3. Each of the digits `1-9` must occur exactly once in each of the 9 `3x3` sub-boxes of the grid.
+
+The `'.'` character indicates empty cells.
+
+ 
+
+**Example 1:**
+
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png)
+
+```
+Input: board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+Output: [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
+Explanation: The input board is shown above and the only valid solution is shown below:
+```
 
 ```python
-def letterCombinations(self, digits):
-    if len(digits) == 0:
-        return []
-    dic = {"2":"abc", '3':"def", '4':"ghi", '5':"jkl", '6':"mno", '7':"pqrs", '8':"tuv", '9':"wxyz"}
-    result = []
-    self.dfs(digits, dic, 0, "", result)
-    return result
-
-def dfs(self, digits, dic, index, path, result):
-    if len(path) == len(digits):
-        result.append(path)
-        return
-
-    for j in dic[digits[index]]:
-        self.dfs(digits, dic, index+1, path+j, result)
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def backtrack(board):
+            for i in range(len(board)):  #遍历行
+                for j in range(len(board[0])):  #遍历列
+                    if board[i][j] != ".": continue
+                    for k in range(1,10):  #(i, j) 这个位置放k是否合适
+                        if isValid(i,j,k,board):
+                            board[i][j] = str(k)  #放置k
+                            if backtrack(board): return True  #如果找到合适一组立刻返回
+                            board[i][j] = "."  #回溯，撤销k
+                    return False  #9个数都试完了，都不行，那么就返回false
+            return True  #遍历完没有返回false，说明找到了合适棋盘位置了
+        def isValid(row,col,val,board):
+            for i in range(9):  #判断行里是否重复
+                if board[row][i] == str(val):
+                    return False
+            for j in range(9):  #判断列里是否重复
+                if board[j][col] == str(val):
+                    return False
+            startRow = (row // 3) * 3
+            startcol = (col // 3) * 3
+            for i in range(startRow,startRow + 3):  #判断9方格里是否重复
+                for j in range(startcol,startcol + 3):
+                    if board[i][j] == str(val):
+                        return False
+            return True
+        backtrack(board)
 ```
+
+
+
+
 
 
 
@@ -1341,6 +1442,7 @@ These are the only two combinations.
 ```python
 def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
     result = []
+    candidates.sort()
     self.dfs(candidates, target, 0, [], result)
 
     return result
@@ -1356,6 +1458,8 @@ def dfs(self, nums, target, index, path, result):
     for i in range(index, len(nums)):
         self.dfs(nums, target - nums[i], i, path + [nums[i]], result)
 ```
+
+
 
 #### 40. Combination Sum II
 
@@ -1402,9 +1506,52 @@ def dfs(self, nums, target, index, path, result):
 
 
 
+#### 46. Permutations
+
+Given an array `nums` of distinct integers, return *all the possible permutations*. You can return the answer in **any order**.
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+```
+
+```python
+def permute(self, nums: List[int]) -> List[List[int]]:
+    if len(nums) == 1:
+        return [nums]
+    output = []
+    for i, num in enumerate(nums):
+        n = nums[:i] + nums[i+1:]
+
+        for y in self.permute(n):
+            output.append([num] + y)
+
+    return output
+```
+
+```python 
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        
+        def dfs(nums, index, path):
+            if not nums:
+                res.append(path[:])
+                
+            for i in range(0, len(nums)):
+                dfs(nums[:i] + nums[i+1:], index+1, path + [nums[i]])
+        
+        dfs(nums,0,[])
+        return res
+```
 
 
-#### 47. Permutations II
+
+
+
+#### 47*. Permutations II
 
 Given a collection of numbers, `nums`, that might contain duplicates, return *all possible unique permutations **in any order**.*
 
@@ -1426,25 +1573,186 @@ Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 ```
 
 ```python
-def permuteUnique(self, nums: List[int]) -> List[List[int]]:
-    res = []
-    used = [False] * len(nums)
-    nums.sort()
-    path = []
-    self.dfs(nums, path, used, res)
-    return res
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        def dfs(nums, path):
+            if n == len(path):
+                res.append(path)
+                return
 
-def dfs(self, nums, path, used, res):
-    if len(nums) == len(path):
-        res.append(path)
-        return
-    for i in range(len(nums)):
-        if used[i] or (i > 0 and nums[i] == nums[i-1] and not used[i-1]):
-            continue
-        used[i] = True
-        self.dfs(nums, path + [nums[i]], used, res)
-        used[i] = False
+            for i in range(n):
+                if not used[i]:
+                    if (i > 0 and nums[i] == nums[i-1] and not used[i-1]):
+                        continue
+                    used[i] = True
+                    dfs(nums, path + [nums[i]])
+                    used[i] = False
+        res = []
+        n = len(nums)
+        used = [False] * len(nums)
+        nums.sort()
+        dfs(nums, [])
+
+        return res
+
 ```
+
+
+
+#### 51. N-Queens
+
+The **n-queens** puzzle is the problem of placing `n` queens on an `n x n` chessboard such that no two queens attack each other.
+
+Given an integer `n`, return *all distinct solutions to the **n-queens puzzle***. You may return the answer in **any order**.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where `'Q'` and `'.'` both indicate a queen and an empty space, respectively.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/queens.jpg)
+
+```
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+```
+
+```python
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        if not n: return []
+        board = [['.'] * n for _ in range(n)]
+        res = []
+        def isVaild(board,row, col):
+            #判断同一列是否冲突
+            for i in range(len(board)):
+                if board[i][col] == 'Q':
+                    return False
+            # 判断左上角是否冲突
+            i = row -1
+            j = col -1
+            while i>=0 and j>=0:
+                if board[i][j] == 'Q':
+                    return False
+                i -= 1
+                j -= 1
+            # 判断右上角是否冲突
+            i = row - 1
+            j = col + 1
+            while i>=0 and j < len(board):
+                if board[i][j] == 'Q':
+                    return False
+                i -= 1
+                j += 1
+            return True
+
+        def backtracking(board, row, n):
+            # 如果走到最后一行，说明已经找到一个解
+            if row == n:
+                temp_res = []
+                for temp in board:
+                    temp_str = "".join(temp)
+                    temp_res.append(temp_str)
+                res.append(temp_res)
+            for col in range(n):
+                if not isVaild(board, row, col):
+                    continue
+                board[row][col] = 'Q'
+                backtracking(board, row+1, n)
+                board[row][col] = '.'
+        backtracking(board, 0, n)
+        return res
+```
+
+
+
+
+
+#### 77*. Combinations
+
+Given two integers `n` and `k`, return *all possible combinations of* `k` *numbers out of the range* `[1, n]`.
+
+You may return the answer in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 4, k = 2
+Output:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+```
+
+```python
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        # return list(itertools.combinations(range(1,n+1),k))
+        res=[]  #存放符合条件结果的集合
+        path=[]  #用来存放符合条件结果
+        def backtrack(n,k,startIndex):
+            if len(path) == k:
+                res.append(path[:])
+                return 
+            for i in range(startIndex,n-(k-len(path))+2):  #优化的地方
+                path.append(i)  #处理节点 
+                backtrack(n,k,i+1)  #递归
+                path.pop()  #回溯，撤销处理的节点
+        backtrack(n,k,1)
+        return res
+
+```
+
+
+
+#### 78*. Subsets
+
+Given an integer array `nums` of **unique** elements, return *all possible subsets (the power set)*.
+
+The solution set **must not** contain duplicate subsets. Return the solution in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+```
+
+```python
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        path = []
+        
+        n = len(nums)
+        def dfs(nums, index):
+            res.append(path[:])
+            for i in range(index, n):
+                path.append(nums[i])
+                dfs(nums, i + 1) # NOT index + 1
+                path.pop()
+                
+        dfs(nums, 0)
+        
+        return res
+```
+
+
+
+
+
+
 
 #### 79. Word Search
 
@@ -1476,6 +1784,90 @@ def helper(self, board, word, wordIndex, i, j):
     return found
 ```
 
+
+
+#### 90. Subsets II
+
+Given an integer array `nums` that may contain duplicates, return *all possible subsets (the power set)*.
+
+The solution set **must not** contain duplicate subsets. Return the solution in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+```
+
+```python
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        nums.sort()
+        
+        def dfs(nums, index, path):
+            res.append(path[:])
+            
+            for i in range(index, n):
+                if i > index and nums[i] == nums[i-1]:
+                    continue
+                dfs(nums, i+1, path + [nums[i]])
+                
+        dfs(nums, 0, [])
+        return res
+```
+
+
+
+
+
+
+
+#### 93. Restore IP Addresses
+
+Given a string `s` containing only digits, return all possible valid IP addresses that can be obtained from `s`. You can return them in **any** order.
+
+A **valid IP address** consists of exactly four integers, each integer is between `0` and `255`, separated by single dots and cannot have leading zeros. For example, "0.1.2.201" and "192.168.1.1" are **valid** IP addresses and "0.011.255.245", "192.168.1.312" and "192.168@1.1" are **invalid** IP addresses. 
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+```
+
+```python
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        res = []
+        n = len(s)
+        def dfs(s, dot, pos, path):
+            if dot >= 4: 
+                if pos == n:
+                    res.append(path[1:])
+                return
+            if pos >= n: # 剪枝
+                return
+            for i in range(1, min(3, n-pos) + 1): # 剪枝
+                temp = s[pos:pos+i]
+                if int(temp) <= 255:
+                    if temp[0] == "0" and len(temp) > 1:
+                        continue
+                    dfs(s, dot+1, pos+ len(temp), path + "." + temp)
+        
+        dfs(s,0,0,"")
+        return res
+```
+
+
+
+
+
 #### 112. Path Sum
 
 Given the `root` of a binary tree and an integer `targetSum`, return `true` if the tree has a **root-to-leaf** path such that adding up all the values along the path equals `targetSum`.
@@ -1504,9 +1896,534 @@ def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
 
 
 
+#### 131. Palindrome Partitioning
+
+Given a string `s`, partition `s` such that every substring of the partition is a **palindrome**. Return all possible palindrome partitioning of `s`.
+
+A **palindrome** string is a string that reads the same backward as forward.
+
+**Example 1:**
+
+```
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+```
+
+```python
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        def dfs(s, index):
+            if index == len(s):
+                return res.append(path[:])
+
+            for i in range(index, len(s)):
+
+                if s[index:i+1] == s[index:i+1][::-1]:
+                    path.append(s[index:i+1])
+                    dfs(s, i+1)
+                    path.pop()
+                
+        res = []
+        path = []
+        dfs(s, 0)
+        
+        return res
+```
+
+
+
+
+
+
+
+#### 216. Combination Sum III
+
+Find all valid combinations of `k` numbers that sum up to `n` such that the following conditions are true:
+
+- Only numbers `1` through `9` are used.
+- Each number is used **at most once**.
+
+Return *a list of all possible valid combinations*. The list must not contain the same combination twice, and the combinations may be returned in any order.
+
+ 
+
+**Example 1:**
+
+```
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+Explanation:
+1 + 2 + 4 = 7
+There are no other valid combinations.
+```
+
+```python
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        res = []  #存放结果集
+        self.findallPath(n,k,0,1,[],res)
+        return res
+    
+    def findallPath(self,n,k,sum,startIndex,path,res):
+            if sum > n: return  #剪枝操作
+            if sum == n and len(path) == k:  #如果path.size() == k 但sum != n 直接返回
+                return res.append(path[:])
+            for i in range(startIndex,9-(k-len(path))+2):  #剪枝操作
+                path.append(i)
+                sum += i 
+                self.findallPath(n,k,sum,i+1,path,res)  #注意i+1调整startIndex
+                sum -= i  #回溯
+                path.pop()  #回溯
+```
+
+```python
+import itertools
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        allNumbers=[i for i in range(1,10)]
+        res=[]
+        for item in itertools.combinations(allNumbers,k):
+            if sum(item)==n:
+                res.append(item)
+                
+        return res  
+```
+
+
+
+
+
+### Greedy
+
+#### 45. Jump Game II
+
+Given an array of non-negative integers `nums`, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+
+You can assume that you can always reach the last index.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+```
+
+```python
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        n = len(nums)
+        maxPos = end = step = 0
+        for i in range(n-1):
+            if maxPos >= i:
+                maxPos = max(maxPos, i + nums[i])
+                if i >= end:
+                    end = maxPos
+                    step += 1
+        return step
+```
+
+
+
+### DP
+
+#### 5. Longest Palindromic Substring
+
+Given a string `s`, return *the longest palindromic substring* in `s`.
+
+**Example 1:**
+
+```
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+```
+
+**Example 2:**
+
+```
+Input: s = "cbbd"
+Output: "bb"
+```
+
+**Example 3:**
+
+```
+Input: s = "a"
+Output: "a"
+```
+
+**Example 4:**
+
+```
+Input: s = "ac"
+Output: "a"
+```
+
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        Palindrome = ""
+        for i in range(len(s)):
+            temp1 = self.getlongestPalindrome(s, i, i)
+            if len(temp1) > len(Palindrome):
+                Palindrome = temp1
+            temp2 = self.getlongestPalindrome(s, i, i+1)
+            if len(temp2) > len(Palindrome):
+                Palindrome = temp2
+        return Palindrome
+    
+    def getlongestPalindrome(self, s, l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return s[l+1 : r]
+```
+
+
+
+#### 62. Unique Paths
+
+A robot is located at the top-left corner of a `m x n` grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+How many possible unique paths are there?
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+
+```
+Input: m = 3, n = 7
+Output: 28
+```
+
+
+
+```python
+# math
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        return comb(m+n-2, m-1)
+```
+
+```python
+# DP
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        f = [[1] * n] + [[1] + [0] * (n - 1) for _ in range(m - 1)]
+        print(f)
+        for i in range(1, m):
+            for j in range(1, n):
+                f[i][j] = f[i - 1][j] + f[i][j - 1]
+        return f[m - 1][n - 1]
+```
+
+
+
+
+
+#### 70. Climbing Stairs
+
+You are climbing a staircase. It takes `n` steps to reach the top.
+
+Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?
+
+**Example 1:**
+
+```
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+```
+
+
+
+```python
+def climbStairs(self, n):
+    a,b = 1,0
+    for _ in range(n):
+        a,b = a+b,a
+    return a
+```
+
+```python
+def climbStairs(self, n: int) -> int:
+    dp = [0]*(n+1)
+    dp[0] = 1
+    dp[1] = 2
+    for i in range(2,n):
+        dp[i] = dp[i-1] + dp[i-2]
+    return dp[n-1]
+```
+
+
+
+#### 63. Unique Paths II
+
+A robot is located at the top-left corner of a `m x n` grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+Now consider if some obstacles are added to the grids. How many unique paths would there be?
+
+An obstacle and space is marked as `1` and `0` respectively in the grid.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/04/robot1.jpg)
+
+```
+Input: obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+Output: 2
+Explanation: There is one obstacle in the middle of the 3x3 grid above.
+There are two ways to reach the bottom-right corner:
+1. Right -> Right -> Down -> Down
+2. Down -> Down -> Right -> Right
+```
+
+```python
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+
+        if obstacleGrid[0][0] == 1 or obstacleGrid[m-1][n-1] == 1:
+            return 0
+        
+        obstacleGrid[0][0] = 1
+        
+        for j in range(1, n):
+            obstacleGrid[0][j] = int(obstacleGrid[0][j] == 0 and obstacleGrid[0][j-1] == 1)
+
+        for i in range(1, m):
+            obstacleGrid[i][0] = int(obstacleGrid[i][0] == 0 and obstacleGrid[i-1][0] == 1)
+            
+        for i in range(1, m):
+            for j in range(1, n):
+                if obstacleGrid[i][j] == 0:
+                    obstacleGrid[i][j] =  obstacleGrid[i-1][j] +  obstacleGrid[i][j-1]
+                else:
+                    obstacleGrid[i][j] = 0
+                    
+        return obstacleGrid[m-1][n-1] 
+```
+
+
+
+#### 64. Minimum Path Sum
+
+Given a `m x n` `grid` filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+
+**Note:** You can only move either down or right at any point in time.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/05/minpath.jpg)
+
+```
+Input: grid = [[1,3,1],[1,5,1],[4,2,1]]
+Output: 7
+Explanation: Because the path 1 → 3 → 1 → 1 → 1 minimizes the sum.
+```
+
+```python
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        
+        for j in range(1, n):
+            grid[0][j] = grid[0][j] + grid[0][j-1]
+        
+        for i in range(1, m):
+            grid[i][0] = grid[i][0] + grid[i-1][0]
+            
+        for i in range(1, m):
+            for j in range(1, n):
+                grid[i][j] = grid[i][j] + min(grid[i-1][j], grid[i][j-1])
+                
+        return grid[m-1][n-1]
+```
+
+```python
+class Solution:
+    def minPathSum(self, grid):
+        dp = [float('inf')] * (len(grid[0]) + 1)
+        dp[1] = 0
+        for row in grid:
+            for idx, num in enumerate(row):
+                dp[idx + 1] = min(dp[idx], dp[idx + 1]) + num
+        return dp[-1]
+```
+
+
+
+
+
+
+
+### Array
+
+#### 56. Merge Intervals
+
+Given an array of `intervals` where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return *an array of the non-overlapping intervals that cover all the intervals in the input*.
+
+ 
+
+**Example 1:**
+
+```
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+```
+
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+
+        intervals.sort(key=lambda x: x[0])
+
+        merged = []
+        for interval in intervals:
+            # if the list of merged intervals is empty or if the current
+            # interval does not overlap with the previous, simply append it.
+            if not merged or merged[-1][1] < interval[0]:
+                merged.append(interval)
+            else:
+            # otherwise, there is overlap, so we merge the current and previous
+            # intervals.
+                merged[-1][1] = max(merged[-1][1], interval[1])
+
+        return merged
+```
+
+
+
+#### 57. [Insert Interval](https://leetcode.com/problems/insert-interval)
+
+Given a set of *non-overlapping* intervals, insert a new interval into the intervals (merge if necessary).
+
+You may assume that the intervals were initially sorted according to their start times.
+
+ 
+
+**Example 1:**
+
+```
+Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+Output: [[1,5],[6,9]]
+```
+
+```python
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        left, right = newInterval
+        placed = False
+        ans = list()
+        for li, ri in intervals:
+            if li > right:
+                # 在插入区间的右侧且无交集
+                if not placed:
+                    ans.append([left, right])
+                    placed = True
+                ans.append([li, ri])
+            elif ri < left:
+                # 在插入区间的左侧且无交集
+                ans.append([li, ri])
+            else:
+                # 与插入区间有交集，计算它们的并集
+                left = min(left, li)
+                right = max(right, ri)
+        
+        if not placed:
+            ans.append([left, right])
+        return ans
+```
+
+
+
 
 
 ### Strings
+
+#### 6. ZigZag Conversion
+
+The string `"PAYPALISHIRING"` is written in a zigzag pattern on a given number of rows=3 like this: 
+
+```
+P   A   H   N
+A P L S I I G
+Y   I   R
+```
+
+And then read line by line: `"PAHNAPLSIIGYIR"`
+
+Write the code that will take a string and make this conversion given a number of rows:
+
+```
+string convert(string s, int numRows);
+```
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+```
+
+**Example 2:**
+
+```
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+```
+
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1 or numRows >= len(s):
+            return s
+        
+        zigzag = ['' for x in range(numRows)]
+        
+        row, step = 0, 1
+        
+        for ch in s:
+            zigzag[row] += ch
+            if row == 0: 
+                step = 1
+            elif row == numRows - 1: 
+                step = -1
+            row += step
+        
+        return ''.join(zigzag)
+```
+
+
 
 #### 12. Integer to Roman
 
@@ -2977,77 +3894,212 @@ class Solution:
 
 
 
+### Board
 
+#### 36. Valid Sudoku
 
+Determine if a `9 x 9` Sudoku board is valid. Only the filled cells need to be validated **according to the following rules**:
 
+1. Each row must contain the digits `1-9` without repetition.
+2. Each column must contain the digits `1-9` without repetition.
+3. Each of the nine `3 x 3` sub-boxes of the grid must contain the digits `1-9` without repetition.
 
-### Others
+**Note:**
 
-#### 6. ZigZag Conversion
-
-The string `"PAYPALISHIRING"` is written in a zigzag pattern on a given number of rows=3 like this: 
-
-```
-P   A   H   N
-A P L S I I G
-Y   I   R
-```
-
-And then read line by line: `"PAHNAPLSIIGYIR"`
-
-Write the code that will take a string and make this conversion given a number of rows:
-
-```
-string convert(string s, int numRows);
-```
+- A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+- Only the filled cells need to be validated according to the mentioned rules.
 
  
 
 **Example 1:**
 
-```
-Input: s = "PAYPALISHIRING", numRows = 3
-Output: "PAHNAPLSIIGYIR"
-```
-
-**Example 2:**
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png)
 
 ```
-Input: s = "PAYPALISHIRING", numRows = 4
-Output: "PINALSIGYAHRPI"
-Explanation:
-P     I    N
-A   L S  I G
-Y A   H R
-P     I
+Input: board = 
+[["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: true
 ```
 
 ```python
 class Solution:
-    def convert(self, s: str, numRows: int) -> str:
-        if numRows == 1 or numRows >= len(s):
-            return s
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        # init data
+        rows = [{} for i in range(9)]
+        columns = [{} for i in range(9)]
+        boxes = [{} for i in range(9)]
+
+        # validate a board
+        for i in range(9):
+            for j in range(9):
+                num = board[i][j]
+                if num != '.':
+                    num = int(num)
+                    box_index = (i // 3 ) * 3 + j // 3
+                    
+                    # keep the current cell value
+                    rows[i][num] = rows[i].get(num, 0) + 1
+                    columns[j][num] = columns[j].get(num, 0) + 1
+                    boxes[box_index][num] = boxes[box_index].get(num, 0) + 1
+                    
+                    # check if this value has been already seen before
+                    if rows[i][num] > 1 or columns[j][num] > 1 or boxes[box_index][num] > 1:
+                        return False         
+        return True
+```
+
+
+
+#### 54. Spiral Matrix
+
+Given an `m x n` `matrix`, return *all elements of the* `matrix` *in spiral order*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg)
+
+```
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,3,6,9,8,7,4,5]
+```
+
+```python
+class Solution(object):
+    def spiralOrder(self, matrix):
+        def spiral_coords(r1, c1, r2, c2):
+            for c in range(c1, c2 + 1):
+                yield r1, c
+            for r in range(r1 + 1, r2 + 1):
+                yield r, c2
+            if r1 < r2 and c1 < c2:
+                for c in range(c2 - 1, c1, -1):
+                    yield r2, c
+                for r in range(r2, r1, -1):
+                    yield r, c1
+
+        if not matrix: return []
+        ans = []
+        r1, r2 = 0, len(matrix) - 1
+        c1, c2 = 0, len(matrix[0]) - 1
+        while r1 <= r2 and c1 <= c2:
+            for r, c in spiral_coords(r1, c1, r2, c2):
+                ans.append(matrix[r][c])
+            r1 += 1; r2 -= 1
+            c1 += 1; c2 -= 1
+        return ans
+```
+
+
+
+#### 59. Spiral Matrix II
+
+Given a positive integer `n`, generate an `n x n` `matrix` filled with elements from `1` to `n2` in spiral order.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/spiraln.jpg)
+
+```
+Input: n = 3
+Output: [[1,2,3],[8,9,4],[7,6,5]]
+```
+
+
+
+```python
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        left, right, up, down = 0, n-1, 0, n-1
+        matrix = [ [0]*n for _ in range(n)]
+        num = 1
+        while left<=right and up<=down:
+            # 填充左到右
+            for i in range(left, right+1):
+                matrix[up][i] = num
+                num += 1
+            up += 1
+            # 填充上到下
+            for i in range(up, down+1):
+                matrix[i][right] = num
+                num += 1
+            right -= 1
+            # 填充右到左
+            for i in range(right, left-1, -1):
+                matrix[down][i] = num
+                num += 1
+            down -= 1
+            # 填充下到上
+            for i in range(down, up-1, -1):
+                matrix[i][left] = num
+                num += 1
+            left += 1
+        return matrix
+```
+
+
+
+```python
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        matrix = [[0 for i in range(n)] for j in range(n)]
+        i = 0
+        j = 0
+        direct = 0
+        index = 1
+        while index <= n**2:
+            matrix[i][j] = index
+            index += 1
+            direct = self.move(direct, matrix, i, j, n)
+            if direct == 1:
+                j += 1
+            elif direct == 2:
+                i += 1
+            elif direct == 3:
+                j -= 1
+            else:
+                i -= 1
+            
+        return matrix
+            
+    def move(self, num, matrix, i, j, n):
+        if self.try_move(num, matrix, i, j, n):
+            return num
+        return (num + 1) % 4
         
-        zigzag = ['' for x in range(numRows)]
-        
-        row, step = 0, 1
-        
-        for ch in s:
-            zigzag[row] += ch
-            if row == 0: 
-                step = 1
-            elif row == numRows - 1: 
-                step = -1
-            row += step
-        
-        return ''.join(zigzag)
+    def try_move(self, num, matrix, i, j, n):
+        if num == 0 and i > 0 and matrix[i-1][j] == 0:
+            return True
+        if num == 1 and j < n-1 and matrix[i][j+1] == 0:
+            return True
+        if num == 2 and i < n-1 and matrix[i+1][j] == 0:
+            return True
+        if num == 3 and j > 0 and matrix[i][j-1] == 0:
+            return True
+        return False
+            
 ```
 
 
 
 
 
-
+### Others
 
 #### 7. Reverse Integer
 
@@ -3186,143 +4238,6 @@ def canJump(self, nums: List[int]) -> bool:
         if nums[i] + i > reach: 
             reach = nums[i] + i
     return True
-```
-
-
-
-#### 56. Merge Intervals
-
-Given an array of `intervals` where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return *an array of the non-overlapping intervals that cover all the intervals in the input*.
-
- 
-
-**Example 1:**
-
-```
-Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
-Output: [[1,6],[8,10],[15,18]]
-Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
-```
-
-```python
-class Solution:
-    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-
-        intervals.sort(key=lambda x: x[0])
-
-        merged = []
-        for interval in intervals:
-            # if the list of merged intervals is empty or if the current
-            # interval does not overlap with the previous, simply append it.
-            if not merged or merged[-1][1] < interval[0]:
-                merged.append(interval)
-            else:
-            # otherwise, there is overlap, so we merge the current and previous
-            # intervals.
-                merged[-1][1] = max(merged[-1][1], interval[1])
-
-        return merged
-```
-
-
-
-#### 54. Spiral Matrix
-
-Given an `m x n` `matrix`, return *all elements of the* `matrix` *in spiral order*.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg)
-
-```
-Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
-Output: [1,2,3,6,9,8,7,4,5]
-```
-
-```python
-class Solution(object):
-    def spiralOrder(self, matrix):
-        def spiral_coords(r1, c1, r2, c2):
-            for c in range(c1, c2 + 1):
-                yield r1, c
-            for r in range(r1 + 1, r2 + 1):
-                yield r, c2
-            if r1 < r2 and c1 < c2:
-                for c in range(c2 - 1, c1, -1):
-                    yield r2, c
-                for r in range(r2, r1, -1):
-                    yield r, c1
-
-        if not matrix: return []
-        ans = []
-        r1, r2 = 0, len(matrix) - 1
-        c1, c2 = 0, len(matrix[0]) - 1
-        while r1 <= r2 and c1 <= c2:
-            for r, c in spiral_coords(r1, c1, r2, c2):
-                ans.append(matrix[r][c])
-            r1 += 1; r2 -= 1
-            c1 += 1; c2 -= 1
-        return ans
-```
-
-
-
-#### 59. Spiral Matrix II
-
-Given a positive integer `n`, generate an `n x n` `matrix` filled with elements from `1` to `n2` in spiral order.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2020/11/13/spiraln.jpg)
-
-```
-Input: n = 3
-Output: [[1,2,3],[8,9,4],[7,6,5]]
-```
-
-```python
-class Solution:
-    def generateMatrix(self, n: int) -> List[List[int]]:
-        matrix = [[0 for i in range(n)] for j in range(n)]
-        i = 0
-        j = 0
-        direct = 0
-        index = 1
-        while index <= n**2:
-            matrix[i][j] = index
-            index += 1
-            direct = self.move(direct, matrix, i, j, n)
-            if direct == 1:
-                j += 1
-            elif direct == 2:
-                i += 1
-            elif direct == 3:
-                j -= 1
-            else:
-                i -= 1
-            
-        return matrix
-            
-    def move(self, num, matrix, i, j, n):
-        if self.try_move(num, matrix, i, j, n):
-            return num
-        return (num + 1) % 4
-        
-    def try_move(self, num, matrix, i, j, n):
-        if num == 0 and i > 0 and matrix[i-1][j] == 0:
-            return True
-        if num == 1 and j < n-1 and matrix[i][j+1] == 0:
-            return True
-        if num == 2 and i < n-1 and matrix[i+1][j] == 0:
-            return True
-        if num == 3 and j > 0 and matrix[i][j-1] == 0:
-            return True
-        return False
-            
 ```
 
 
@@ -3795,13 +4710,138 @@ class Solution:
 
 ### After 200
 
-| Problem                | Level | Type          | Comment                |
-| :--------------------- | :---- | ------------- | ---------------------- |
-| 278. First Bad Version | Easy  | Binary Search | Standard binary search |
+| Problem                        | Level  | Type          | Comment                                                      |
+| :----------------------------- | :----- | ------------- | ------------------------------------------------------------ |
+| 278. First Bad Version         | Easy   | Binary Search | Standard binary search                                       |
+| 332. Reconstruct Itinerary     | Medium | DFS           | Tricky DFS: need dict as Iterator; how to sort and prevent loop |
+| 977. Squares of a Sorted Array | Easy   | Two Pointer   |                                                              |
+| 1306. Jump Game III            | Medium | BFS           | Standard BFS                                                 |
 
 
 
 ------
+
+#### 203. Remove Linked List Elements
+
+Given the `head` of a linked list and an integer `val`, remove all the nodes of the linked list that has `Node.val == val`, and return *the new head*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/06/removelinked-list.jpg)
+
+```
+Input: head = [1,2,6,3,4,5,6], val = 6
+Output: [1,2,3,4,5]
+```
+
+```python
+class Solution:
+    def removeElements(self, head, val):
+
+        dummy_head = ListNode(-1, head)
+        
+        curr = dummy_head
+        while curr.next != None:
+            if curr.next.val == val:
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
+                
+        return dummy_head.next
+```
+
+
+
+
+
+#### 240. Search a 2D Matrix II
+
+Write an efficient algorithm that searches for a `target` value in an `m x n` integer `matrix`. The `matrix` has the following properties:
+
+- Integers in each row are sorted in ascending from left to right.
+- Integers in each column are sorted in ascending from top to bottom.
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/24/searchgrid2.jpg)
+
+```
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+Output: true
+```
+
+```python
+# bisect
+class Solution:
+    def binary_search(self, matrix, target, start, vertical):
+        lo = start
+        hi = len(matrix[0])-1 if vertical else len(matrix)-1
+
+        while hi >= lo:
+            mid = (lo + hi)//2
+            if vertical: # searching a column
+                if matrix[start][mid] < target:
+                    lo = mid + 1
+                elif matrix[start][mid] > target:
+                    hi = mid - 1
+                else:
+                    return True
+            else: # searching a row
+                if matrix[mid][start] < target:
+                    lo = mid + 1
+                elif matrix[mid][start] > target:
+                    hi = mid - 1
+                else:
+                    return True
+        
+        return False
+
+    def searchMatrix(self, matrix, target):
+        # an empty matrix obviously does not contain `target`
+        if not matrix:
+            return False
+
+        # iterate over matrix diagonals starting in bottom left.
+        for i in range(min(len(matrix), len(matrix[0]))):
+            vertical_found = self.binary_search(matrix, target, i, True)
+            horizontal_found = self.binary_search(matrix, target, i, False)
+            if vertical_found or horizontal_found:
+                return True
+        
+        return False
+```
+
+```python
+# move from left bottom
+class Solution:
+    def searchMatrix(self, matrix, target):
+        # an empty matrix obviously does not contain `target` (make this check
+        # because we want to cache `width` for efficiency's sake)
+        if len(matrix) == 0 or len(matrix[0]) == 0:
+            return False
+
+        # cache these, as they won't change.
+        height = len(matrix)
+        width = len(matrix[0])
+
+        # start our "pointer" in the bottom-left
+        row = height-1
+        col = 0
+
+        while col < width and row >= 0:
+            if matrix[row][col] > target:
+                row -= 1
+            elif matrix[row][col] < target:
+                col += 1
+            else: # found it
+                return True
+        
+        return False
+```
+
+
 
 
 
@@ -3860,7 +4900,403 @@ class Solution:
 
 
 
+#### 283. Move Zeroes
+
+Given an integer array `nums`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.
+
+**Note** that you must do this in-place without making a copy of the array.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [0,1,0,3,12]
+Output: [1,3,12,0,0]
+```
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        slow = 0
+        fast = 0
+        for fast in range(len(nums)):
+            if nums[fast] == 0:
+                fast += 1
+            else:
+                nums[slow], nums[fast] = nums[fast], nums[slow]
+                slow += 1
+                fast += 1
+```
+
+
+
+
+
+
+
+#### 332. Reconstruct Itinerary
+
+You are given a list of airline `tickets` where `tickets[i] = [fromi, toi]` represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.
+
+All of the tickets belong to a man who departs from `"JFK"`, thus, the itinerary must begin with `"JFK"`. If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string.
+
+- For example, the itinerary `["JFK", "LGA"]` has a smaller lexical order than `["JFK", "LGB"]`.
+
+You may assume all tickets form at least one valid itinerary. You must use all the tickets once and only once.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/14/itinerary1-graph.jpg)
+
+```
+Input: tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
+Output: ["JFK","MUC","LHR","SFO","SJC"]
+```
+
+```python
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        # defaultdic(list) 是为了方便直接append
+        tickets_dict = defaultdict(list)
+        for item in tickets:
+            tickets_dict[item[0]].append(item[1])
+        '''
+        tickets_dict里面的内容是这样的
+         {'JFK': ['SFO', 'ATL'], 'SFO': ['ATL'], 'ATL': ['JFK', 'SFO']})
+        '''
+        path = ["JFK"]
+        def backtracking(start_point):
+            # 终止条件
+            if len(path) == len(tickets) + 1:
+                return True
+            tickets_dict[start_point].sort()
+            for _ in tickets_dict[start_point]:
+                #必须及时删除，避免出现死循环
+                end_point = tickets_dict[start_point].pop(0)
+                path.append(end_point)
+                # 只要找到一个就可以返回了
+                if backtracking(end_point):
+                    return True
+                path.pop()
+                tickets_dict[start_point].append(end_point)
+
+        backtracking("JFK")
+        return path
+```
+
+
+
+#### 367. Valid Perfect Square
+
+Given a **positive** integer *num*, write a function which returns True if *num* is a perfect square else False.
+
+**Follow up:** **Do not** use any built-in library function such as `sqrt`.
+
+ 
+
+**Example 1:**
+
+```
+Input: num = 16
+Output: true
+```
+
+```python
+class Solution:
+    def isPerfectSquare(self, num: int) -> bool:
+        start = 1
+        end = num
+        while start <= end:
+            mid = start + (end - start) // 2
+            if mid*mid == num:
+                return True
+            if mid*mid < num:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return False
+```
+
+
+
+
+
+#### 491. Increasing Subsequences
+
+Given an integer array `nums`, return all the different possible increasing subsequences of the given array with **at least two elements**. You may return the answer in **any order**.
+
+The given array may contain duplicates, and two equal integers should also be considered a special case of increasing sequence.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [4,6,7,7]
+Output: [[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
+```
+
+```python
+class Solution:
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        def dfs(nums, index, path):
+            if len(path) >= 2:
+                res.append(path[:])
+                
+            used = []
+            for i in range(index, n):
+                if nums[i] in used:
+                    continue
+                if not path or nums[i] >= path[-1]:
+                    used.append(nums[i])
+                    dfs(nums, i+1, path + [nums[i]])
+                    
+        dfs(nums, 0, [])
+        
+        return res
+```
+
+
+
+#### 977. Squares of a Sorted Array
+
+Given an integer array `nums` sorted in **non-decreasing** order, return *an array of **the squares of each number** sorted in non-decreasing order*.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+Explanation: After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100].
+```
+
+```python
+def sortedSquares(self, A):
+    answer = collections.deque()
+    l, r = 0, len(A) - 1
+    while l <= r:
+        left, right = abs(A[l]), abs(A[r])
+        if left > right:
+            answer.appendleft(left * left)
+            l += 1
+        else:
+            answer.appendleft(right * right)
+            r -= 1
+    return list(answer)
+```
+
+
+
+
+
+#### 704. Binary Search
+
+Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.
+
+You must write an algorithm with `O(log n)` runtime complexity.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+Explanation: 9 exists in nums and its index is 4
+```
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        
+        while left <= right:
+            middle = (left + right) // 2
+
+            if nums[middle] < target:
+                left = middle + 1
+            elif nums[middle] > target:
+                right = middle - 1
+            else:
+                return middle
+        return -1
+```
+
+
+
+
+
+#### 1888. Minimum Number of Flips to Make the Binary String Alternating
+
+You are given a binary string `s`. You are allowed to perform two types of operations on the string in any sequence:
+
+- **Type-1: Remove** the character at the start of the string `s` and **append** it to the end of the string.
+- **Type-2: Pick** any character in `s` and **flip** its value, i.e., if its value is `'0'` it becomes `'1'` and vice-versa.
+
+Return *the **minimum** number of **type-2** operations you need to perform* *such that* `s` *becomes **alternating**.*
+
+The string is called **alternating** if no two adjacent characters are equal.
+
+- For example, the strings `"010"` and `"1010"` are alternating, while the string `"0100"` is not.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "111000"
+Output: 2
+Explanation: Use the first operation two times to make s = "100011".
+Then, use the second operation on the third and sixth elements to make s = "101010".
+```
+
+```python
+# sliding window
+class Solution:
+    def minFlips(self, s: str) -> int:
+        n = len(s)
+        s = s + s
+        alt1, alt2 = "", ""
+        for i in range(len(s)):
+            alt1 += "0" if i % 2 else "1"
+            alt2 += "1" if i % 2 else "0"
+            
+        res = len(s)
+        diff1, diff2 = 0, 0
+        l = 0
+        for r in range(len(s)):
+            if s[r] != alt1[r]:
+                diff1 += 1
+            if s[r] != alt2[r]:
+                diff2 += 1
+                
+            if (r - l + 1) > n:
+                if s[l] != alt1[l]:
+                    diff1 -= 1
+                if s[l] != alt2[l]:
+                    diff2 -= 1
+                l += 1
+                
+            if (r - l + 1) == n:
+                res = min(res, diff1, diff2)
+                
+        return res
+```
+
+
+
+
+
+#### 1306. [Jump Game III](https://leetcode.com/problems/jump-game-iii) 
+
+Given an array of non-negative integers `arr`, you are initially positioned at `start` index of the array. When you are at index `i`, you can jump to `i + arr[i]` or `i - arr[i]`, check if you can reach to **any** index with value 0.
+
+Notice that you can not jump outside of the array at any time.
+
+**Example 1:**
+
+```
+Input: arr = [4,2,3,0,3,1,2], start = 5
+Output: true
+Explanation: 
+All possible ways to reach at index 3 with value 0 are: 
+index 5 -> index 4 -> index 1 -> index 3 
+index 5 -> index 6 -> index 4 -> index 1 -> index 3 
+```
+
+```python
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        if arr[start] == 0:
+            return True
+        
+        n = len(arr)
+        used = set()
+        q = collections.deque([start])
+        
+        while len(q) > 0:
+            u = q.popleft()
+            for v in [u + arr[u], u - arr[u]]:
+                if 0 <= v < n and v not in used:
+                    if arr[v] == 0:
+                        return True
+                    q.append(v)
+                    used.add(v)
+                    
+        return False
+```
+
+
+
+#### 1898. Maximum Number of Removable Characters
+
+You are given two strings `s` and `p` where `p` is a **subsequence** of `s`. You are also given a **distinct 0-indexed** integer array `removable` containing a subset of indices of `s` (`s` is also **0-indexed**).
+
+You want to choose an integer `k` (`0 <= k <= removable.length`) such that, after removing `k` characters from `s` using the **first** `k` indices in `removable`, `p` is still a **subsequence** of `s`. More formally, you will mark the character at `s[removable[i]]` for each `0 <= i < k`, then remove all marked characters and check if `p` is still a subsequence.
+
+Return *the **maximum*** `k` *you can choose such that* `p` *is still a **subsequence** of* `s` *after the removals*.
+
+A **subsequence** of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "abcacb", p = "ab", removable = [3,1,0]
+Output: 2
+Explanation: After removing the characters at indices 3 and 1, "abcacb" becomes "accb".
+"ab" is a subsequence of "accb".
+If we remove the characters at indices 3, 1, and 0, "abcacb" becomes "ccb", and "ab" is no longer a subsequence.
+Hence, the maximum k is 2.
+```
+
+```python
+class Solution:
+    def maximumRemovals(self, s: str, p: str, removable: List[int]) -> int:
+
+        def subSeq(m):
+            i = j = 0
+            remove = set(removable[:m+1])
+            while i < len(s) and j < len(p):
+                if i in remove:
+                    i += 1
+                    continue
+                if s[i] == p[j]:
+                    i += 1
+                    j += 1
+                else:
+                    i += 1
+            return j == len(p)
+
+        left, right = 0, len(removable) - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if subSeq(mid):
+                left = mid + 1
+            else:
+                right = mid - 1
+        return left
+```
+
+
+
+
+
 #### References
+
+代码随想录 https://github.com/youngyangyang04/leetcode-master
 
 https://runestone.academy/runestone/books/published/pythonds/index.html
 
