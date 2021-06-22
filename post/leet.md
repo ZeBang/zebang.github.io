@@ -2645,7 +2645,7 @@ class Solution:
 
 
 
-### Array
+### Intervals
 
 #### 56. Merge Intervals
 
@@ -2683,7 +2683,7 @@ class Solution:
 
 
 
-#### 57. [Insert Interval](https://leetcode.com/problems/insert-interval)
+#### 57. Insert Interval
 
 Given a set of *non-overlapping* intervals, insert a new interval into the intervals (merge if necessary).
 
@@ -6227,6 +6227,35 @@ class Solution:
             else:
                 return middle
         return -1
+```
+
+
+
+#### 738. Monotone Increasing Digits
+
+An integer has **monotone increasing digits** if and only if each pair of adjacent digits `x` and `y` satisfy `x <= y`.
+
+Given an integer `n`, return *the largest number that is less than or equal to* `n` *with **monotone increasing digits***.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 10
+Output: 9
+```
+
+```python
+class Solution:
+    def monotoneIncreasingDigits(self, n: int) -> int:
+        a = list(str(n))
+        for i in range(len(a)-1,0,-1):
+            if int(a[i]) < int(a[i-1]):
+                a[i-1] = str(int(a[i-1]) - 1)
+                a[i:] = '9' * (len(a) - i)  #python不需要设置flag值，直接按长度给9就好了
+        return int("".join(a)) 
+
 ```
 
 
