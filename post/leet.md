@@ -6,6 +6,24 @@
 
 
 
+### Template
+
+Sort List 148
+
+Merge List 143
+
+Vec List 143
+
+Reverse List 206
+
+Circle List 142
+
+Index List 19
+
+Monotone Queue 239
+
+
+
 ### Binary Search
 
 Standard binary search: 704 - 35 - 34 - 69 - 367
@@ -357,6 +375,51 @@ class Solution(object):
 
 
 
+#### 81. Search in Rotated Sorted Array II
+
+There is an integer array `nums` sorted in non-decreasing order (not necessarily with **distinct** values).
+
+Before being passed to your function, `nums` is **rotated** at an unknown pivot index `k` (`0 <= k < nums.length`) such that the resulting array is `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]` (**0-indexed**). For example, `[0,1,2,4,4,4,5,6,6,7]` might be rotated at pivot index `5` and become `[4,5,6,6,7,0,1,2,4,4]`.
+
+Given the array `nums` **after** the rotation and an integer `target`, return `true` *if* `target` *is in* `nums`*, or* `false` *if it is not in* `nums`*.*
+
+You must decrease the overall operation steps as much as possible.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+```
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start, end = 0, len(nums) - 1
+        while start <= end:
+            mid = start + (end - start) // 2
+            if nums[mid] == target:
+                return True
+            if nums[start] == nums[mid] and nums[mid] == nums[end]: # only exception: nums[start] == nums[mid] == nums[end]
+                start += 1
+                end -= 1
+            elif nums[mid] >= nums[start]:
+                if target >= nums[start] and target < nums[mid]:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            else:
+                if target <= nums[end] and target > nums[mid]:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+        return False
+```
+
+
+
 
 
 #### 110. Balanced Binary Tree
@@ -569,7 +632,7 @@ def threeSum(nums):
     for first in range(n - 2): # 取 n -2 防止指针溢出
         if nums[first] > 0:
             return ans
-        if first > 0 and nums[first] == nums[first - 1]:
+        if first > 0 and nums[first] == nums[first - 1]: 
             continue
         second = first + 1
         third = n - 1
@@ -662,7 +725,7 @@ def fourSum(nums, target):
             return twoSum(nums, target)
         for i in range(len(nums)):
             if i == 0 or nums[i - 1] != nums[i]: # no duplicate nums[i]
-                 for set in kSum(nums[i + 1:], target - nums[i], k - 1):
+                 for ans in kSum(nums[i + 1:], target - nums[i], k - 1):
                     res.append([nums[i]] + set)
         return res
 
@@ -715,7 +778,47 @@ def fourSum(nums, target):
     return kSum(nums, target, 4)
 ```
 
+```python
+# Hash Map
+class Solution(object):
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        # use a dict to store value:showtimes
+        hashmap = dict()
+        for n in nums:
+            if n in hashmap:
+                hashmap[n] += 1
+            else: 
+                hashmap[n] = 1
+        
+        # good thing about using python is you can use set to drop duplicates.
+        ans = set()
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                for k in range(j + 1, len(nums)):
+                    val = target - (nums[i] + nums[j] + nums[k])
+                    if val in hashmap:
+                        # make sure no duplicates.
+                        count = (nums[i] == val) + (nums[j] == val) + (nums[k] == val)
+                        if hashmap[val] > count:
+                            ans.add(tuple(sorted([nums[i], nums[j], nums[k], val])))
+                    else:
+                        continue
+        return ans
+```
+
+
+
+
+
+
+
 #### 26. Remove Duplicates from Sorted Array
+
 Given a sorted array *nums*, remove the duplicates [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) such that each element appears only *once* and returns the new length.
 
 Do not allocate extra space for another array, you must do this by **modifying the input array [in-place](https://en.wikipedia.org/wiki/In-place_algorithm)** with O(1) extra memory.
@@ -790,7 +893,7 @@ Explanation: Your function should return k = 2, with the first two elements of n
 It does not matter what you leave beyond the returned k (hence they are underscores).
 ```
 
-```python`
+```python
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
         index = 1
@@ -2019,14 +2122,159 @@ Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 st
 class Solution:
     def jump(self, nums: List[int]) -> int:
         n = len(nums)
-        maxPos = end = step = 0
+        maxPos = end = step = 0 # end表示候选集边界，是在候选集里选最远可达位置
+        # 候选集可以理解为，我这一步可以跳到的位置集合，但具体跳到哪一个，取决于它们各自的最远可达maxPos
         for i in range(n-1):
-            if maxPos >= i:
-                maxPos = max(maxPos, i + nums[i])
-                if i >= end:
-                    end = maxPos
+            if maxPos >= i:  # 所在位置未出最远可达 
+                maxPos = max(maxPos, i + nums[i])  # 更新最远可达
+                if i >= end:  # 所在位置超出候选集边界，这时候必须跳动，跳动到拥有最远maxPos的位置
+                    end = maxPos # 更新候选集边界
                     step += 1
         return step
+```
+
+
+
+#### 53. Maximum Subarray
+
+Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return *its sum*.
+
+**Example 1:**
+
+```
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+```
+
+```python
+def maxSubArray(self, nums: List[int]) -> int:
+    for i in range(0, len(nums)-1):
+        nums[i+1] += max(0, nums[i])
+    return max(nums)
+```
+
+```python
+def maxSubArray(self, nums: List[int]) -> int:
+    if max(nums) < 0:
+        return max(nums)
+
+    local_max, global_max = 0, 0
+    for num in nums:
+        local_max = max(0, local_max + num)
+        global_max = max(global_max, local_max)
+            
+    return global_max
+```
+
+
+
+#### 55. Jump Game
+
+Given an array of non-negative integers `nums`, you are initially positioned at the **first index** of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Determine if you are able to reach the last index.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+```
+
+```python
+def canJump(self, nums: List[int]) -> bool:
+    reach = 0
+    for i in range(len(nums)):
+        if i > reach:
+            return False
+        if nums[i] + i > reach: 
+            reach = nums[i] + i
+    return True
+```
+
+
+
+#### 134. Gas Station
+
+There are `n` gas stations along a circular route, where the amount of gas at the `ith` station is `gas[i]`.
+
+You have a car with an unlimited gas tank and it costs `cost[i]` of gas to travel from the `ith` station to its next `(i + 1)th` station. You begin the journey with an empty tank at one of the gas stations.
+
+Given two integer arrays `gas` and `cost`, return *the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return* `-1`. If there exists a solution, it is **guaranteed** to be **unique**
+
+ 
+
+**Example 1:**
+
+```
+Input: gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+Output: 3
+Explanation:
+Start at station 3 (index 3) and fill up with 4 unit of gas. Your tank = 0 + 4 = 4
+Travel to station 4. Your tank = 4 - 1 + 5 = 8
+Travel to station 0. Your tank = 8 - 2 + 1 = 7
+Travel to station 1. Your tank = 7 - 3 + 2 = 6
+Travel to station 2. Your tank = 6 - 4 + 3 = 5
+Travel to station 3. The cost is 5. Your gas is just enough to travel back to station 3.
+Therefore, return 3 as the starting index.
+```
+
+```python
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        start = 0
+        curSum = 0
+        totalSum = 0
+        for i in range(len(gas)):
+            curSum += gas[i] - cost[i]
+            totalSum += gas[i] - cost[i]
+            if curSum < 0:
+                curSum = 0
+                start = i + 1
+        if totalSum < 0: return -1
+        return start
+```
+
+
+
+#### 135. Candy
+
+There are `n` children standing in a line. Each child is assigned a rating value given in the integer array `ratings`.
+
+You are giving candies to these children subjected to the following requirements:
+
+- Each child must have at least one candy.
+- Children with a higher rating get more candies than their neighbors.
+
+Return *the minimum number of candies you need to have to distribute the candies to the children*.
+
+ 
+
+**Example 1:**
+
+```
+Input: ratings = [1,0,2]
+Output: 5
+Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+```
+
+```python
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        candyVec = [1] * len(ratings)
+        for i in range(1, len(ratings)):
+            if ratings[i] > ratings[i - 1]:
+                candyVec[i] = candyVec[i - 1] + 1
+        for j in range(len(ratings) - 2, -1, -1):
+            if ratings[j] > ratings[j + 1]:
+                candyVec[j] = max(candyVec[j], candyVec[j + 1] + 1)
+        return sum(candyVec)
 ```
 
 
@@ -2273,6 +2521,125 @@ class Solution:
 ```
 
 
+
+#### 20. Valid Parentheses
+
+Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
+
+An input string is valid if:
+
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "()"
+Output: true
+```
+
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []  # 保存还未匹配的左括号
+        mapping = {")": "(", "]": "[", "}": "{"}
+        for i in s:
+            if i in "([{":  # 当前是左括号，则入栈
+                stack.append(i)
+            elif stack and stack[-1] == mapping[i]:  # 当前是配对的右括号则出栈
+                stack.pop()
+            else:  # 不是匹配的右括号或者没有左括号与之匹配，则返回false
+                return False
+        return stack == []  # 最后必须正好把左括号匹配完
+```
+
+
+
+### Stack and Queue
+
+#### 239. Sliding Window Maximum
+
+You are given an array of integers `nums`, there is a sliding window of size `k` which is moving from the very left of the array to the very right. You can only see the `k` numbers in the window. Each time the sliding window moves right by one position.
+
+Return *the max sliding window*.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,3,-1,-3,5,3,6,7], k = 3
+Output: [3,3,5,5,6,7]
+Explanation: 
+Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+```
+
+```python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        n = len(nums)
+        q = collections.deque()
+        for i in range(k):
+            while q and nums[i] >= nums[q[-1]]:
+                q.pop()
+            q.append(i)
+
+        ans = [nums[q[0]]]
+        for i in range(k, n):
+            while q and nums[i] >= nums[q[-1]]:
+                q.pop()
+            q.append(i)
+            while q[0] <= i - k:
+                q.popleft()
+            ans.append(nums[q[0]])
+        
+        return ans
+```
+
+```python
+class MyQueue: #单调队列（从大到小
+    def __init__(self):
+        self.queue = [] #使用list来实现单调队列
+    
+    #每次弹出的时候，比较当前要弹出的数值是否等于队列出口元素的数值，如果相等则弹出。
+    #同时pop之前判断队列当前是否为空。
+    def pop(self, value):
+        if self.queue and value == self.queue[0]:
+            self.queue.pop(0)#list.pop()时间复杂度为O(n),这里可以使用collections.deque()
+            
+    #如果push的数值大于入口元素的数值，那么就将队列后端的数值弹出，直到push的数值小于等于队列入口元素的数值为止。
+    #这样就保持了队列里的数值是单调从大到小的了。
+    def push(self, value):
+        while self.queue and value > self.queue[-1]:
+            self.queue.pop()
+        self.queue.append(value)
+        
+    #查询当前队列里的最大值 直接返回队列前端也就是front就可以了。
+    def front(self):
+        return self.queue[0]
+    
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        que = MyQueue()
+        result = []
+        for i in range(k): #先将前k的元素放进队列
+            que.push(nums[i])
+        result.append(que.front()) #result 记录前k的元素的最大值
+        for i in range(k, len(nums)):
+            que.pop(nums[i - k]) #滑动窗口移除最前面元素
+            que.push(nums[i]) #滑动窗口前加入最后面的元素
+            result.append(que.front()) #记录对应的最大值
+        return result
+```
 
 
 
@@ -2644,6 +3011,37 @@ class Solution:
         return haystack.find(needle)
 ```
 
+```python
+# KMP
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        a = len(needle)
+        b = len(haystack)
+        if a==0:
+            return 0
+        next=self.getnext(needle)
+        p = 0
+        for j in range(b):
+            while p > 0 and haystack[j] != needle[p]:
+                p = next[p-1]
+            if haystack[j] == needle[p]:
+                p += 1
+            if p == a:
+                return j - a + 1
+        return -1
+
+    def getnext(self, s):
+        next = [0] * len(s)
+        j = 0
+        for i in range(1, len(s)):
+            while (j > 0 and s[i] != s[j]):
+                j = next[j-1]
+            if s[i] == s[j]:
+                j += 1
+            next[i] = j
+        return next
+```
+
 
 
 
@@ -2866,6 +3264,30 @@ class Solution:
             
         return True
 ```
+
+
+
+#### 150. Evaluate Reverse Polish Notation
+
+Evaluate the value of an arithmetic expression in [Reverse Polish Notation](http://en.wikipedia.org/wiki/Reverse_Polish_notation).
+
+Valid operators are `+`, `-`, `*`, and `/`. Each operand may be an integer or another expression.
+
+```python
+def evalRPN(tokens) -> int:
+    stack = list()
+    for i in range(len(tokens)):
+        if tokens[i] not in ["+", "-", "*", "/"]:
+            stack.append(tokens[i])
+        else:
+            tmp1 = stack.pop()
+            tmp2 = stack.pop()
+            res = eval(tmp2+tokens[i]+tmp1)
+            stack.append(str(int(res)))
+    return stack[-1]
+```
+
+
 
 
 
@@ -3172,10 +3594,10 @@ class Solution:
         while temp.next and temp.next.next:
             node1 = temp.next
             node2 = temp.next.next
-            temp.next = node2
-            node1.next = node2.next
-            node2.next = node1
-            temp = node1
+            temp.next = node2          # step 1
+            node1.next = node2.next    # step 2
+            node2.next = node1         # step 3
+            temp = node1               # update starting point
         return dummyHead.next
 ```
 
@@ -3518,19 +3940,6 @@ class Solution:
 ```python
 # 方法二：快慢指针
 class Solution:
-    def hasCycle(self, head: ListNode) -> bool:
-        if not head or not head.next:
-            return False
-        slow, fast = head, head.next
-        
-        while slow != fast:
-            if not fast or not fast.next:
-                return False
-            slow = slow.next
-            fast = fast.next.next
-        return True
-    
- class Solution:
     def hasCycle(self, head: ListNode) -> bool:
         fast = slow = head
         while fast and fast.next:
@@ -3894,6 +4303,45 @@ class Solution:
 
 
 
+#### 206. Reverse Linked List
+
+Given the `head` of a singly linked list, reverse the list, and return *the reversed list*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+
+```
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        prev = None
+        curr = head
+        while curr:
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+        return prev
+```
+
+
+
+
+
+
+
 ### Board
 
 #### 36. Valid Sudoku
@@ -4190,55 +4638,6 @@ class Solution:
 ```
 
 
-
-#### 53. Maximum Subarray
-
-Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return *its sum*.
-
-**Example 1:**
-
-```
-Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
-Output: 6
-Explanation: [4,-1,2,1] has the largest sum = 6.
-```
-
-```python
-def maxSubArray(self, nums: List[int]) -> int:
-    for i in range(0, len(nums)-1):
-        nums[i+1] += max(0, nums[i])
-    return max(nums)
-```
-
-```python
-def maxSubArray(self, nums: List[int]) -> int:
-    if max(nums) < 0:
-        return max(nums)
-
-    local_max, global_max = 0, 0
-    for num in nums:
-        local_max = max(0, local_max + num)
-        global_max = max(global_max, local_max)
-            
-    return global_max
-```
-
-
-
-#### 55. Jump Game
-
-Algorithm: Greedy. 
-
-```python
-def canJump(self, nums: List[int]) -> bool:
-    reach = 0
-    for i in range(len(nums)):
-        if i > reach:
-            return False
-        if nums[i] + i > reach: 
-            reach = nums[i] + i
-    return True
-```
 
 
 
@@ -4537,6 +4936,65 @@ def maxProfit(self, prices: List[int]) -> int:
 
 
 
+#### 128. Longest Consecutive Sequence
+
+Given an unsorted array of integers `nums`, return *the length of the longest consecutive elements sequence.*
+
+You must write an algorithm that runs in `O(n)` time.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+```
+
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        hash_map = set(nums)
+        trueLen = 0
+        for num in nums:
+            if num - 1 not in hash_map:
+                currNum = num
+                tempLen = 1
+                
+                while currNum + 1 in hash_map:
+                    currNum += 1
+                    tempLen += 1
+                
+                trueLen = max(trueLen, tempLen)
+                
+        return trueLen
+```
+
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        if len(nums) <= 1:
+            return len(nums)
+        
+        nums.sort()
+        ans = temp = 1
+        for i in range(1, len(nums)):
+            if nums[i] == nums[i-1]:
+                continue
+            elif nums[i] == nums[i-1] + 1:
+                temp += 1
+            else:
+                temp = 1
+            ans = max(ans, temp)
+            
+        return ans
+```
+
+
+
+
+
 #### 136*. Single Number
 
 Given a **non-empty** array of integers `nums`, every element appears *twice* except for one. Find that single one.
@@ -4710,16 +5168,92 @@ class Solution:
 
 ### After 200
 
-| Problem                        | Level  | Type          | Comment                                                      |
-| :----------------------------- | :----- | ------------- | ------------------------------------------------------------ |
-| 278. First Bad Version         | Easy   | Binary Search | Standard binary search                                       |
-| 332. Reconstruct Itinerary     | Medium | DFS           | Tricky DFS: need dict as Iterator; how to sort and prevent loop |
-| 977. Squares of a Sorted Array | Easy   | Two Pointer   |                                                              |
-| 1306. Jump Game III            | Medium | BFS           | Standard BFS                                                 |
+| Problem                                     | Level  | Type          | Comment                                                      |
+| :------------------------------------------ | :----- | ------------- | ------------------------------------------------------------ |
+| 202. Happy Numbers                          | Easy   | Dict          | Tricky Dict; Squares by digits                               |
+| 203. Remove Linked List Elements            | Easy   | List          |                                                              |
+| 242. Valid Anagram                          | Easy   | Dict          | Standard Dict                                                |
+| 278. First Bad Version                      | Easy   | Binary Search | Standard binary search                                       |
+| 332. Reconstruct Itinerary                  | Medium | DFS           | Tricky DFS: need dict as Iterator; how to sort and prevent loop |
+| 349. Intersection of Two Arrays             | Easy   | Dict          |                                                              |
+| 367. Valid Perfect Square                   | Easy   | Binary Search | Standard BS                                                  |
+| 454. 4Sum II                                | Medium | Dict          | Tricky Dict                                                  |
+| 459*. Repeated Substring Pattern            | Easy   | String        | Tricky string problem                                        |
+| 491. Increasing Subsequences                | Medium | DFS           | use "used" to same level Pruning                             |
+| 977. Squares of a Sorted Array              | Easy   | Two Pointer   |                                                              |
+| 1047. Remove All Adjacent Duplicates        | Easy   | Stack         | Standard Stack; same as 20                                   |
+| 1306. Jump Game III                         | Medium | BFS           | Standard BFS                                                 |
+| 1897. Redistribute Characters               | Medium | Dict          | Standard Dict                                                |
+| 1898. Maximum Number of Removable           | Medium | Binary Search | subSeq func; hard to realize should use Binary Search        |
+| 1899. Merge Triplets to Form Target Triplet | Medium | Array         | Tricky array problem                                         |
 
 
 
 ------
+
+#### 202. Happy Number
+
+Write an algorithm to determine if a number `n` is happy.
+
+A **happy number** is a number defined by the following process:
+
+- Starting with any positive integer, replace the number by the sum of the squares of its digits.
+- Repeat the process until the number equals 1 (where it will stay), or it **loops endlessly in a cycle** which does not include 1.
+- Those numbers for which this process **ends in 1** are happy.
+
+Return `true` *if* `n` *is a happy number, and* `false` *if not*.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 19
+Output: true
+Explanation:
+12 + 92 = 82
+82 + 22 = 68
+62 + 82 = 100
+12 + 02 + 02 = 1
+```
+
+```python
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        seen = set()
+        
+        while n != 1:
+            n = sum([int(x)**2 for x in str(n)])
+            if n in seen:
+                return False
+            else:
+                seen.add(n)
+        return True
+```
+
+```python
+# 按位求平方和的其他办法
+    def getSum(n):
+        sum_ = 0
+        while n > 0:
+            sum_ += (n%10) * (n%10)
+            n //= 10
+        return sum_
+    
+    def get_next(n):
+        sum_ = 0
+        while n > 0:
+            n, digit = divmod(n, 10)
+            sum_ += digit ** 2
+        return sum_
+
+```
+
+
+
+
+
+
 
 #### 203. Remove Linked List Elements
 
@@ -4750,6 +5284,105 @@ class Solution:
                 curr = curr.next
                 
         return dummy_head.next
+```
+
+
+
+#### 225. Implement Stack using Queues
+
+Implement a last in first out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal queue (`push`, `top`, `pop`, and `empty`).
+
+```python
+class MyStack:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.queue = collections.deque()
+
+
+    def push(self, x: int) -> None:
+        """
+        Push element x onto stack.
+        """
+        n = len(self.queue)
+        self.queue.append(x)
+        for _ in range(n):
+            self.queue.append(self.queue.popleft())
+
+
+    def pop(self) -> int:
+        """
+        Removes the element on top of the stack and returns that element.
+        """
+        return self.queue.popleft()
+
+
+    def top(self) -> int:
+        """
+        Get the top element.
+        """
+        return self.queue[0]
+
+
+    def empty(self) -> bool:
+        """
+        Returns whether the stack is empty.
+        """
+        return not self.queue
+```
+
+
+
+#### 232. Implement Queue using Stacks
+
+Implement a first in first out (FIFO) queue using only two stacks. The implemented queue should support all the functions of a normal queue (`push`, `peek`, `pop`, and `empty`).
+
+```python
+# 使用两个栈实现先进先出的队列
+class MyQueue:
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.stack1 = list()  # 输入栈
+        self.stack2 = list()  # 输出栈
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        # self.stack1用于接受元素
+        self.stack1.append(x)
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        # self.stack2用于弹出元素，如果self.stack2为[],则将self.stack1中元素全部弹出给self.stack2
+        if self.stack2 == []:
+            while self.stack1:
+                tmp = self.stack1.pop()
+                self.stack2.append(tmp)
+        return self.stack2.pop()
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        if self.stack2 == []:
+            while self.stack1:
+                tmp = self.stack1.pop()
+                self.stack2.append(tmp)
+        return self.stack2[-1]
+
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        return self.stack1 == [] and self.stack2 == []
+
 ```
 
 
@@ -4840,6 +5473,37 @@ class Solution:
         
         return False
 ```
+
+
+
+#### 242. Valid Anagram
+
+Given two strings `s` and `t`, return `true` *if* `t` *is an anagram of* `s`*, and* `false` *otherwise*.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "anagram", t = "nagaram"
+Output: true
+```
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        Dict = defaultdict(int)
+        for i in s:
+            Dict[i] += 1
+        for i in t:
+            Dict[i] -= 1
+        for i in Dict.values():
+            if i != 0:
+                return False
+        return True
+```
+
+
 
 
 
@@ -4992,6 +5656,73 @@ class Solution:
 
 
 
+#### 347*. Top K Frequent Elements
+
+Given an integer array `nums` and an integer `k`, return *the* `k` *most frequent elements*. You may return the answer in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+```
+
+```python
+from collections import Counter
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]: 
+        # O(1) time 
+        if k == len(nums):
+            return nums
+        
+        # 1. build hash map : character and how often it appears
+        # O(N) time
+        count = Counter(nums)   
+        # 2-3. build heap of top k frequent elements and
+        # convert it into an output array
+        # O(N log k) time
+        return heapq.nlargest(k, count.keys(), key=count.get)
+      # return sorted(count, key=count.get, reverse=True)[:k]
+```
+
+```python
+#时间复杂度：O(nlogk)
+#空间复杂度：O(n)
+import heapq
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        #要统计元素出现频率
+        map_ = {} #nums[i]:对应出现的次数
+        for i in range(len(nums)):
+            map_[nums[i]] = map_.get(nums[i], 0) + 1
+        
+        #对频率排序
+        #定义一个小顶堆，大小为k
+        pri_que = [] #小顶堆
+        
+        #用固定大小为k的小顶堆，扫面所有频率的数值
+        for key, freq in map_.items():
+            heapq.heappush(pri_que, (freq, key))
+            if len(pri_que) > k: #如果堆的大小大于了K，则队列弹出，保证堆的大小一直为k
+                heapq.heappop(pri_que)
+        
+        #找出前K个高频元素，因为小顶堆先弹出的是最小的，所以倒叙来输出到数组
+        result = [0] * k
+        for i in range(k-1, -1, -1):
+            result[i] = heapq.heappop(pri_que)[1]
+        return result
+```
+
+
+
+
+
+#### 349. Intersection of Two Arrays
+
+
+
 #### 367. Valid Perfect Square
 
 Given a **positive** integer *num*, write a function which returns True if *num* is a perfect square else False.
@@ -5022,6 +5753,357 @@ class Solution:
                 end = mid - 1
         return False
 ```
+
+
+
+#### 376. Wiggle Subsequence
+
+A **wiggle sequence** is a sequence where the differences between successive numbers strictly alternate between positive and negative. The first difference (if one exists) may be either positive or negative. A sequence with one element and a sequence with two non-equal elements are trivially wiggle sequences.
+
+- For example, `[1, 7, 4, 9, 2, 5]` is a **wiggle sequence** because the differences `(6, -3, 5, -7, 3)` alternate between positive and negative.
+- In contrast, `[1, 4, 7, 2, 5]` and `[1, 7, 4, 5, 5]` are not wiggle sequences. The first is not because its first two differences are positive, and the second is not because its last difference is zero.
+
+A **subsequence** is obtained by deleting some elements (possibly zero) from the original sequence, leaving the remaining elements in their original order.
+
+Given an integer array `nums`, return *the length of the longest **wiggle subsequence** of* `nums`.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,7,4,9,2,5]
+Output: 6
+Explanation: The entire sequence is a wiggle sequence with differences (6, -3, 5, -7, 3).
+```
+
+```python
+class Solution:
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        preC,curC,res = 0,0,1  #题目里nums长度大于等于1，当长度为1时，其实到不了for循环里去，所以不用考虑nums长度
+        for i in range(len(nums) - 1):
+            curC = nums[i + 1] - nums[i]
+            if curC * preC <= 0 and curC !=0:  #差值为0时，不算摆动
+                res += 1
+                preC = curC  #如果当前差值和上一个差值为一正一负时，才需要用当前差值替代上一个差值
+        return res
+```
+
+
+
+
+
+
+
+#### 383. Ransom Note
+
+Given two stings `ransomNote` and `magazine`, return `true` if `ransomNote` can be constructed from `magazine` and `false` otherwise.
+
+Each letter in `magazine` can only be used once in `ransomNote`.
+
+ 
+
+**Example 1:**
+
+```
+Input: ransomNote = "a", magazine = "b"
+Output: false
+```
+
+```python
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        x=Counter(ransomNote)
+        y=Counter(magazine)
+        for i,v in x.items():
+            if(x[i]<=y[i]):
+                continue
+            else:
+                return False
+        return True
+```
+
+
+
+#### 406. Queue Reconstruction by Height
+
+You are given an array of people, `people`, which are the attributes of some people in a queue (not necessarily in order). Each `people[i] = [hi, ki]` represents the `ith` person of height `hi` with **exactly** `ki` other people in front who have a height greater than or equal to `hi`.
+
+Reconstruct and return *the queue that is represented by the input array* `people`. The returned queue should be formatted as an array `queue`, where `queue[j] = [hj, kj]` is the attributes of the `jth` person in the queue (`queue[0]` is the person at the front of the queue).
+
+ 
+
+**Example 1:**
+
+```
+Input: people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
+Output: [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]
+Explanation:
+Person 0 has height 5 with no other people taller or the same height in front.
+Person 1 has height 7 with no other people taller or the same height in front.
+Person 2 has height 5 with two persons taller or the same height in front, which is person 0 and 1.
+Person 3 has height 6 with one person taller or the same height in front, which is person 1.
+Person 4 has height 4 with four people taller or the same height in front, which are people 0, 1, 2, and 3.
+Person 5 has height 7 with one person taller or the same height in front, which is person 1.
+Hence [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]] is the reconstructed queue.
+```
+
+```python
+class Solution:
+    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+        people.sort(key=lambda x: (-x[0], x[1])) # first sort -x[0], if equal, sort x[1]
+        que = []
+        for p in people:
+            if p[1] > len(que):
+                que.append(p)
+            else:
+                que.insert(p[1], p) # que[p[1]:p[1]] = [p]
+        return que
+```
+
+
+
+#### 435. Non-overlapping Intervals
+
+Given an array of intervals `intervals` where `intervals[i] = [starti, endi]`, return *the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping*.
+
+ 
+
+**Example 1:**
+
+```
+Input: intervals = [[1,2],[2,3],[3,4],[1,3]]
+Output: 1
+Explanation: [1,3] can be removed and the rest of the intervals are non-overlapping.
+```
+
+```python
+class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        if not intervals:
+            return 0
+        intervals.sort(key=lambda x: x[1])
+        pos = intervals[0][1]
+        ans = 1
+        for interval in intervals:
+            if interval[0] >= pos:
+                pos = interval[1]
+                ans += 1
+        return len(intervals) - ans
+```
+
+
+
+
+
+#### 452. Minimum Number of Arrows to Burst Balloons
+
+There are some spherical balloons spread in two-dimensional space. For each balloon, provided input is the start and end coordinates of the horizontal diameter. Since it's horizontal, y-coordinates don't matter, and hence the x-coordinates of start and end of the diameter suffice. The start is always smaller than the end.
+
+An arrow can be shot up exactly vertically from different points along the x-axis. A balloon with `xstart` and `xend` bursts by an arrow shot at `x` if `xstart ≤ x ≤ xend`. There is no limit to the number of arrows that can be shot. An arrow once shot keeps traveling up infinitely.
+
+Given an array `points` where `points[i] = [xstart, xend]`, return *the minimum number of arrows that must be shot to burst all balloons*.
+
+ 
+
+**Example 1:**
+
+```
+Input: points = [[10,16],[2,8],[1,6],[7,12]]
+Output: 2
+Explanation: One way is to shoot one arrow for example at x = 6 (bursting the balloons [2,8] and [1,6]) and another arrow at x = 11 (bursting the other two balloons).
+```
+
+```python
+# 求交集
+class Solution:
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        points.sort()
+        i = 1
+        while i < len(points):
+            (al, ar), (bl, br) = points[i - 1], points[i]
+            if bl <= ar:
+                points[i - 1] = bl, min(ar, br)
+                points.pop(i)
+            else:
+                i += 1
+        return len(points)
+```
+
+```python
+# 按第二位排序
+# 箭永远射气球最右端
+class Solution:
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        if not points:
+            return 0
+        
+        points.sort(key=lambda balloon: balloon[1])
+        pos = points[0][1]
+        ans = 1
+        for balloon in points:
+            if balloon[0] > pos:
+                pos = balloon[1]
+                ans += 1
+        
+        return ans
+```
+
+```python
+# 按第一位排序
+# 箭永远射重叠气球最小右边界
+class Solution:
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        if len(points) == 0: return 0
+        points.sort(key=lambda x: x[0])
+        result = 1
+        pos = points[0][1] # 起始射击位置为气球最右端
+        for i in range(1, len(points)):
+            if points[i][0] > pos: 
+                result += 1
+                pos = points[i][1] # 更新射击位置为新的不重叠气球的最右端
+            else:
+                pos = min(pos, points[i][1]) # 更新重叠气球最小右边界
+        return result
+```
+
+
+
+
+
+#### 454. 4Sum II
+
+Given four integer arrays `nums1`, `nums2`, `nums3`, and `nums4` all of length `n`, return the number of tuples `(i, j, k, l)` such that:
+
+- `0 <= i, j, k, l < n`
+- `nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0`
+
+ 
+
+**Example 1:**
+
+```
+Input: nums1 = [1,2], nums2 = [-2,-1], nums3 = [-1,2], nums4 = [0,2]
+Output: 2
+Explanation:
+The two tuples are:
+1. (0, 0, 0, 1) -> nums1[0] + nums2[0] + nums3[0] + nums4[1] = 1 + (-2) + (-1) + 2 = 0
+2. (1, 1, 0, 0) -> nums1[1] + nums2[1] + nums3[0] + nums4[0] = 2 + (-1) + (-1) + 0 = 0
+```
+
+```python
+class Solution:
+    def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
+        
+        hash_map = defaultdict(int)
+        for i in nums1:
+            for j in nums2:
+                hash_map[i + j] += 1
+        count = 0  
+        for i in nums3:
+            for j in nums4:
+                key = -i-j
+                if key in hash_map.keys():
+                    count += hash_map[key]
+                    
+        return count
+```
+
+
+
+#### 455. Assign Cookies
+
+Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie.
+
+Each child `i` has a greed factor `g[i]`, which is the minimum size of a cookie that the child will be content with; and each cookie `j` has a size `s[j]`. If `s[j] >= g[i]`, we can assign the cookie `j` to the child `i`, and the child `i` will be content. Your goal is to maximize the number of your content children and output the maximum number.
+
+ 
+
+**Example 1:**
+
+```
+Input: g = [1,2,3], s = [1,1]
+Output: 1
+Explanation: You have 3 children and 2 cookies. The greed factors of 3 children are 1, 2, 3. 
+And even though you have 2 cookies, since their size is both 1, you could only make the child whose greed factor is 1 content.
+You need to output 1.
+```
+
+```python
+class Solution:
+    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+        g.sort()
+        s.sort()
+        res = 0
+        for i in range(len(s)):
+            if res <len(g) and s[i] >= g[res]:  #小饼干先喂饱小胃口
+                res += 1
+        return res
+```
+
+
+
+
+
+
+
+#### 459*. Repeated Substring Pattern
+
+Given a string `s`, check if it can be constructed by taking a substring of it and appending multiple copies of the substring together.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "abab"
+Output: true
+Explanation: It is the substring "ab" twice.
+```
+
+```python
+# copy original string
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        return (s + s).find(s, 1) != len(s)
+```
+
+```python
+# enumerate
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        n = len(s)
+        for i in range(1, n // 2 + 1):
+            if n % i == 0:
+                if all(s[j] == s[j - i] for j in range(i, n)):
+                    return True
+        return False
+```
+
+```python
+# KMP
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:  
+        if len(s) == 0:
+            return False
+        nxt = self.getNext(s)
+        if nxt[-1] != 0 and len(s) % (len(s) - nxt[-1]) == 0:
+            return True
+        return False
+
+    def getNext(self, s):
+        next = [0] * len(s)
+        j = 0
+        for i in range(1, len(s)):
+            while (j > 0 and s[i] != s[j]):
+                j = next[j-1]
+            if s[i] == s[j]:
+                j += 1
+            next[i] = j
+        return next
+```
+
+
 
 
 
@@ -5066,34 +6148,48 @@ class Solution:
 
 
 
-#### 977. Squares of a Sorted Array
+#### 541. Reverse String II
 
-Given an integer array `nums` sorted in **non-decreasing** order, return *an array of **the squares of each number** sorted in non-decreasing order*.
+Given a string `s` and an integer `k`, reverse the first `k` characters for every `2k` characters counting from the start of the string.
+
+If there are fewer than `k` characters left, reverse all of them. If there are less than `2k` but greater than or equal to `k` characters, then reverse the first `k` characters and left the other as original.
 
  
 
 **Example 1:**
 
 ```
-Input: nums = [-4,-1,0,3,10]
-Output: [0,1,9,16,100]
-Explanation: After squaring, the array becomes [16,1,0,9,100].
-After sorting, it becomes [0,1,9,16,100].
+Input: s = "abcdefg", k = 2
+Output: "bacdfeg"
 ```
 
 ```python
-def sortedSquares(self, A):
-    answer = collections.deque()
-    l, r = 0, len(A) - 1
-    while l <= r:
-        left, right = abs(A[l]), abs(A[r])
-        if left > right:
-            answer.appendleft(left * left)
-            l += 1
-        else:
-            answer.appendleft(right * right)
-            r -= 1
-    return list(answer)
+class Solution(object):
+    def reverseStr(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: str
+        """
+        from functools import reduce
+        # turn s into a list 
+        s = list(s)
+        
+        # another way to simply use a[::-1], but i feel this is easier to understand
+        def reverse(s):
+            left, right = 0, len(s) - 1
+            while left < right:
+                s[left], s[right] = s[right], s[left]
+                left += 1
+                right -= 1
+            return s
+        
+        # make sure we reverse each 2k elements 
+        for i in range(0, len(s), 2*k):
+            s[i:(i+k)] = reverse(s[i:(i+k)])
+        
+        # combine list into str.
+        return reduce(lambda a, b: a+b, s) # same as "".join(s)
 ```
 
 
@@ -5131,6 +6227,238 @@ class Solution:
             else:
                 return middle
         return -1
+```
+
+
+
+#### 763. Partition Labels
+
+You are given a string `s`. We want to partition the string into as many parts as possible so that each letter appears in at most one part.
+
+Return *a list of integers representing the size of these parts*.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "ababcbacadefegdehijhklij"
+Output: [9,7,8]
+Explanation:
+The partition is "ababcbaca", "defegde", "hijhklij".
+This is a partition so that each letter appears in at most one part.
+A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits s into less parts.
+```
+
+```python
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+        lastPos = defaultdict(int)
+        for i in range(len(s)):
+            lastPos[s[i]] = i
+            
+        result = []
+        left = 0
+        right = 0
+        for i in range(len(s)):
+            right = max(right, lastPos[s[i]])
+            if i == right:
+                result.append(right - left + 1)
+                left = right + 1
+        return result
+```
+
+
+
+
+
+#### 860. Lemonade Change
+
+At a lemonade stand, each lemonade costs `$5`. 
+
+Customers are standing in a queue to buy from you, and order one at a time (in the order specified by `bills`).
+
+Each customer will only buy one lemonade and pay with either a `$5`, `$10`, or `$20` bill. You must provide the correct change to each customer, so that the net transaction is that the customer pays $5.
+
+Note that you don't have any change in hand at first.
+
+Return `true` if and only if you can provide every customer with correct change.
+
+ 
+
+**Example 1:**
+
+```
+Input: [5,5,5,10,20]
+Output: true
+Explanation: 
+From the first 3 customers, we collect three $5 bills in order.
+From the fourth customer, we collect a $10 bill and give back a $5.
+From the fifth customer, we give a $10 bill and a $5 bill.
+Since all customers got correct change, we output true.
+```
+
+```python
+class Solution(object):
+    def lemonadeChange(self, bills):
+        five = ten = 0
+        for bill in bills:
+            if bill == 5:
+                five += 1
+            elif bill == 10:
+                if not five: return False
+                five -= 1
+                ten += 1
+            else:
+                if ten and five:
+                    ten -= 1
+                    five -= 1
+                elif five >= 3:
+                    five -= 3
+                else:
+                    return False
+        return True
+```
+
+
+
+
+
+#### 977. Squares of a Sorted Array
+
+Given an integer array `nums` sorted in **non-decreasing** order, return *an array of **the squares of each number** sorted in non-decreasing order*.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+Explanation: After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100].
+```
+
+```python
+def sortedSquares(self, A):
+    answer = collections.deque()
+    l, r = 0, len(A) - 1
+    while l <= r:
+        left, right = abs(A[l]), abs(A[r])
+        if left > right:
+            answer.appendleft(left * left)
+            l += 1
+        else:
+            answer.appendleft(right * right)
+            r -= 1
+    return list(answer)
+```
+
+
+
+#### 1005. Maximize Sum Of Array After K Negations
+
+Given an array `nums` of integers, we **must** modify the array in the following way: we choose an `i` and replace `nums[i]` with `-nums[i]`, and we repeat this process `k` times in total. (We may choose the same index `i` multiple times.)
+
+Return the largest possible sum of the array after modifying it in this way.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [4,2,3], k = 1
+Output: 5
+Explanation: Choose indices (1,) and nums becomes [4,-2,3].
+```
+
+```python
+class Solution:
+    def largestSumAfterKNegations(self, A: List[int], K: int) -> int:
+        A = sorted(A, key=abs) # 将A按绝对值从小到大排列
+        for i in range(len(A)-1,-1,-1):
+            if K > 0 and A[i] < 0:
+                A[i] *= -1
+                K -= 1
+        if K > 0:
+            A[0] *= (-1)**K #取A最后一个数只需要写-1
+        return sum(A)
+```
+
+
+
+#### 1047. Remove All Adjacent Duplicates In String
+
+You are given a string `s` consisting of lowercase English letters. A **duplicate removal** consists of choosing two **adjacent** and **equal** letters and removing them.
+
+We repeatedly make **duplicate removals** on `s` until we no longer can.
+
+Return *the final string after all such duplicate removals have been made*. It can be proven that the answer is **unique**.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "abbaca"
+Output: "ca"
+Explanation: 
+For example, in "abbaca" we could remove "bb" since the letters are adjacent and equal, and this is the only possible move.  The result of this move is that the string is "aaca", of which only "aa" is possible, so the final string is "ca".
+```
+
+```python
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        t = list()
+        for i in s:
+            if t and t[-1] == i:
+                t.pop(-1)
+            else:
+                t.append(i)
+        return "".join(t)  # 字符串拼接
+```
+
+
+
+
+
+#### 1306. [Jump Game III](https://leetcode.com/problems/jump-game-iii) 
+
+Given an array of non-negative integers `arr`, you are initially positioned at `start` index of the array. When you are at index `i`, you can jump to `i + arr[i]` or `i - arr[i]`, check if you can reach to **any** index with value 0.
+
+Notice that you can not jump outside of the array at any time.
+
+**Example 1:**
+
+```
+Input: arr = [4,2,3,0,3,1,2], start = 5
+Output: true
+Explanation: 
+All possible ways to reach at index 3 with value 0 are: 
+index 5 -> index 4 -> index 1 -> index 3 
+index 5 -> index 6 -> index 4 -> index 1 -> index 3 
+```
+
+```python
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        if arr[start] == 0:
+            return True
+        
+        n = len(arr)
+        used = set()
+        q = collections.deque([start])
+        
+        while len(q) > 0:
+            u = q.popleft()
+            for v in [u + arr[u], u - arr[u]]:
+                if 0 <= v < n and v not in used:
+                    if arr[v] == 0:
+                        return True
+                    q.append(v)
+                    used.add(v)
+                    
+        return False
 ```
 
 
@@ -5198,44 +6526,38 @@ class Solution:
 
 
 
-#### 1306. [Jump Game III](https://leetcode.com/problems/jump-game-iii) 
+#### 1897. Redistribute Characters to Make All Strings Equal
 
-Given an array of non-negative integers `arr`, you are initially positioned at `start` index of the array. When you are at index `i`, you can jump to `i + arr[i]` or `i - arr[i]`, check if you can reach to **any** index with value 0.
+You are given an array of strings `words` (**0-indexed**).
 
-Notice that you can not jump outside of the array at any time.
+In one operation, pick two **distinct** indices `i` and `j`, where `words[i]` is a non-empty string, and move **any** character from `words[i]` to **any** position in `words[j]`.
+
+Return `true` *if you can make **every** string in* `words` ***equal** using **any** number of operations*, *and* `false` *otherwise*.
+
+ 
 
 **Example 1:**
 
 ```
-Input: arr = [4,2,3,0,3,1,2], start = 5
+Input: words = ["abc","aabc","bc"]
 Output: true
-Explanation: 
-All possible ways to reach at index 3 with value 0 are: 
-index 5 -> index 4 -> index 1 -> index 3 
-index 5 -> index 6 -> index 4 -> index 1 -> index 3 
+Explanation: Move the first 'a' in words[1] to the front of words[2],
+to make words[1] = "abc" and words[2] = "abc".
+All the strings are now equal to "abc", so return true.
 ```
 
 ```python
 class Solution:
-    def canReach(self, arr: List[int], start: int) -> bool:
-        if arr[start] == 0:
-            return True
-        
-        n = len(arr)
-        used = set()
-        q = collections.deque([start])
-        
-        while len(q) > 0:
-            u = q.popleft()
-            for v in [u + arr[u], u - arr[u]]:
-                if 0 <= v < n and v not in used:
-                    if arr[v] == 0:
-                        return True
-                    q.append(v)
-                    used.add(v)
-                    
-        return False
+    def makeEqual(self, words: List[str]) -> bool:
+        freq = defaultdict(int)
+        for word in words: 
+            for ch in word: 
+                freq[ch] += 1
+
+        return all(x % len(words) == 0 for x in freq.values())
 ```
+
+
 
 
 
@@ -5289,6 +6611,42 @@ class Solution:
                 right = mid - 1
         return left
 ```
+
+
+
+#### 1899. Merge Triplets to Form Target Triplet
+
+A **triplet** is an array of three integers. You are given a 2D integer array `triplets`, where `triplets[i] = [ai, bi, ci]` describes the `ith` **triplet**. You are also given an integer array `target = [x, y, z]` that describes the **triplet** you want to obtain.
+
+Return `true` *if it is possible to obtain the* `target` ***triplet*** `[x, y, z]` *as an **element** of* `triplets`*, or* `false` *otherwise*.
+
+**Example 1:**
+
+```
+Input: triplets = [[2,5,3],[1,8,4],[1,7,5]], target = [2,7,5]
+Output: true
+Explanation: Perform the following operations:
+- Choose the first and last triplets [[2,5,3],[1,8,4],[1,7,5]]. Update the last triplet to be [max(2,1), max(5,7), max(3,5)] = [2,7,5]. triplets = [[2,5,3],[1,8,4],[2,7,5]]
+The target triplet [2,7,5] is now an element of triplets.
+```
+
+```python
+class Solution:
+    def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:
+        ac=[0,0,0]
+        if ac==target:
+            return True
+        for i in triplets:
+            if i==target:
+                return True
+            if target[0]>=i[0] and target[1]>=i[1] and target[2]>=i[2]:
+                ac=[max(ac[0],i[0]),max(ac[1],i[1]),max(ac[2],i[2])]
+            if ac==target:
+                return True
+        return False
+```
+
+
 
 
 
