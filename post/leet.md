@@ -6216,10 +6216,8 @@ Explanation: 9 exists in nums and its index is 4
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         left, right = 0, len(nums) - 1
-        
         while left <= right:
             middle = (left + right) // 2
-
             if nums[middle] < target:
                 left = middle + 1
             elif nums[middle] > target:
@@ -6227,6 +6225,22 @@ class Solution:
             else:
                 return middle
         return -1
+```
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left, right  = 0, len(nums)
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = mid
+            else:
+                return mid
+        return -1
+
 ```
 
 
