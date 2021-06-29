@@ -52,8 +52,41 @@ Output: 2.50000
 Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
 ```
 
+       ```python
+       class Solution:
+           def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+               if len(nums1) > len(nums2):
+                   return self.findMedianSortedArrays(nums2, nums1)
+       
+               infinty = float('inf')
+               m, n = len(nums1), len(nums2)
+               left, right = 0, m
+               # median1：前一部分的最大值
+               # median2：后一部分的最小值
+               median1, median2 = 0, 0
+       
+               while left <= right:
+                   # 前一部分包含 nums1[0 .. i-1] 和 nums2[0 .. j-1]
+                   # // 后一部分包含 nums1[i .. m-1] 和 nums2[j .. n-1]
+                   i = left + (right - left) // 2
+                   j = (m + n + 1) // 2 - i
+                   
+                   # nums_im1, nums_i, nums_jm1, nums_j 分别表示 nums1[i-1], nums1[i], nums2[j-1], nums2[j]
+                   nums_im1 = (-infinty if i == 0 else nums1[i - 1])
+                   nums_i = (infinty if i == m else nums1[i])
+                   nums_jm1 = (-infinty if j == 0 else nums2[j - 1])
+                   nums_j = (infinty if j == n else nums2[j])
+       
+                   if nums_im1 <= nums_j:
+                       median1, median2 = max(nums_im1, nums_jm1), min(nums_i, nums_j)
+                       left = i + 1
+                   else:
+                       right = i - 1
+       
+               return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
+       ```
 
-​        
+
 
 ```python
 class Solution:
@@ -196,46 +229,64 @@ Output: [3,4]
 ```
 
 ```python
-def searchRange(self, nums: List[int], target: int) -> List[int]:
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
         if len(nums) == 0:
             return [-1, -1]
         if nums[0] > target:
             return [-1, -1]
-    
-        start = 0
-        end = len(nums) - 1
         
-        start = self.find_first(nums, target, start, end)
-        end = self.find_end(nums, target, start, end)
+        left, right = 0, len(nums) - 1
         
-        return [start, end]
+        left = self.find_first(nums, target, left, right)
+        right = self.find_end(nums, target, left, right)
+        
+        return [left, right]
     
-    def find_first(self, nums, target, start, end):
-        while start + 1 < end:
-            mid = start + (end - start) // 2
+    def find_first(self, nums, target, left, right):
+        while left <= right:
+            mid = left + (right - left) // 2
             if nums[mid] < target:
-                start = mid
+                left = mid + 1
             else:
-                end = mid
-        if nums[start] == target:
-            return start
-        if nums[end] == target:
-            return end
+                right = mid - 1
+        if left < len(nums) and nums[left] == target:
+            return left
+        if right < len(nums) and nums[right] == target:
+            return right
         return -1
     
-    def find_end(self, nums, target, start, end):
-        while start + 1 < end:
-            mid = start + (end - start) // 2
+    def find_end(self, nums, target, left, right):
+        while left <= right:
+            mid = left + (right - left) // 2
             if nums[mid] > target:
-                end = mid
+                right = mid - 1
             else:
-                start = mid
-        if nums[end] == target:
-            return end
-        if nums[start] == target:
-            return start
+                left = mid + 1
+        if right < len(nums) and nums[right] == target:
+            return right
+        if left < len(nums) and nums[left] == target:
+            return left
         return -1
+```
+
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if len(nums) == 0:
+            return [-1, -1]
+        if nums[0] > target:
+            return [-1, -1]
         
+        left = bisect_left(nums, target, 0, len(nums) - 1)
+        right = bisect_right(nums, target, 0, len(nums) - 1)
+        
+        if nums[left] == target:
+            if nums[right] == target:
+                return [left, right]
+            else:
+                return [left, right - 1]
+        return [-1, -1]
 ```
 
 
@@ -258,27 +309,17 @@ Output: 2
 ```python
 class Solution:
     def searchInsert(self, nums: List[int], target: int) -> int:
-        start = 0
-        end = len(nums) - 1
-        while start + 1 < end:
-            mid = start + (end - start) // 2
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = left + (right - left) // 2 # mid = (right + left) // 2
             if nums[mid] < target:
-                start = mid + 1
+                left = mid + 1
             elif nums[mid] > target:
-                end = mid - 1
+                right = right - 1
             else:
                 return mid
-        if nums[start] >= target:
-            return start
-        elif nums[start] < target and target <= nums[end]:
-            return end
-        else:
-            return end + 1
+        return left
 ```
-
-
-
-
 
 
 
@@ -302,20 +343,16 @@ Output: 2
 ```python
 class Solution:
     def mySqrt(self, x: int) -> int:
-        if x < 2:
-            return x
+        if x < 2: return x
         start = 1
         end = x // 2
         while start <= end:
-            
             mid = start + (end - start) // 2
             if mid*mid > x:
                 end = mid - 1
             else:
                 start = mid + 1
-            
         return start - 1
-        
 ```
 
 
@@ -420,24 +457,6 @@ class Solution:
 
 
 
-
-
-#### 110. Balanced Binary Tree
-
-```python
-def isBalanced(self, root: TreeNode) -> bool:
-    def get_height(root):
-        if root is None:
-            return 0
-        left_height, right_height = get_height(root.left), get_height(root.right)
-        if left_height < 0 or right_height < 0 or abs(left_height - right_height) > 1:
-            return -1
-        return max(left_height, right_height) + 1
-    return get_height(root) >= 0
-```
-
-
-
 #### 153. Find Minimum in Rotated Sorted Array
 
 Suppose an array of length `n` sorted in ascending order is **rotated** between `1` and `n` times. For example, the array `nums = [0,1,2,4,5,6,7]` might become:
@@ -476,6 +495,20 @@ class Solution:
 
 ```
 
+```python
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        start = 0
+        end = len(nums) - 1
+        while start <= end:
+            mid = (end + start) // 2
+            if nums[mid] > nums[start - 1]:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return min(nums[start], nums[end])
+```
+
 
 
 #### 162. Find Peak Element
@@ -510,6 +543,73 @@ class Solution:
             else:
                 right = mid
         return left
+```
+
+
+
+
+
+#### 278. First Bad Version
+
+You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
+
+You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 5, bad = 4
+Output: 4
+Explanation:
+call isBadVersion(3) -> false
+call isBadVersion(5) -> true
+call isBadVersion(4) -> true
+Then 4 is the first bad version.
+```
+
+```python
+# The isBadVersion API is already defined for you.
+# @param version, an integer
+# @return an integer
+# def isBadVersion(version):
+
+class Solution:
+    def firstBadVersion(self, n):
+        start = 1
+        end = n
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            if not isBadVersion(mid):
+                start = mid + 1
+            else:
+                end = mid - 1
+        if isBadVersion(start):
+            return start
+        elif isBadVersion(end):
+            return end
+        else:
+            return end + 1
+```
+
+```python
+class Solution:
+    def firstBadVersion(self, n):
+        start = 1
+        end = n
+        while start <= end:
+            mid = (end + start) // 2
+            if not isBadVersion(mid):
+                start = mid + 1
+            else:
+                end = mid - 1
+        if isBadVersion(start): # 看最后那一步，每次更新start意味着start有可能是坏(start-1一定不是坏)，所以先检查start
+            return start
+        else:
+            return end
 ```
 
 
@@ -4338,6 +4438,22 @@ class Solution:
 
 
 
+### Tree
+
+#### 110. Balanced Binary Tree
+
+```python
+def isBalanced(self, root: TreeNode) -> bool:
+    def get_height(root):
+        if root is None:
+            return 0
+        left_height, right_height = get_height(root.left), get_height(root.right)
+        if left_height < 0 or right_height < 0 or abs(left_height - right_height) > 1:
+            return -1
+        return max(left_height, right_height) + 1
+    return get_height(root) >= 0
+```
+
 
 
 
@@ -5166,14 +5282,13 @@ class Solution:
 
 ------
 
-### After 200
+### After 300
 
 | Problem                                     | Level  | Type          | Comment                                                      |
 | :------------------------------------------ | :----- | ------------- | ------------------------------------------------------------ |
 | 202. Happy Numbers                          | Easy   | Dict          | Tricky Dict; Squares by digits                               |
 | 203. Remove Linked List Elements            | Easy   | List          |                                                              |
 | 242. Valid Anagram                          | Easy   | Dict          | Standard Dict                                                |
-| 278. First Bad Version                      | Easy   | Binary Search | Standard binary search                                       |
 | 332. Reconstruct Itinerary                  | Medium | DFS           | Tricky DFS: need dict as Iterator; how to sort and prevent loop |
 | 349. Intersection of Two Arrays             | Easy   | Dict          |                                                              |
 | 367. Valid Perfect Square                   | Easy   | Binary Search | Standard BS                                                  |
@@ -5505,65 +5620,6 @@ class Solution:
 
 
 
-
-
-
-
-#### 278. First Bad Version
-
-You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
-
-Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
-
-You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
-
- 
-
-**Example 1:**
-
-```
-Input: n = 5, bad = 4
-Output: 4
-Explanation:
-call isBadVersion(3) -> false
-call isBadVersion(5) -> true
-call isBadVersion(4) -> true
-Then 4 is the first bad version.
-```
-
-```python
-# The isBadVersion API is already defined for you.
-# @param version, an integer
-# @return an integer
-# def isBadVersion(version):
-
-class Solution:
-    def firstBadVersion(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
-        start = 1
-        end = n
-        print([start, end])
-        while start + 1 < end:
-            mid = start + (end - start) // 2
-            if not isBadVersion(mid):
-                start = mid + 1
-            else:
-                end = mid - 1
-            print([start, end])
-        
-        if isBadVersion(start):
-            return start
-        elif isBadVersion(end):
-            return end
-        else:
-            return end + 1
-```
-
-
-
 #### 283. Move Zeroes
 
 Given an integer array `nums`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.
@@ -5729,7 +5785,7 @@ Given a **positive** integer *num*, write a function which returns True if *num*
 
 **Follow up:** **Do not** use any built-in library function such as `sqrt`.
 
- 
+
 
 **Example 1:**
 
