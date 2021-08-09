@@ -1,3 +1,5 @@
+
+
 ## leetCode in Python
 
 
@@ -52,39 +54,39 @@ Output: 2.50000
 Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
 ```
 
-       ```python
-       class Solution:
-           def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-               if len(nums1) > len(nums2):
-                   return self.findMedianSortedArrays(nums2, nums1)
-       
-               infinty = float('inf')
-               m, n = len(nums1), len(nums2)
-               left, right = 0, m
-               # median1：前一部分的最大值
-               # median2：后一部分的最小值
-               median1, median2 = 0, 0
-       
-               while left <= right:
-                   # 前一部分包含 nums1[0 .. i-1] 和 nums2[0 .. j-1]
-                   # // 后一部分包含 nums1[i .. m-1] 和 nums2[j .. n-1]
-                   i = left + (right - left) // 2
-                   j = (m + n + 1) // 2 - i
-                   
-                   # nums_im1, nums_i, nums_jm1, nums_j 分别表示 nums1[i-1], nums1[i], nums2[j-1], nums2[j]
-                   nums_im1 = (-infinty if i == 0 else nums1[i - 1])
-                   nums_i = (infinty if i == m else nums1[i])
-                   nums_jm1 = (-infinty if j == 0 else nums2[j - 1])
-                   nums_j = (infinty if j == n else nums2[j])
-       
-                   if nums_im1 <= nums_j:
-                       median1, median2 = max(nums_im1, nums_jm1), min(nums_i, nums_j)
-                       left = i + 1
-                   else:
-                       right = i - 1
-       
-               return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
-       ```
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1) > len(nums2):
+            return self.findMedianSortedArrays(nums2, nums1)
+
+        infinty = float('inf')
+        m, n = len(nums1), len(nums2)
+        left, right = 0, m
+        # median1：前一部分的最大值
+        # median2：后一部分的最小值
+        median1, median2 = 0, 0
+
+        while left <= right:
+            # 前一部分包含 nums1[0 .. i-1] 和 nums2[0 .. j-1]
+            # 后一部分包含 nums1[i .. m-1] 和 nums2[j .. n-1]
+            i = left + (right - left) // 2
+            j = (m + n + 1) // 2 - i
+            
+            # nums_im1, nums_i, nums_jm1, nums_j 分别表示 nums1[i-1], nums1[i], nums2[j-1], nums2[j]
+            nums_im1 = (-infinty if i == 0 else nums1[i - 1])
+            nums_i = (infinty if i == m else nums1[i])
+            nums_jm1 = (-infinty if j == 0 else nums2[j - 1])
+            nums_j = (infinty if j == n else nums2[j])
+
+            if nums_im1 > nums_j:
+                right = i - 1
+            else:
+                left = i + 1
+                median1, median2 = max(nums_im1, nums_jm1), min(nums_i, nums_j)
+
+        return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
+```
 
 
 
@@ -236,7 +238,7 @@ class Solution:
         if nums[0] > target:
             return [-1, -1]
         
-        left, right = 0, len(nums) - 1
+        left, right = 0, len(nums) - 1 # 注意len - 1
         
         left = self.find_first(nums, target, left, right)
         right = self.find_end(nums, target, left, right)
@@ -267,6 +269,90 @@ class Solution:
             return right
         if left < len(nums) and nums[left] == target:
             return left
+        return -1
+```
+
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if len(nums) == 0:
+            return [-1, -1]
+        if nums[0] > target:
+            return [-1, -1]
+        
+        left, right = 0, len(nums) - 1
+        
+        left = self.find_first(nums, target, left, right)
+        right = self.find_end(nums, target, left, right)
+        
+        return [left, right]
+    
+    def find_first(self, nums, target, left, right):
+        while left + 1 < right:
+            mid = left + (right - left) // 2
+            if nums[mid] < target:
+                left = mid
+            else:
+                right = mid
+        if left < len(nums) and nums[left] == target:
+            return left
+        if right < len(nums) and nums[right] == target:
+            return right
+        return -1
+    
+    def find_end(self, nums, target, left, right):
+        while left + 1 < right:
+            mid = left + (right - left) // 2
+            if nums[mid] > target:
+                right = mid
+            else:
+                left = mid
+        if right < len(nums) and nums[right] == target:
+            return right
+        if left < len(nums) and nums[left] == target:
+            return left
+        return -1
+```
+
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if len(nums) == 0:
+            return [-1, -1]
+        if nums[0] > target:
+            return [-1, -1]
+        
+        left, right = 0, len(nums)
+        
+        left = self.find_first(nums, target, left, right)
+        right = self.find_end(nums, target, left, right)
+        
+        return [left, right]
+    
+    def find_first(self, nums, target, left, right):
+        while left < right:
+            mid = left + (right - left) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+        if left < len(nums) and nums[left] == target:
+            return left
+        if right < len(nums) and nums[right] == target:
+            return right
+        return -1
+    
+    def find_end(self, nums, target, left, right):
+        while left < right:
+            mid = left + (right - left) // 2
+            if nums[mid] > target:
+                right = mid
+            else:
+                left = mid + 1
+        if right < len(nums) and nums[right] == target:
+            return right
+        if left - 1 < len(nums) and nums[left - 1] == target:
+            return left - 1
         return -1
 ```
 
@@ -622,22 +708,39 @@ Slow and Fast two pointer: 26 - 27 - 283 - 844 - 977
 
 #### 1. Two Sum
 
-Algorithm: Hash-Map.  
-Time: O(n)  
-Space: O(n)  
-Description: Look up in hash table should be amortized O(1) time as long as the hash function was chosen carefully.
+Given an array of integers `nums` and an integer `target`, return *indices of the two numbers such that they add up to `target`*.
+
+You may assume that each input would have ***exactly\* one solution**, and you may not use the *same* element twice.
+
+You can return the answer in any order.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Output: Because nums[0] + nums[1] == 9, we return [0, 1].
+```
+
+
 
 
 ```python
-def twoSum(self, nums, target):
-    h = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement not in h:
-            h[num] = i
-        else:
-            return [h[complement], i]
+# why cannot use two pointer: since not sorted (if nums.sort() then lose index)
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        h = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement not in h:
+                h[num] = i
+            else:
+                return [h[complement], i]
 ```
+
+
 
 #### 3. Longest Substring Without Repeating Characters
 
@@ -652,49 +755,113 @@ Explanation: The answer is "abc", with the length of 3.
 ```
 
 ```python
-def lengthOfLongestSubstring(self, s: str) -> int:
-    start = -1
-    max = 0
-    d = {}
-
-    for i in range(len(s)):
-        if s[i] in d and d[s[i]] > start:
-            start = d[s[i]]
-            d[s[i]] = i
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        start = -1
+        ans = 0
+        d = {} # 哈希表，记录每个字符最近出现的位置
+        for i in range(len(s)):
+            if s[i] in d and d[s[i]] > start: # 最接近出现位置在start之后
+                start = d[s[i]] # 需要更新start到之前重复位置
+                d[s[i]] = i # 更新当前字母最新出现位置
             else:
                 d[s[i]] = i
-                if i - start > max:
-                    max = i - start
-   return max
+                ans = max(i - start, ans)
+        return ans
 ```
 
-
-
-
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        occ = set() # 哈希集合，记录每个字符是否出现过
+        n = len(s) # 不用len(s)-1是因为用len(s)对于len(s)=0可以直接跳过下面for循环
+        rk, ans = -1, 0 # 右指针，初始值为 -1，相当于我们在字符串的左边界的左侧，还没有开始移动
+        for i in range(n):
+            if i != 0:
+                occ.remove(s[i - 1]) # 左指针向右移动一格，移除一个字符
+            while rk < n - 1 and s[rk + 1] not in occ:
+                occ.add(s[rk + 1]) 
+                rk += 1 # 不断地移动右指针
+            ans = max(ans, rk - i + 1)  # 第 i 到 rk 个字符是一个极长的无重复字符子串
+        return ans
+```
 
 
 
 #### 9. Palindrome Number
 
+Given an integer `x`, return `true` if `x` is palindrome integer.
+
+An integer is a **palindrome** when it reads the same backward as forward. For example, `121` is palindrome while `123` is not.
+
+ 
+
+**Example 1:**
+
+```
+Input: x = 121
+Output: true
+```
+
 
 ```python
-def isPalindrome(self, x: int) -> bool:
-    x = str(x)
-    left = 0
-    right = len(x) - 1
-    while left <= right:
-        if abs(left - right) <=  1 and x[left] == x[right]:
-            return True
-        if x[left] == x[right]:
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        x = str(x) # 字符串化
+        left = 0
+        right = len(x) - 1
+        while left <= right:
+            if x[left] != x[right]:
+                return False
             left += 1
             right -= 1
-        else:
+        return True
+```
+
+```python
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        result = 0
+        x0 = x
+        if x < 0:
+           return False
+        while x:
+            result = result * 10 + x % 10
+            x //= 10
+        return True if result == x0 else False
+```
+
+```python
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        if x < 0:
             return False
+        rev = 0
+        while x:
+            x, tail = divmod(x, 10)
+            rev = rev * 10 + tail
+        return True if rev == x else False
 ```
 
 
 
 #### 11. Container With Most Water
+
+Given `n` non-negative integers `a1, a2, ..., an` , where each represents a point at coordinate `(i, ai)`. `n` vertical lines are drawn such that the two endpoints of the line `i` is at `(i, ai)` and `(i, 0)`. Find two lines, which, together with the x-axis forms a container, such that the container contains the most water.
+
+**Notice** that you may not slant the container.
+
+ 
+
+**Example 1:**
+
+![img](https://s3-lc-upload.s3.amazonaws.com/uploads/2018/07/17/question_11.jpg)
+
+```
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+```
 
 Algorithm: Two-Pointer.  
 Time: O(n)  
@@ -703,18 +870,21 @@ Description: Move longer line will not increase the volumn. So we start from mos
 
 
 ```python
-def maxArea(self, height: List[int]) -> int:
-    left, right = 0, len(height) - 1
-    ans = 0
-    while left < right:
-        water = min(height[left], height[right]) * (right - left)
-        ans = max(ans, water)
-        if height[left] <= height[right]:
-            left += 1
-        else:
-            right -= 1
-    return ans
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        left, right = 0, len(height) - 1
+        ans = 0
+        while left < right:
+            water = min(height[left], height[right]) * (right - left)
+            ans = max(ans, water)
+            if height[left] <= height[right]:
+                left += 1
+            else:
+                right -= 1
+        return ans
 ```
+
+
 
 #### 15. 3Sum
 
@@ -754,6 +924,18 @@ def threeSum(nums):
 
 #### 16. 3Sum Closeat
 
+Given an array `nums` of *n* integers and an integer `target`, find three integers in `nums` such that the sum is closest to `target`. Return the sum of the three integers. You may assume that each input would have exactly one solution.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [-1,2,1,-4], target = 1
+Output: 2
+Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+```
+
 Algorithm: Two-Pointer.  
 Time: O(n^2)  
 Space: O(n) or O(logn) depends on which sort algorithm been used.  
@@ -773,7 +955,7 @@ def threeSumClosest(nums, target):
     n = len(nums)
     for i in range(n):
         left, right = i + 1, n - 1
-        while (left < right):
+        while (left < right): # 隐含了如果i=n-1则left=n right=n-1不执行
             sum = nums[i] + nums[left] + nums[right]
             if abs(sum - target) < abs(diff):
                 diff = target - sum
@@ -805,6 +987,23 @@ def threeSumCloseat(nums, target):
 
 #### 18. 4Sum
 
+Given an array `nums` of `n` integers, return *an array of all the **unique** quadruplets* `[nums[a], nums[b], nums[c], nums[d]]` such that:
+
+- `0 <= a, b, c, d < n`
+- `a`, `b`, `c`, and `d` are **distinct**.
+- `nums[a] + nums[b] + nums[c] + nums[d] == target`
+
+You may return the answer in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+```
+
 Algorithm: Two-Pointer.  
 Time: O(n^3)  
 Space: O(n)
@@ -826,7 +1025,7 @@ def fourSum(nums, target):
         for i in range(len(nums)):
             if i == 0 or nums[i - 1] != nums[i]: # no duplicate nums[i]
                  for ans in kSum(nums[i + 1:], target - nums[i], k - 1):
-                    res.append([nums[i]] + set)
+                    res.append([nums[i]] + ans)
         return res
 
     def twoSum(nums, target):
@@ -834,9 +1033,9 @@ def fourSum(nums, target):
             lo, hi = 0, len(nums) - 1
             while (lo < hi):
                 sum = nums[lo] + nums[hi]
-                if sum < target or (lo > 0 and nums[lo] == nums[lo - 1]):
+                if sum < target or (lo > 0 and nums[lo] == nums[lo - 1]): # no duplicate nums[lo]
                     lo += 1
-                elif sum > target or (hi < len(nums) - 1 and nums[hi] == nums[hi + 1]):
+                elif sum > target or (hi < len(nums) - 1 and nums[hi] == nums[hi + 1]): # no duplicate nums[hi]
                     hi -= 1
                 else:
                     res.append([nums[lo], nums[hi]])
@@ -860,8 +1059,8 @@ def fourSum(nums, target):
         res = []
         for i in range(len(nums)):
             if i == 0 or nums[i - 1] != nums[i]: # no duplicate nums[i]
-                 for set in kSum(nums[i + 1:], target - nums[i], k - 1):
-                    res.append([nums[i]] + set)
+                 for ans in kSum(nums[i + 1:], target - nums[i], k - 1):
+                    res.append([nums[i]] + ans)
         return res
 
     def twoSum(nums, target):
@@ -964,12 +1163,12 @@ def removeDuplicates(nums):
 def removeDuplicates(nums):    
     if len(nums) == 0 or len(nums) == 1:
         return len(nums)
-    count = 0
-    for j in range(1, len(nums)):
-        if nums[j] != nums[count]:
-            count += 1
-            nums[count] = nums[j]
-    return count + 1
+    slow = 0
+    for fast in range(1, len(nums)):
+        if nums[fast] != nums[slow]:
+            slow += 1
+            nums[slow] = nums[fast]
+    return slow + 1
 ```
 
 
@@ -1013,17 +1212,13 @@ class Solution:
 ```python
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        i = 0
-        for x in nums:
-            if x != val:
-                nums[i] = x
-                i += 1
-        return i
+        slow = 0
+        for fast in nums:
+            if fast != val:
+                nums[slow] = fast
+                slow += 1
+        return slow
 ```
-
-
-
-
 
 
 
@@ -1134,77 +1329,32 @@ def removeDuplicates(self, nums: List[int]) -> int:
 ```python
 class Solution(object):
     def removeDuplicates(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        
-        # Initialize the counter and the array index.
-        i, count = 1, 1
-        
-        # Start from the second element of the array and process
-        # elements one by one.
-        while i < len(nums):
-            
-            # If the current element is a duplicate, 
-            # increment the count.
-            if nums[i] == nums[i - 1]:
+        curr = count = 1
+        while curr < len(nums):
+            if nums[curr] == nums[curr - 1]:
                 count += 1
-                
-                # If the count is more than 2, this is an
-                # unwanted duplicate element and hence we 
-                # remove it from the array.
-                if count > 2:
-                    nums.pop(i)
-                    
-                    # Note that we have to decrement the
-                    # array index value to keep it consistent
-                    # with the size of the array.
-                    i-= 1
-                
             else:
-                
-                # Reset the count since we encountered a different element
-                # than the previous one
                 count = 1
-           
-            # Move on to the next element in the array
-            i += 1    
-                
+            if count > 2:
+                nums.pop(curr)
+                curr -= 1
+            curr += 1
         return len(nums)
 ```
 
 ```python
-class Solution(object):
-    def removeDuplicates(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        
-        # Initialize the counter and the second pointer.
-        j, count = 1, 1
-        
-        # Start from the second element of the array and process
-        # elements one by one.
-        for i in range(1, len(nums)):
-            
-            # If the current element is a duplicate, 
-            # increment the count.
-            if nums[i] == nums[i - 1]:
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        slow, count = 1, 1
+        for fast in range(1, len(nums)):
+            if nums[fast] == nums[fast - 1]:
                 count += 1
             else:
-                # Reset the count since we encountered a different element
-                # than the previous one
                 count = 1
-            
-            # For a count <= 2, we copy the element over thus
-            # overwriting the element at index "j" in the array
             if count <= 2:
-                nums[j] = nums[i]
-                j += 1
-                
-        return j
+                nums[slow] = nums[fast]
+                slow += 1
+        return slow
 ```
 
 
@@ -1234,7 +1384,8 @@ def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         else:
             nums1[m-1], nums1[m+n-1] = nums1[m+n-1], nums1[m-1]
             m -= 1
-    if n > m:
+    # if m >= n: all nums2 are moved to nums1 
+    if n > m: # some head of nums2 are remaining and should be in head of nums1
         nums1[:n] = nums2[:n]
 ```
 
@@ -1308,6 +1459,38 @@ class Solution:
 ```
 
 
+
+#### 283. Move Zeroes
+
+Given an integer array `nums`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.
+
+**Note** that you must do this in-place without making a copy of the array.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [0,1,0,3,12]
+Output: [1,3,12,0,0]
+```
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        slow = 0
+        fast = 0
+        for fast in range(len(nums)):
+            if nums[fast] == 0:
+                fast += 1
+            else:
+                nums[slow], nums[fast] = nums[fast], nums[slow]
+                slow += 1
+                fast += 1
+```
 
 
 
@@ -2267,6 +2450,20 @@ def maxSubArray(self, nums: List[int]) -> int:
     return global_max
 ```
 
+```python
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        result = dp[0]
+        for i in range(1, len(nums)):
+            dp[i] = max(dp[i-1] + nums[i], nums[i]) #状态转移公式
+            result = max(result, dp[i]) #result 保存dp[i]的最大值
+        return result
+```
+
 
 
 #### 55. Jump Game
@@ -2469,7 +2666,6 @@ class Solution:
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
         f = [[1] * n] + [[1] + [0] * (n - 1) for _ in range(m - 1)]
-        print(f)
         for i in range(1, m):
             for j in range(1, n):
                 f[i][j] = f[i - 1][j] + f[i][j - 1]
@@ -2514,6 +2710,21 @@ def climbStairs(self, n: int) -> int:
     for i in range(2,n):
         dp[i] = dp[i-1] + dp[i-2]
     return dp[n-1]
+```
+
+```python
+# Each time you can either climb `1` ... `m` steps.
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        dp = [0]*(n + 1)
+        dp[0] = 1
+        m = 2
+        # 排列问题
+        for j in range(n + 1): # 遍历背包
+            for step in range(1, m + 1): # 遍历物品
+                if j >= step:
+                    dp[j] += dp[j - step]
+        return dp[n]
 ```
 
 
@@ -2653,6 +2864,1788 @@ class Solution:
             else:  # 不是匹配的右括号或者没有左括号与之匹配，则返回false
                 return False
         return stack == []  # 最后必须正好把左括号匹配完
+```
+
+
+
+#### 96. Unique Binary Search Trees
+
+Given an integer `n`, return *the number of structurally unique **BST'**s (binary search trees) which has exactly* `n` *nodes of unique values from* `1` *to* `n`.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/uniquebstn3.jpg)
+
+```
+Input: n = 3
+Output: 5
+```
+
+**Example 2:**
+
+```
+Input: n = 1
+Output: 1
+```
+
+```python
+class Solution:
+    def numTrees(self, n: int) -> int:
+        dp = [0] * (n + 1)
+        dp[0], dp[1] = 1, 1
+        for i in range(2, n+1):
+            for j in range(i):
+                dp[i] += dp[j]*dp[i-j-1]
+        return dp[n]
+```
+
+
+
+#### ##. 01背包
+
+背包最大重量为4。
+
+物品为：
+
+|       | 重量 | 价值 |
+| ----- | ---- | ---- |
+| 物品0 | 1    | 15   |
+| 物品1 | 3    | 20   |
+| 物品2 | 4    | 30   |
+
+问背包能背的物品最大价值是多少？
+
+```python
+# 二维dp
+def test_2_wei_bag_problem1(bag_size, weight, value) -> int: 
+	rows, cols = len(weight), bag_size + 1
+	dp = [[0 for _ in range(cols)] for _ in range(rows)]
+    # dp[i][j] 表示从下标为[0-i]的物品里任意取，放进容量为j的背包，价值总和最大是多少
+	res = 0
+    
+	# 初始化dp数组. 
+	for i in range(rows): 
+		dp[i][0] = 0
+	first_item_weight, first_item_value = weight[0], value[0]
+	for j in range(1, cols): 	
+		if first_item_weight <= j: 
+			dp[0][j] = first_item_value
+
+	# 更新dp数组: 先遍历物品, 再遍历背包. 
+	for i in range(1, len(weight)): 
+		cur_weight, cur_val = weight[i], value[i]
+		for j in range(1, cols): 
+			if cur_weight > j: # 说明背包装不下当前物品. 
+				dp[i][j] = dp[i - 1][j] # 所以不装当前物品. 
+			else: 
+				# 定义dp数组: dp[i][j] 前i个物品里，放进容量为j的背包，价值总和最大是多少。
+				dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - cur_weight]+ cur_val)
+				if dp[i][j] > res: 
+					res = dp[i][j]
+
+	print(dp)
+
+
+if __name__ == "__main__": 
+	bag_size = 4
+	weight = [1, 3, 4]
+	value = [15, 20, 30]
+	test_2_wei_bag_problem1(bag_size, weight, value)
+```
+
+```python
+# 一维dp
+def test_1_wei_bag_problem():
+    weight = [1, 3, 4]
+    value = [15, 20, 30]
+    bag_weight = 4
+    # 初始化: 全为0
+    dp = [0] * (bag_weight + 1)
+
+    # 必须先遍历物品, 再遍历背包容量
+    for i in range(len(weight)):
+        # 这里必须倒序,区别二维,因为二维dp保存了i的状态
+        for j in range(bag_weight, weight[i] - 1, -1):
+            # 递归公式
+            dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
+
+    print(dp)
+
+test_1_wei_bag_problem()
+```
+
+![416.分割等和子集1](https://camo.githubusercontent.com/5c5af3f54a3503cdb989ab1c28e2933202a33259608c70af0e72db5a858f14e6/68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303231303131373137313330373430372e706e67)
+
+01背包是每个物品都是1个
+
+完全背包是每个物品无数个
+
+多重背包是每个物品，数量不同的情况
+
+对于leetcode掌握01背包和完全背包足矣
+
+#### 416. Partition Equal Subset Sum
+
+Given a **non-empty** array `nums` containing **only positive integers**, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,5,11,5]
+Output: true
+Explanation: The array can be partitioned as [1, 5, 5] and [11].
+```
+
+**Example 2:**
+
+```
+Input: nums = [1,2,3,5]
+Output: false
+Explanation: The array cannot be partitioned into equal sum subsets.
+```
+
+```python
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        target = sum(nums)
+        if target % 2 == 1: return False
+        target //= 2
+        # 套到本题，dp[i]表示 背包总容量是i，最大可以凑成i的子集总和为dp[i]
+        # 题目中说：每个数组中的元素不会超过 100，数组的大小不会超过 200
+        # 总和不会大于20000，背包最大只需要其中一半，所以10001大小就可以了
+        dp = [0] * 10001
+        # 本题，相当于背包里放入数值，那么物品i的重量是nums[i]，其价值也是nums[i]
+        # 所以递推公式：dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+        for i in range(len(nums)):
+            for j in range(target, nums[i] - 1, -1):
+                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
+        return target == dp[target]
+```
+
+
+
+#### 1049. Last Stone Weight II
+
+You are given an array of integers `stones` where `stones[i]` is the weight of the `ith` stone.
+
+We are playing a game with the stones. On each turn, we choose any two stones and smash them together. Suppose the stones have weights `x` and `y` with `x <= y`. The result of this smash is:
+
+- If `x == y`, both stones are destroyed, and
+- If `x != y`, the stone of weight `x` is destroyed, and the stone of weight `y` has new weight `y - x`.
+
+At the end of the game, there is **at most one** stone left.
+
+Return *the smallest possible weight of the left stone*. If there are no stones left, return `0`.
+
+ 
+
+**Example 1:**
+
+```
+Input: stones = [2,7,4,1,8,1]
+Output: 1
+Explanation:
+We can combine 2 and 4 to get 2, so the array converts to [2,7,1,8,1] then,
+we can combine 7 and 8 to get 1, so the array converts to [2,1,1,1] then,
+we can combine 2 and 1 to get 1, so the array converts to [1,1,1] then,
+we can combine 1 and 1 to get 0, so the array converts to [1], then that's the optimal value.
+```
+
+**Example 2:**
+
+```
+Input: stones = [31,26,33,21,40]
+Output: 5
+```
+
+**Example 3:**
+
+```
+Input: stones = [1,2]
+Output: 1
+```
+
+```python
+class Solution:
+    def lastStoneWeightII(self, stones: List[int]) -> int:
+        # 本题其实就是尽量让石头分成重量相同的两堆，相撞之后剩下的石头最小
+        # 是不是感觉和昨天讲解的416. 分割等和子集非常像了
+        # dp[j]表示容量（这里说容量更形象，其实就是重量）为j的背包，最多可以背dp[j]这么重的石头
+        total = sum(stones)
+        half = total // 2
+        dp = [0] * (half + 1)
+        
+        for i in range(len(stones)):
+            for j in range(half, stones[i] - 1, -1):
+                dp[j] = max(dp[j], dp[j - stones[i]] + stones[i])
+        # 最后dp[target]里是容量为target的背包所能背的最大重量
+        # 那么分成两堆石头，一堆石头的总重量是dp[target]，另一堆就是sum - dp[target]
+        # target = sum / 2 因为是向下取整，所以sum - dp[target] 一定是大于等于dp[target]的
+        # 那么相撞之后剩下的最小石头重量就是 (sum - dp[target]) - dp[target]
+        return (total - dp[half]) - dp[half]
+```
+
+#### 494. Target Sum
+
+You are given an integer array `nums` and an integer `target`.
+
+You want to build an **expression** out of nums by adding one of the symbols `'+'` and `'-'` before each integer in nums and then concatenate all the integers.
+
+- For example, if `nums = [2, 1]`, you can add a `'+'` before `2` and a `'-'` before `1` and concatenate them to build the expression `"+2-1"`.
+
+Return the number of different **expressions** that you can build, which evaluates to `target`.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,1,1,1,1], target = 3
+Output: 5
+Explanation: There are 5 ways to assign symbols to make the sum of nums be target 3.
+-1 + 1 + 1 + 1 + 1 = 3
++1 - 1 + 1 + 1 + 1 = 3
++1 + 1 - 1 + 1 + 1 = 3
++1 + 1 + 1 - 1 + 1 = 3
++1 + 1 + 1 + 1 - 1 = 3
+```
+
+**Example 2:**
+
+```
+Input: nums = [1], target = 1
+Output: 1
+```
+
+```python
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        sumValue = sum(nums)
+        if target > sumValue or (sumValue + target) % 2 == 1: return 0
+        bagSize = (sumValue + target) // 2
+        dp = [0] * (bagSize + 1)
+        # 假设加法的总和为x，那么减法对应的总和就是sum - x。
+        # 所以我们要求的是 x - (sum - x) = S
+        # x = (S + sum) / 2
+        # 此时问题就转化为，装满容量为x背包，有几种方法。
+        # dp[j] 表示：填满j（包括j）这么大容积的包，有dp[i]种方法
+        dp[0] = 1
+        for i in range(len(nums)):
+            for j in range(bagSize, nums[i] - 1, -1):
+                dp[j] += dp[j - nums[i]]
+                # 在求装满背包有几种方法的情况下，递推公式一般为：
+                # dp[j] += dp[j - nums[i]];
+        return dp[bagSize]
+```
+
+#### 474. Ones and Zeroes
+
+You are given an array of binary strings `strs` and two integers `m` and `n`.
+
+Return *the size of the largest subset of `strs` such that there are **at most*** `m` `0`*'s and* `n` `1`*'s in the subset*.
+
+A set `x` is a **subset** of a set `y` if all elements of `x` are also elements of `y`.
+
+ 
+
+**Example 1:**
+
+```
+Input: strs = ["10","0001","111001","1","0"], m = 5, n = 3
+Output: 4
+Explanation: The largest subset with at most 5 0's and 3 1's is {"10", "0001", "1", "0"}, so the answer is 4.
+Other valid but smaller subsets include {"0001", "1"} and {"10", "1", "0"}.
+{"111001"} is an invalid subset because it contains 4 1's, greater than the maximum of 3.
+```
+
+**Example 2:**
+
+```
+Input: strs = ["10","0","1"], m = 1, n = 1
+Output: 2
+Explanation: The largest subset is {"0", "1"}, so the answer is 2.
+```
+
+```python
+# m 和 n相当于是一个背包，两个维度的背包
+# 背包有两个维度，一个是m 一个是n，而不同长度的字符串就是不同大小的待装物品
+# dp[i][j]：最多有i个0和j个1的strs的最大子集的大小为dp[i][j]
+# dp[i][j] 可以由前一个strs里的字符串推导出来，strs里的字符串有zeroNum个0，oneNum个1
+# dp[i][j] 就可以是 dp[i - zeroNum][j - oneNum] + 1
+class Solution:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        dp = [[0] * (n + 1) for _ in range(m + 1)]	# 默认初始化0
+        # 先遍历物品
+        for str in strs:
+            ones = str.count('1')
+            zeros = str.count('0')
+            # 遍历背包容量且从后向前遍历！
+            # 这两层for循环先后循序没有什么讲究，都是物品重量的一个维度，先遍历那个都行
+            for i in range(m, zeros - 1, -1):
+                for j in range(n, ones - 1, -1):
+                    dp[i][j] = max(dp[i][j], dp[i - zeros][j - ones] + 1)
+        return dp[m][n]
+```
+
+#### ##. 完全背包
+
+```python
+# 先遍历物品，再遍历背包
+def test_complete_pack1():
+    weight = [1, 3, 4]
+    value = [15, 20, 30]
+    bag_weight = 4
+
+    dp = [0]*(bag_weight + 1)
+
+    for i in range(len(weight)):
+        for j in range(weight[i], bag_weight + 1):
+            dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
+    
+    print(dp[bag_weight])
+
+# 先遍历背包，再遍历物品
+def test_complete_pack2():
+    weight = [1, 3, 4]
+    value = [15, 20, 30]
+    bag_weight = 4
+
+    dp = [0]*(bag_weight + 1)
+
+    for j in range(bag_weight + 1):
+        for i in range(len(weight)):
+            if j >= weight[i]: dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
+    
+    print(dp[bag_weight])
+
+
+if __name__ == '__main__':
+    test_complete_pack1()
+    test_complete_pack2()
+```
+
+
+
+#### 518. Coin Change 2
+
+You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
+
+Return *the number of combinations that make up that amount*. If that amount of money cannot be made up by any combination of the coins, return `0`.
+
+You may assume that you have an infinite number of each kind of coin.
+
+The answer is **guaranteed** to fit into a signed **32-bit** integer.
+
+ 
+
+**Example 1:**
+
+```
+Input: amount = 5, coins = [1,2,5]
+Output: 4
+Explanation: there are four ways to make up the amount:
+5=5
+5=2+2+1
+5=2+1+1+1
+5=1+1+1+1+1
+```
+
+**Example 2:**
+
+```
+Input: amount = 3, coins = [2]
+Output: 0
+Explanation: the amount of 3 cannot be made up just with coins of 2.
+```
+
+**Example 3:**
+
+```
+Input: amount = 10, coins = [10]
+Output: 1
+```
+
+```python
+# 如果求组合数就是外层for循环遍历物品，内层for遍历背包。
+# 如果求排列数就是外层for遍历背包，内层for循环遍历物品。
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        dp = [0]*(amount + 1)
+        dp[0] = 1
+        # 组合问题
+        # dp[j]：凑成总金额j的货币组合数为dp[j]
+        for i in range(len(coins)): # 遍历物品
+            for j in range(coins[i], amount + 1): # 遍历背包
+                dp[j] += dp[j - coins[i]]
+                # 求装满背包有几种方法，一般公式都是：dp[j] += dp[j - nums[i]];
+        return dp[amount]
+```
+
+
+
+#### 377. Combination Sum IV
+
+Given an array of **distinct** integers `nums` and a target integer `target`, return *the number of possible combinations that add up to* `target`.
+
+The answer is **guaranteed** to fit in a **32-bit** integer.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3], target = 4
+Output: 7
+Explanation:
+The possible combination ways are:
+(1, 1, 1, 1)
+(1, 1, 2)
+(1, 2, 1)
+(1, 3)
+(2, 1, 1)
+(2, 2)
+(3, 1)
+Note that different sequences are counted as different combinations.
+```
+
+**Example 2:**
+
+```
+Input: nums = [9], target = 3
+Output: 0
+```
+
+```python
+# 如果求组合数就是外层for循环遍历物品，内层for遍历背包。
+# 如果求排列数就是外层for遍历背包，内层for循环遍历物品。
+class Solution:
+    def combinationSum4(self, nums, target):
+        dp = [0] * (target + 1)
+        dp[0] = 1
+        # 排列问题
+        # dp[i]: 凑成目标正整数为i的排列个数为dp[i]
+        for i in range(1, target+1): # 遍历背包
+            for j in nums: # 遍历物品
+                if i >= j:
+                    dp[i] += dp[i - j]
+        return dp[-1]
+```
+
+
+
+#### 322. Coin Change
+
+You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
+
+Return *the fewest number of coins that you need to make up that amount*. If that amount of money cannot be made up by any combination of the coins, return `-1`.
+
+You may assume that you have an infinite number of each kind of coin.
+
+ 
+
+**Example 1:**
+
+```
+Input: coins = [1,2,5], amount = 11
+Output: 3
+Explanation: 11 = 5 + 5 + 1
+```
+
+**Example 2:**
+
+```
+Input: coins = [2], amount = 3
+Output: -1
+```
+
+```python
+class Solution:
+    # dp[j]：凑足总额为j所需钱币的最少个数为dp[j]
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        '''版本一'''
+        # 初始化
+        dp = [amount + 1]*(amount + 1)
+        dp[0] = 0
+        # 遍历物品
+        for coin in coins:
+            # 遍历背包
+            for j in range(coin, amount + 1):
+                dp[j] = min(dp[j], dp[j - coin] + 1)
+        return dp[amount] if dp[amount] < amount + 1 else -1
+    
+    def coinChange1(self, coins: List[int], amount: int) -> int:
+        '''版本二'''
+        # 初始化
+        dp = [amount + 1]*(amount + 1)
+        dp[0] = 0
+        # 遍历背包
+        for j in range(1, amount + 1):
+            # 遍历物品
+            for coin in coins:
+                if j >= coin:
+                	dp[j] = min(dp[j], dp[j - coin] + 1)
+        return dp[amount] if dp[amount] < amount + 1 else -1
+
+```
+
+
+
+#### 279. Perfect Squares
+
+Given an integer `n`, return *the least number of perfect square numbers that sum to* `n`.
+
+A **perfect square** is an integer that is the square of an integer; in other words, it is the product of some integer with itself. For example, `1`, `4`, `9`, and `16` are perfect squares while `3` and `11` are not.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 12
+Output: 3
+Explanation: 12 = 4 + 4 + 4.
+```
+
+**Example 2:**
+
+```
+Input: n = 13
+Output: 2
+Explanation: 13 = 4 + 9.
+```
+
+```python
+class Solution:
+    def numSquares(self, n: int) -> int:
+        '''版本一'''
+        # 初始化
+        nums = [i**2 for i in range(1, n + 1) if i**2 <= n]
+        dp = [i for i in range(n + 1)]
+
+        # 遍历背包
+        for j in range(1, n + 1):
+            # 遍历物品
+            for num in nums:
+                if j >= num:
+                    dp[j] = min(dp[j], dp[j - num] + 1)
+        return dp[n]
+    
+    def numSquares1(self, n: int) -> int:
+        '''版本二'''
+        # 初始化
+        nums = [i**2 for i in range(1, n + 1) if i**2 <= n]
+        dp = [i for i in range(n + 1)]
+        # 遍历物品
+        for num in nums:
+            # 遍历背包
+            for j in range(num, n + 1)
+                dp[j] = min(dp[j], dp[j - num] + 1)
+        return dp[n]
+
+```
+
+
+
+#### 139. Word Break
+
+Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words.
+
+**Note** that the same word in the dictionary may be reused multiple times in the segmentation.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "leetcode", wordDict = ["leet","code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+```
+
+**Example 2:**
+
+```
+Input: s = "applepenapple", wordDict = ["apple","pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+Note that you are allowed to reuse a dictionary word.
+```
+
+**Example 3:**
+
+```
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: false
+```
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        # 字符串分割其实是一个排列问题（而不是组合）（apple, pen apple）和(apple, apple, pen)不一样
+        dp = [False]*(len(s) + 1)
+        # dp[i] : 字符串长度为i的话，dp[i]为true，表示可以拆分为一个或多个在字典中出现的单词。
+        dp[0] = True
+        for j in range(1, len(s) + 1): # 遍历背包
+            for word in wordDict: # 遍历单词
+                if j >= len(word):
+                    dp[j] = dp[j] or (dp[j - len(word)] and word == s[j - len(word):j])
+                    print(dp)
+        return dp[len(s)]
+```
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:       
+        n=len(s)
+        dp=[False]*(n+1)
+        dp[0]=True
+        for i in range(n):
+            for j in range(i+1,n+1):
+                if(dp[i] and (s[i:j] in wordDict)):
+                    dp[j]=True
+        return dp[-1]
+```
+
+```python
+# 回溯
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        import functools
+        @functools.lru_cache(None)
+        def back_track(s):
+            if(not s):
+                return True
+            res=False
+            for i in range(1,len(s)+1):
+                if(s[:i] in wordDict):
+                    res=back_track(s[i:]) or res
+            return res
+        return back_track(s)
+```
+
+#### 198. House Robber
+
+ou are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and **it will automatically contact the police if two adjacent houses were broken into on the same night**.
+
+Given an integer array `nums` representing the amount of money of each house, return *the maximum amount of money you can rob tonight **without alerting the police***.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3,1]
+Output: 4
+Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
+Total amount you can rob = 1 + 3 = 4.
+```
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        # dp[i]：考虑下标i（包括i）以内的房屋，最多可以偷窃的金额为dp[i]
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i-2]+nums[i], dp[i-1])
+        return dp[-1]
+```
+
+#### 213. House Robber II
+
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. All houses at this place are **arranged in a circle.** That means the first house is the neighbor of the last one. Meanwhile, adjacent houses have a security system connected, and **it will automatically contact the police if two adjacent houses were broken into on the same night**.
+
+Given an integer array `nums` representing the amount of money of each house, return *the maximum amount of money you can rob tonight **without alerting the police***.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [2,3,2]
+Output: 3
+Explanation: You cannot rob house 1 (money = 2) and then rob house 3 (money = 2), because they are adjacent houses.
+```
+
+**Example 2:**
+
+```
+Input: nums = [1,2,3,1]
+Output: 4
+Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
+Total amount you can rob = 1 + 3 = 4.
+```
+
+**Example 3:**
+
+```
+Input: nums = [0]
+Output: 0
+```
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if (n := len(nums)) == 0:
+            return 0
+        if n == 1:
+            return nums[0]
+        result1 = self.robRange(nums, 0, n - 2)
+        result2 = self.robRange(nums, 1, n - 1)
+        return max(result1 , result2)
+
+    def robRange(self, nums: List[int], start: int, end: int) -> int:
+        if end == start: return nums[start]
+        dp = [0] * len(nums)
+        dp[start] = nums[start]
+        dp[start + 1] = max(nums[start], nums[start + 1])
+        for i in range(start + 2, end + 1):
+            dp[i] = max(dp[i -2] + nums[i], dp[i - 1])
+        return dp[end]
+```
+
+
+
+#### 337. House Robber III
+
+The thief has found himself a new place for his thievery again. There is only one entrance to this area, called `root`.
+
+Besides the `root`, each house has one and only one parent house. After a tour, the smart thief realized that all houses in this place form a binary tree. It will automatically contact the police if **two directly-linked houses were broken into on the same night**.
+
+Given the `root` of the binary tree, return *the maximum amount of money the thief can rob **without alerting the police***.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/10/rob1-tree.jpg)
+
+```
+Input: root = [3,2,3,null,3,null,1]
+Output: 7
+Explanation: Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.
+```
+
+```python
+# 暴力递归
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rob(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        if root.left is None and root.right  is None:
+            return root.val
+        # 偷父节点
+        val1 = root.val
+        if root.left:
+            val1 += self.rob(root.left.left) + self.rob(root.left.right)
+        if root.right:
+            val1 += self.rob(root.right.left) + self.rob(root.right.right)
+        # 不偷父节点
+        val2 = self.rob(root.left) + self.rob(root.right)
+        return max(val1, val2)
+```
+
+```python
+# 记忆化递归
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    memory = {}
+    def rob(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        if root.left is None and root.right  is None:
+            return root.val
+        if self.memory.get(root) is not None:
+            return self.memory[root]
+        # 偷父节点
+        val1 = root.val
+        if root.left:
+            val1 += self.rob(root.left.left) + self.rob(root.left.right)
+        if root.right:
+            val1 += self.rob(root.right.left) + self.rob(root.right.right)
+        # 不偷父节点
+        val2 = self.rob(root.left) + self.rob(root.right)
+        self.memory[root] = max(val1, val2)
+        return max(val1, val2)
+```
+
+```python
+# DP
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rob(self, root: TreeNode) -> int:
+        result = self.rob_tree(root)
+        return max(result[0], result[1])
+    
+    def rob_tree(self, node):
+        if node is None:
+            return (0, 0) # (偷当前节点金额，不偷当前节点金额)
+        left = self.rob_tree(node.left)
+        right = self.rob_tree(node.right)
+        val1 = node.val + left[1] + right[1] # 偷当前节点，不能偷子节点
+        val2 = max(left[0], left[1]) + max(right[0], right[1]) # 不偷当前节点，可偷可不偷子节点
+        return (val1, val2)
+```
+
+
+
+#### 121. Best Time to Buy and Sell Stock
+
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+
+You want to maximize your profit by choosing a **single day** to buy one stock and choosing a **different day in the future** to sell that stock.
+
+Return *the maximum profit you can achieve from this transaction*. If you cannot achieve any profit, return `0`.
+
+**Example 1:**
+
+```
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+```
+
+```python
+# 贪心
+def maxProfit(self, prices: List[int]) -> int:
+    max_profi, min_price = 0, float("inf")
+    for i in prices:
+        min_price = min(min_price, i)
+        max_profi = max(max_profi, i - min_price)
+    return max_profi
+```
+
+```python
+# DP
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        length = len(prices)
+        if len == 0:
+            return 0
+        dp = [[0] * 2 for _ in range(length)]
+        # dp[i][0] 表示第i天持有股票所得最多现金
+        # dp[i][1] 表示第i天不持有股票所得最多现金
+        dp[0][0] = -prices[0]
+        dp[0][1] = 0
+        for i in range(1, length):
+            dp[i][0] = max(dp[i-1][0], -prices[i])
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
+        return dp[-1][1]
+```
+
+
+
+#### 122. Best Time to Buy and Sell Stock II
+
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+
+Find the maximum profit you can achieve. You may complete as many transactions as you like (i.e., buy one and sell one share of the stock multiple times).
+
+**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+**Example 1:**
+
+```
+Input: prices = [7,1,5,3,6,4]
+Output: 7
+Explanation: Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-1 = 4.
+Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 = 3.
+```
+
+```python
+def maxProfit(self, prices: List[int]) -> int:
+    profit = 0
+    for i in range(len(prices)-1):
+        if prices[i+1] > prices[i]: profit += prices[i+1] - prices[i]
+    return profit
+```
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        length = len(prices)
+        dp = [[0] * 2 for _ in range(length)]
+        dp[0][0] = -prices[0]
+        dp[0][1] = 0
+        for i in range(1, length):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i]) 
+            #注意这里是和121. 买卖股票的最佳时机唯一不同的地方
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
+        return dp[-1][1]
+
+```
+
+#### 123. Best Time to Buy and Sell Stock III
+
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+
+Find the maximum profit you can achieve. You may complete **at most two transactions**.
+
+**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+ 
+
+**Example 1:**
+
+```
+Input: prices = [3,3,5,0,0,3,1,4]
+Output: 6
+Explanation: Buy on day 4 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
+Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.
+```
+
+```python
+class Solution:
+    # 一天一共就有五个状态， 
+    # 0.没有操作
+    # 1.第一次买入
+    # 2.第一次卖出
+    # 3.第二次买入
+    # 4.第二次卖出
+    # dp[i][j]中 i表示第i天，j为 [0 - 4] 五个状态，dp[i][j]表示第i天状态j所剩最大现金。
+    def maxProfit(self, prices: List[int]) -> int:
+        if len(prices) == 0:
+            return 0
+        dp = [[0] * 5 for _ in range(len(prices))]
+        dp[0][1] = -prices[0]
+        dp[0][3] = -prices[0]
+        for i in range(1, len(prices)):
+            dp[i][0] = dp[i-1][0]
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+            dp[i][2] = max(dp[i-1][2], dp[i-1][1] + prices[i])
+            dp[i][3] = max(dp[i-1][3], dp[i-1][2] - prices[i])
+            dp[i][4] = max(dp[i-1][4], dp[i-1][3] + prices[i])
+        return dp[-1][4]
+```
+
+#### 188. Best Time to Buy and Sell Stock IV
+
+You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `ith` day, and an integer `k`.
+
+Find the maximum profit you can achieve. You may complete at most `k` transactions.
+
+**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+ 
+
+**Example 1:**
+
+```
+Input: k = 2, prices = [2,4,1]
+Output: 2
+Explanation: Buy on day 1 (price = 2) and sell on day 2 (price = 4), profit = 4-2 = 2.
+```
+
+```python
+# 使用二维数组 dp[i][j] ：第i天的状态为j，所剩下的最大现金是dp[i][j]
+# j的状态表示为：
+# 0 表示不操作
+# 1 第一次买入
+# 2 第一次卖出
+# 3 第二次买入
+# 4 第二次卖出
+# .....
+# 大家应该发现规律了吧 ，除了0以外，偶数就是卖出，奇数就是买入。
+# 题目要求是至多有K笔交易，那么j的范围就定义为 2 * k + 1 就可以了。
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        if len(prices) == 0:
+            return 0
+        dp = [[0] * (2*k+1) for _ in range(len(prices))]
+        for j in range(1, 2*k, 2):
+            dp[0][j] = -prices[0]
+        for i in range(1, len(prices)):
+            for j in range(0, 2*k-1, 2):
+                dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j] - prices[i])
+                dp[i][j+2] = max(dp[i-1][j+2], dp[i-1][j+1] + prices[i])
+        return dp[-1][2*k]
+```
+
+#### 309. Best Time to Buy and Sell Stock with Cooldown
+
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+
+Find the maximum profit you can achieve. You may complete as many transactions as you like (i.e., buy one and sell one share of the stock multiple times) with the following restrictions:
+
+- After you sell your stock, you cannot buy stock on the next day (i.e., cooldown one day).
+
+**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+ 
+
+**Example 1:**
+
+```
+Input: prices = [1,2,3,0,2]
+Output: 3
+Explanation: transactions = [buy, sell, cooldown, buy, sell]
+```
+
+**Example 2:**
+
+```
+Input: prices = [1]
+Output: 0
+```
+
+```python
+# dp[i][j]，第i天状态为j，所剩的最多现金为dp[i][j]。
+# 具体可以区分出如下四个状态：
+
+# 状态0：买入股票状态（今天买入股票，或者是之前就买入了股票然后没有操作）
+# 卖出股票状态，这里就有两种卖出股票状态
+# 	状态1：两天前就卖出了股票，度过了冷冻期，一直没操作，今天保持卖出股票状态
+# 	状态2：今天卖出了股票
+# 状态3：今天为冷冻期状态，但冷冻期状态不可持续，只有一天！
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        if n == 0:
+            return 0
+        dp = [[0] * 4 for _ in range(n)]
+        dp[0][0] = -prices[0] #持股票
+        for i in range(1, n):
+            dp[i][0] = max(dp[i-1][0], max(dp[i-1][3], dp[i-1][1]) - prices[i])
+            dp[i][1] = max(dp[i-1][1], dp[i-1][3]) # 不能是昨天卖出，因为昨天卖出则今天是状态3
+            dp[i][2] = dp[i-1][0] + prices[i]
+            dp[i][3] = dp[i-1][2]
+        return max(dp[n-1][3], dp[n-1][1], dp[n-1][2])
+```
+
+
+
+#### 714. Best Time to Buy and Sell Stock with Transaction Fee
+
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day, and an integer `fee` representing a transaction fee.
+
+Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.
+
+**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+ 
+
+**Example 1:**
+
+```
+Input: prices = [1,3,2,8,4,9], fee = 2
+Output: 8
+Explanation: The maximum profit can be achieved by:
+- Buying at prices[0] = 1
+- Selling at prices[3] = 8
+- Buying at prices[4] = 4
+- Selling at prices[5] = 9
+The total profit is ((8 - 1) - 2) + ((9 - 4) - 2) = 8.
+```
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        profit = 0
+        buy = prices[0]
+        for i in range(1, len(prices)):
+            if prices[i] < buy:
+                buy = prices[i]
+            elif prices[i] >= buy and prices[i] - buy <= fee:
+                continue
+            else:
+                profit += prices[i] - buy - fee
+                buy = prices[i] - fee
+        return profit
+```
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        n = len(prices)
+        dp = [[0] * 2 for _ in range(n)]
+        # 0 : 持股（买入）
+        # 1 : 不持股（售出）
+        # dp 定义第i天持股/不持股 所得最多现金
+        dp[0][0] = -prices[0] #初始化持股
+        for i in range(1, n):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i])
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i] - fee)
+        return max(dp[-1][0], dp[-1][1])
+```
+
+
+
+
+
+#### 300. Longest Increasing Subsequence
+
+Given an integer array `nums`, return the length of the longest strictly increasing subsequence.
+
+A **subsequence** is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, `[3,6,2,7]` is a subsequence of the array `[0,3,1,6,2,2,7]`.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+```
+
+**Example 2:**
+
+```
+Input: nums = [0,1,0,3,2,3]
+Output: 4
+```
+
+**Example 3:**
+
+```
+Input: nums = [7,7,7,7,7,7,7]
+Output: 1
+```
+
+```python
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        if len(nums) <= 1:
+            return len(nums)
+        dp = [1] * len(nums)
+        # dp[i]表示i之前包括i的最长上升子序列
+        result = 0
+        for i in range(1, len(nums)):
+            for j in range(0, i):
+                if nums[i] > nums[j]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+                result = max(result, dp[i])
+        return result
+```
+
+#### 674. Longest Continuous Increasing Subsequence
+
+Given an unsorted array of integers `nums`, return *the length of the longest **continuous increasing subsequence** (i.e. subarray)*. The subsequence must be **strictly** increasing.
+
+A **continuous increasing subsequence** is defined by two indices `l` and `r` (`l < r`) such that it is `[nums[l], nums[l + 1], ..., nums[r - 1], nums[r]]` and for each `l <= i < r`, `nums[i] < nums[i + 1]`.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,3,5,4,7]
+Output: 3
+Explanation: The longest continuous increasing subsequence is [1,3,5] with length 3.
+Even though [1,3,5,7] is an increasing subsequence, it is not continuous as elements 5 and 7 are separated by element
+4.
+```
+
+```python
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        dp = [1] * len(nums)
+        result = 0
+        for i in range(len(nums)-1):
+            if nums[i+1] > nums[i]: #连续记录
+                dp[i+1] = dp[i] + 1
+            result = max(result, dp[i+1])
+        return result
+```
+
+```python
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        result = 1 #连续子序列最少也是1
+        count = 1
+        for i in range(len(nums)-1):
+            if nums[i+1] > nums[i]: #连续记录
+                count += 1
+            else: #不连续，count从头开始
+                count = 1
+            result = max(result, count)
+        return result
+```
+
+#### 718. Maximum Length of Repeated Subarray
+
+Given two integer arrays `nums1` and `nums2`, return *the maximum length of a subarray that appears in **both** arrays*.
+
+**Example 1:**
+
+```
+Input: nums1 = [1,2,3,2,1], nums2 = [3,2,1,4,7]
+Output: 3
+Explanation: The repeated subarray with maximum length is [3,2,1].
+```
+
+```python
+class Solution:
+    def findLength(self, A: List[int], B: List[int]) -> int:
+        dp = [[0] * (len(B)+1) for _ in range(len(A)+1)]
+        result = 0
+        for i in range(1, len(A)+1):
+            for j in range(1, len(B)+1):
+                if A[i-1] == B[j-1]:
+                    dp[i][j] = dp[i-1][j-1] + 1
+                result = max(result, dp[i][j])
+        return result
+```
+
+```python
+class Solution:
+    def findLength(self, A: List[int], B: List[int]) -> int:
+        dp = [0] * (len(B) + 1)
+        result = 0
+        for i in range(1, len(A)+1):
+            for j in range(len(B), 0, -1):
+                if A[i-1] == B[j-1]:
+                    dp[j] = dp[j-1] + 1
+                else:
+                    dp[j] = 0 #注意这里不相等的时候要有赋0的操作
+                result = max(result, dp[j])
+        return result
+```
+
+#### 1143. Longest Common Subsequence
+
+Given two strings `text1` and `text2`, return *the length of their longest **common subsequence**.* If there is no **common subsequence**, return `0`.
+
+A **subsequence** of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+
+- For example, `"ace"` is a subsequence of `"abcde"`.
+
+A **common subsequence** of two strings is a subsequence that is common to both strings.
+
+ 
+
+**Example 1:**
+
+```
+Input: text1 = "abcde", text2 = "ace" 
+Output: 3  
+Explanation: The longest common subsequence is "ace" and its length is 3.
+```
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        len1, len2 = len(text1)+1, len(text2)+1
+        dp = [[0 for _ in range(len1)] for _ in range(len2)] 
+        # dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]
+        for i in range(1, len2):
+            for j in range(1, len1): 
+                if text1[j-1] == text2[i-1]:
+                    dp[i][j] = dp[i-1][j-1]+1 
+                else:
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+        return dp[-1][-1]
+```
+
+#### 1035. Uncrossed Lines
+
+We write the integers of `nums1` and `nums2` (in the order they are given) on two separate horizontal lines.
+
+Now, we may draw *connecting lines*: a straight line connecting two numbers `nums1[i]` and `nums2[j]` such that:
+
+- `nums1[i] == nums2[j]`;
+- The line we draw does not intersect any other connecting (non-horizontal) line.
+
+Note that a connecting lines cannot intersect even at the endpoints: each number can only belong to one connecting line.
+
+Return the maximum number of connecting lines we can draw in this way.
+
+ 
+
+**Example 1:**
+
+<img src="https://assets.leetcode.com/uploads/2019/04/26/142.png" alt="img" style="zoom:5%;" />
+
+```
+Input: nums1 = [1,4,2], nums2 = [1,2,4]
+Output: 2
+Explanation: We can draw 2 uncrossed lines as in the diagram.
+We cannot draw 3 uncrossed lines, because the line from nums1[1]=4 to nums2[2]=4 will intersect the line from nums1[2]=2 to nums2[1]=2.
+```
+
+```python
+# 本题说是求绘制的最大连线数，其实就是求两个字符串的最长公共子序列的长度
+class Solution:
+    def maxUncrossedLines(self, A: List[int], B: List[int]) -> int:
+        dp = [[0] * (len(B)+1) for _ in range(len(A)+1)]
+        for i in range(1, len(A)+1):
+            for j in range(1, len(B)+1):
+                if A[i-1] == B[j-1]:
+                    dp[i][j] = dp[i-1][j-1] + 1
+                else:
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+        return dp[-1][-1]
+```
+
+#### 53. Maximum Subarray
+
+see 53 in greedy
+
+#### 392. Is Subsequence
+
+Given two strings `s` and `t`, return `true` *if* `s` *is a **subsequence** of* `t`*, or* `false` *otherwise*.
+
+A **subsequence** of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (i.e., `"ace"` is a subsequence of `"abcde"` while `"aec"` is not).
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "abc", t = "ahbgdc"
+Output: true
+```
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        n, m = len(s), len(t)
+        i = j = 0
+        while i < n and j < m:
+            if s[i] == t[j]:
+                i += 1
+            j += 1
+        return i == n
+```
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        # dp[i][j] 表示以下标i-1为结尾的字符串s，和以下标j-1为结尾的字符串t，相同子序列的长度为dp[i][j]。
+        dp = [[0] * (len(t)+1) for _ in range(len(s)+1)]
+        for i in range(1, len(s)+1):
+            for j in range(1, len(t)+1):
+                if s[i-1] == t[j-1]:
+                    dp[i][j] = dp[i-1][j-1] + 1
+                else:
+                    dp[i][j] = dp[i][j-1]
+        if dp[-1][-1] == len(s):
+            return True
+        return False
+```
+
+#### 91. Decode Ways
+
+A message containing letters from `A-Z` can be **encoded** into numbers using the following mapping:
+
+```
+'A' -> "1"
+'B' -> "2"
+...
+'Z' -> "26"
+```
+
+To **decode** an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, `"11106"` can be mapped into:
+
+- `"AAJF"` with the grouping `(1 1 10 6)`
+- `"KJF"` with the grouping `(11 10 6)`
+
+Note that the grouping `(1 11 06)` is invalid because `"06"` cannot be mapped into `'F'` since `"6"` is different from `"06"`.
+
+Given a string `s` containing only digits, return *the **number** of ways to **decode** it*.
+
+The answer is guaranteed to fit in a **32-bit** integer.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "12"
+Output: 2
+Explanation: "12" could be decoded as "AB" (1 2) or "L" (12).
+```
+
+```python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        n = len(s)
+        # 设f表示字符串s的前i个字符s[1..i]的解码方法数
+        f = [1] + [0] * n
+        for i in range(1, n + 1):
+            if s[i - 1] != '0':
+                f[i] += f[i - 1]
+            if i > 1 and s[i - 2] != '0' and int(s[i-2:i]) <= 26:
+                f[i] += f[i - 2]
+        return f[n]
+```
+
+#### 115. Distinct Subsequences
+
+
+
+Given two strings `s` and `t`, return *the number of distinct subsequences of `s` which equals `t`*.
+
+A string's **subsequence** is a new string formed from the original string by deleting some (can be none) of the characters without disturbing the remaining characters' relative positions. (i.e., `"ACE"` is a subsequence of `"ABCDE"` while `"AEC"` is not).
+
+It is guaranteed the answer fits on a 32-bit signed integer.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "rabbbit", t = "rabbit"
+Output: 3
+Explanation:
+As shown below, there are 3 ways you can generate "rabbit" from S.
+rabbbit
+rabbbit
+rabbbit
+```
+
+```python
+# 其中 dp[i][j] 表示在 s[i:] 的子序列中 t[j:] 出现的个数
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        m, n = len(s), len(t)
+        if m < n:
+            return 0
+        
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(m + 1):
+            dp[i][n] = 1
+        
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                if s[i] == t[j]:
+                    dp[i][j] = dp[i + 1][j + 1] + dp[i + 1][j]
+                else:
+                    dp[i][j] = dp[i + 1][j]
+        
+        return dp[0][0]
+```
+
+```python
+# dp[i][j]：以i-1为结尾的s子序列中出现以j-1为结尾的t的个数为dp[i][j]
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        if (m := len(s)) < (n := len(t)):
+            return 0
+        dp = [[0] * (n+1) for _ in range(m+1)]
+        for i in range(m):
+            dp[i][0] = 1
+        for i in range(1, m+1):
+            for j in range(1, n+1):
+                if s[i-1] == t[j-1]:
+                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+                else:
+                    dp[i][j] = dp[i-1][j]
+        return dp[-1][-1]
+    
+    
+    
+class SolutionDP2:
+    """
+    既然dp[i]只用到dp[i - 1]的状态，
+    我们可以通过缓存dp[i - 1]的状态来对dp进行压缩，
+    减少空间复杂度。
+    （原理等同同于滚动数组）
+    """
+    def numDistinct(self, s: str, t: str) -> int:
+        n1, n2 = len(s), len(t)
+        if n1 < n2:
+            return 0
+
+        dp = [0 for _ in range(n2 + 1)]
+        dp[0] = 1
+
+        for i in range(1, n1 + 1):
+            # 必须深拷贝
+            # 不然prev[i]和dp[i]是同一个地址的引用
+            prev = dp.copy()
+            # 剪枝，保证s的长度大于等于t
+            # 因为对于任意i，i > n1, dp[i] = 0
+            # 没必要跟新状态。 
+            end = i if i < n2 else n2
+            for j in range(1, end + 1):
+                if s[i - 1] == t[j - 1]:
+                    dp[j] = prev[j - 1] + prev[j]
+                else:
+                    dp[j] = prev[j]
+        return dp[-1]
+```
+
+
+
+#### 583. Delete Operation for Two Strings
+
+Given two strings `word1` and `word2`, return *the minimum number of **steps** required to make* `word1` *and* `word2` *the same*.
+
+In one **step**, you can delete exactly one character in either string.
+
+ 
+
+**Example 1:**
+
+```
+Input: word1 = "sea", word2 = "eat"
+Output: 2
+Explanation: You need one step to make "sea" to "ea" and another step to make "eat" to "ea".
+```
+
+**Example 2:**
+
+```
+Input: word1 = "leetcode", word2 = "etco"
+Output: 4
+```
+
+```python
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        # dp[i][j]：以i-1为结尾的字符串word1，和以j-1位结尾的字符串word2，想要达到相等，所需要删除元素的最少次数
+        dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
+        for i in range(len(word1)+1):
+            dp[i][0] = i
+        for j in range(len(word2)+1):
+            dp[0][j] = j
+        for i in range(1, len(word1)+1):
+            for j in range(1, len(word2)+1):
+                if word1[i-1] == word2[j-1]:
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    dp[i][j] = min(dp[i-1][j-1] + 2, dp[i-1][j] + 1, dp[i][j-1] + 1)
+        return dp[-1][-1]
+```
+
+#### 72. Edit Distance
+
+Given two strings `word1` and `word2`, return *the minimum number of operations required to convert `word1` to `word2`*.
+
+You have the following three operations permitted on a word:
+
+- Insert a character
+- Delete a character
+- Replace a character
+
+ 
+
+**Example 1:**
+
+```
+Input: word1 = "hr", word2 = "ros"
+Input: word1 = "hr", word2 = "rosr"
+Output: 3
+Explanation: 
+horse -> rorse (replace 'h' with 'r')
+rorse -> rose (remove 'r')
+rose -> ros (remove 'e')
+```
+
+```python
+# dp[i][j] 表示以下标i-1为结尾的字符串word1，和以下标j-1为结尾的字符串word2，最近编辑距离为dp[i][j]
+```
+
+在确定递推公式的时候，首先要考虑清楚编辑的几种操作，整理如下：
+
+```
+if (word1[i - 1] == word2[j - 1])
+    不操作
+if (word1[i - 1] != word2[j - 1])
+    增
+    删
+    换
+```
+
+也就是如上4种情况。
+
+`if (word1[i - 1] != word2[j - 1])`，此时就需要编辑了，如何编辑呢？
+
+- 操作一：word1增加一个元素，使其word1[i - 1]与word2[j - 1]相同，那么就是以下标i-1为结尾的word1 与 j-2为结尾的word2的最近编辑距离 加上一个增加元素的操作。
+
+即 `dp[i][j] = dp[i][j-1] + 1;`
+
+- 操作二：word2添加一个元素，使其word1[i - 1]与word2[j - 1]相同，那么就是以下标i-2为结尾的word1 与 j-1为结尾的word2的最近编辑距离 加上一个增加元素的操作。
+
+即 `dp[i][j] = dp[i-1][j] + 1;`
+
+这里有同学发现了，怎么都是添加元素，删除元素去哪了。
+
+**word2添加一个元素，相当于word1删除一个元素**，例如 `word1 = "ad" ，word2 = "a"`，`word1`删除元素`'d'`，`word2`添加一个元素`'d'`，变成`word1="a", word2="ad"`， 最终的操作数是一样！ 
+
+其实这里只需要考虑“删除”或者只考虑“插入”，此二者等价。
+
+```python
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
+        for i in range(len(word1)+1):
+            dp[i][0] = i
+        for j in range(len(word2)+1):
+            dp[0][j] = j
+        for i in range(1, len(word1)+1):
+            for j in range(1, len(word2)+1):
+                if word1[i-1] == word2[j-1]:
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    dp[i][j] = min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
+        return dp[-1][-1]
+```
+
+
+
+#### 647. Palindromic Substrings
+
+Given a string `s`, return *the number of **palindromic substrings** in it*.
+
+A string is a **palindrome** when it reads the same backward as forward.
+
+A **substring** is a contiguous sequence of characters within the string.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+```
+
+```python
+# 双指针
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        result = 0
+        for i in range(len(s)):
+            result += self.extend(s, i, i, len(s)) #以i为中心
+            result += self.extend(s, i, i+1, len(s)) #以i和i+1为中心
+        return result
+    
+    def extend(self, s, i, j, n):
+        res = 0
+        while i >= 0 and j < n and s[i] == s[j]:
+            i -= 1
+            j += 1
+            res += 1
+        return res
+```
+
+
+
+动规五部曲：
+
+1. 确定dp数组（dp table）以及下标的含义
+
+布尔类型的dp\[i\]\[j\]：表示区间范围[i,j] （注意是左闭右闭）的子串是否是回文子串，如果是dp[i][j]为true，否则为false。
+
+1. 确定递推公式
+
+在确定递推公式时，就要分析如下几种情况。
+
+整体上是两种，就是s[i]与s[j]相等，s[i]与s[j]不相等这两种。
+
+当s[i]与s[j]不相等，那没啥好说的了，dp[i][j]一定是false。
+
+当s[i]与s[j]相等时，这就复杂一些了，有如下三种情况
+
+- 情况一：下标i 与 j相同，同一个字符例如a，当然是回文子串
+
+- 情况二：下标i 与 j相差为1，例如aa，也是文子串
+
+- 情况三：下标：i 与 j相差大于1的时候，例如cabac，此时s[i]与s[j]已经相同了，我们看i到j区间是不是回文子串就看aba是不是回文就可以了，那么aba的区间就是 i+1 与 j-1区间，这个区间是不是回文就看dp\[i + 1\]\[j - 1\]是否为true。
+
+  
+
+  ```python
+  class Solution:
+      def countSubstrings(self, s: str) -> int:
+          dp = [[False] * len(s) for _ in range(len(s))]
+          result = 0
+          for i in range(len(s)-1, -1, -1): #注意遍历顺序
+              for j in range(i, len(s)):
+                  if s[i] == s[j]:
+                      if j - i <= 1: #情况一 和 情况二
+                          result += 1
+                          dp[i][j] = True
+                      elif dp[i+1][j-1]: #情况三
+                          result += 1
+                          dp[i][j] = True
+          return result
+  ```
+
+  #### 516. Longest Palindromic Subsequence
+
+  Given a string `s`, find *the longest palindromic **subsequence**'s length in* `s`.
+
+  A **subsequence** is a sequence that can be derived from another sequence by deleting some or no elements without changing the order of the remaining elements.
+
+   
+
+  **Example 1:**
+
+  ```
+  Input: s = "bbbab"
+  Output: 4
+  Explanation: One possible longest palindromic subsequence is "bbbb".
+  ```
+
+动规五部曲分析如下：
+
+1.确定dp数组（dp table）以及下标的含义
+
+dp\[i][j]：字符串s在[i, j]范围内最长的回文子序列的长度为dp\[i][j]。
+
+2.确定递推公式
+
+在判断回文子串的题目中，关键逻辑就是看s[i]与s[j]是否相同。
+
+如果s[i]与s[j]相同，那么dp\[i][j] = dp\[i + 1][j - 1] + 2;
+
+如果s[i]与s[j]不相同，说明s[i]和s[j]的同时加入 并不能增加[i,j]区间回文子串的长度，那么分别加入s[i]、s[j]看看哪一个可以组成最长的回文子序列。
+
+加入s[j]的回文子序列长度为dp\[i + 1][j]。
+
+加入s[i]的回文子序列长度为dp\[i][j - 1]。
+
+那么dp\[i][j]一定是取最大的，即：dp\[i][j] = max(dp\[i + 1][j], dp\[i][j - 1]);
+
+```python
+class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
+        dp = [[0] * len(s) for _ in range(len(s))]
+        for i in range(len(s)):
+            dp[i][i] = 1
+        for i in range(len(s)-1, -1, -1):
+            for j in range(i+1, len(s)):
+                if s[i] == s[j]:
+                    dp[i][j] = dp[i+1][j-1] + 2
+                else:
+                    dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+        return dp[0][-1]
 ```
 
 
@@ -2874,11 +4867,8 @@ class Solution:
     def convert(self, s: str, numRows: int) -> str:
         if numRows == 1 or numRows >= len(s):
             return s
-        
         zigzag = ['' for x in range(numRows)]
-        
         row, step = 0, 1
-        
         for ch in s:
             zigzag[row] += ch
             if row == 0: 
@@ -2886,7 +4876,6 @@ class Solution:
             elif row == numRows - 1: 
                 step = -1
             row += step
-        
         return ''.join(zigzag)
 ```
 
@@ -2951,7 +4940,6 @@ class Solution:
                 num -= values[i]
                 result += numerals[i]
         return result
-        
 ```
 
 
@@ -3003,8 +4991,6 @@ class Solution:
             prev = dict[i]
         return res
 ```
-
-
 
 
 
@@ -3117,9 +5103,9 @@ class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
         a = len(needle)
         b = len(haystack)
-        if a==0:
+        if a == 0:
             return 0
-        next=self.getnext(needle)
+        next = self.getnext(needle)
         p = 0
         for j in range(b):
             while p > 0 and haystack[j] != needle[p]:
@@ -3141,8 +5127,6 @@ class Solution:
             next[i] = j
         return next
 ```
-
-
 
 
 
@@ -3232,7 +5216,6 @@ class Solution:
             else:
                 solution[regsort] = [reg]
         return solution.values()
-        
 ```
 
 
@@ -3272,8 +5255,6 @@ class Solution:
             result += str(1)
         return result[::-1]
 ```
-
-
 
 
 
@@ -3349,7 +5330,6 @@ Explanation: "amanaplanacanalpanama" is a palindrome.
 ```python
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-
         left = 0
         right = len(s) - 1
         while left < right:
@@ -3505,6 +5485,79 @@ class Solution:
         return result
 ```
 
+#### 205. Isomorphic Strings
+
+Given two strings `s` and `t`, *determine if they are isomorphic*.
+
+Two strings `s` and `t` are isomorphic if the characters in `s` can be replaced to get `t`.
+
+All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "egg", t = "add"
+Output: true
+```
+
+```python
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        return len(set(s)) == len(set(t)) and len(set(s)) == len(set(zip(s, t)))
+```
+
+#### 228. Summary Ranges
+
+You are given a **sorted unique** integer array `nums`.
+
+Return *the **smallest sorted** list of ranges that **cover all the numbers in the array exactly***. That is, each element of `nums` is covered by exactly one of the ranges, and there is no integer `x` such that `x` is in one of the ranges but not in `nums`.
+
+Each range `[a,b]` in the list should be output as:
+
+- `"a->b"` if `a != b`
+- `"a"` if `a == b`
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [0,1,2,4,5,7]
+Output: ["0->2","4->5","7"]
+Explanation: The ranges are:
+[0,2] --> "0->2"
+[4,5] --> "4->5"
+[7,7] --> "7"
+```
+
+```python
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        n = len(nums)
+        if n == 0:
+            return []
+        if n == 1:
+            return [str(nums[0])]
+        output = []
+        start = nums[0]
+        for i in range(1, n):
+            if nums[i] - nums[i-1] > 1:
+                end = nums[i-1]
+                if end == start:
+                    output.append(str(start))
+                else:
+                    output.append(str(start) + "->" + str(end))
+                start = nums[i]
+            if i == n - 1:
+                if nums[i] - nums[i-1] > 1:
+                    output.append(str(start))
+                else:
+                    output.append(str(start) + "->" + str(nums[i]))
+        return output
+```
+
 
 
 ### List
@@ -3532,7 +5585,7 @@ class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         dummy = tail = ListNode(0)
         s = 0
-        while l1 or l2 or s:
+        while l1 or l2 or s: # or s 保证了最后的进位
             s += (l1.val if l1 else 0) + (l2.val if l2 else 0)
             tail.next = ListNode(s % 10)
             tail = tail.next
@@ -3778,20 +5831,21 @@ class Solution:
         
         n = 1
         cur = head
-        while cur.next:
+        while cur.next:             # 计算List长度并把curr指向末尾
             cur = cur.next
             n += 1
         
-        if (add := n - k % n) == n:
+        if (add := n - k % n) == n: # 如果k是n的倍数，则什么都不必做
             return head
         
-        cur.next = head
-        while add:
+        cur.next = head             # 闭合成环
+        while add:                  # 将curr移到add处
             cur = cur.next
             add -= 1
         
-        ret = cur.next
+        head = cur.next             # 在curr处剪断闭环
         cur.next = None
+        return head
 ```
 
 
@@ -3837,7 +5891,7 @@ class Solution:
             if curr.next.val == curr.next.next.val:
                 x = curr.next.val
                 while curr.next and curr.next.val == x:
-                    curr.next = curr.next.next
+                    curr.next = curr.next.next # curr does not change
             else:
                 curr = curr.next
         
@@ -3877,15 +5931,12 @@ class Solution:
             return head
         curr = head.next
         prev = head
-        
         while curr:
             if curr.val == prev.val:
                 prev.next = curr.next
-                curr = curr.next
             else:
                 prev = curr
-                curr = curr.next
-                
+            curr = curr.next
         return head
 ```
 
@@ -4205,7 +6256,7 @@ class Solution:
             l1 = l1_tmp
             
             l2.next = l1
-            l2 = l2-tmp
+            l2 = l2_tmp
 ```
 
 
@@ -4241,8 +6292,7 @@ class Solution:
         if not head:
             return head
         
-        dummyHead = ListNode(0)
-        dummyHead.next = head
+        dummyHead = ListNode(0, head)
         lastSorted = head
         curr = head.next
 
@@ -4251,10 +6301,10 @@ class Solution:
                 lastSorted = lastSorted.next
             else:
                 prev = dummyHead
-                while prev.next.val <= curr.val:
+                while prev.next.val <= curr.val: # 找到应该插入的位置
                     prev = prev.next
-                lastSorted.next = curr.next
-                curr.next = prev.next
+                lastSorted.next = curr.next # 末位链接curr下一位（提取curr）
+                curr.next = prev.next # 插入curr
                 prev.next = curr
             curr = lastSorted.next
         
@@ -4374,7 +6424,7 @@ class Solution:
 
 
 
-#### 160. Intersection of Two Linked List**s**
+#### 160. Intersection of Two Linked Lists
 
 **comment**: trick problem
 
@@ -4660,6 +6710,169 @@ class Solution:
 ```
 
 
+
+### Math
+
+#### 204. Count Primes
+
+Count the number of prime numbers less than a non-negative number, `n`.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+```
+
+```python
+# 埃氏筛
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        # 定义数组标记是否是质数
+        is_prime = [1] * n
+        count = 0
+        for i in range(2, n):
+            # 将质数的倍数标记为合数
+            if is_prime[i]:
+                count += 1
+                # 从 i*i 开始标记
+                for j in range(i*i, n, i):
+                    is_prime[j] = 0
+        return count
+```
+
+```python
+# 线性筛
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        if n < 2:
+            return 0
+        count = 0
+        is_prime = [1] * n
+        prime = []
+        for i in range(2,n,1):
+            if is_prime[i]:
+                prime.append(i)
+                count += 1
+            j = 0
+            while j < count and i * prime[j] < n:
+                is_prime[i * prime[j]] = False
+                #如果已经找到了i的质因子（如果i是合数） 就不再继续
+                if i % prime[j] == 0:
+                    break
+                j += 1
+        return count
+```
+
+#### 264. Ugly Number II
+
+An **ugly number** is a positive integer whose prime factors are limited to `2`, `3`, and `5`.
+
+Given an integer `n`, return *the* `nth` ***ugly number***.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 10
+Output: 12
+Explanation: [1, 2, 3, 4, 5, 6, 8, 9, 10, 12] is the sequence of the first 10 ugly numbers.
+```
+
+```python
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        factors = [2, 3, 5]
+        seen = {1}
+        heap = [1]
+        
+        for i in range(n - 1):
+            curr = heapq.heappop(heap)
+            for factor in factors:
+                if (nxt := curr * factor) not in seen:
+                    seen.add(nxt)
+                    heapq.heappush(heap, nxt)
+                    
+        return heapq.heappop(heap)
+```
+
+```python
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        p2 = p3 = p5 = 1
+
+        for i in range(2, n + 1):
+            num2, num3, num5 = dp[p2] * 2, dp[p3] * 3, dp[p5] * 5
+            dp[i] = min(num2, num3, num5)
+            if dp[i] == num2:
+                p2 += 1
+            if dp[i] == num3:
+                p3 += 1
+            if dp[i] == num5:
+                p5 += 1
+        
+        return dp[n]
+```
+
+
+
+#### 313. Super Ugly Number
+
+A **super ugly number** is a positive integer whose prime factors are in the array `primes`.
+
+Given an integer `n` and an array of integers `primes`, return *the* `nth` ***super ugly number***.
+
+The `nth` **super ugly number** is **guaranteed** to fit in a **32-bit** signed integer.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 12, primes = [2,7,13,19]
+Output: 32
+Explanation: [1,2,4,7,8,13,14,16,19,26,28,32] is the sequence of the first 12 super ugly numbers given primes = [2,7,13,19].
+```
+
+```python
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        seen = {1}
+        heap = [1]
+        
+        for i in range(n-1):
+            curr = heapq.heappop(heap)
+            for factor in primes:
+                if (nxt := factor * curr) not in seen:
+                    seen.add(nxt)
+                    heapq.heappush(heap, nxt)
+                    
+        return heapq.heappop(heap)
+```
+
+```python
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        m = len(primes)
+        pointers = [1] * m
+
+        for i in range(2, n + 1):
+            min_num = min(dp[pointers[j]] * primes[j] for j in range(m))
+            dp[i] = min_num
+            for j in range(m):
+                if dp[pointers[j]] * primes[j] == min_num:
+                    pointers[j] += 1
+        
+        return dp[n]
+```
 
 
 
@@ -4997,61 +7210,6 @@ def getRow(self, rowIndex: int) -> List[int]: # dp
 
 
 
-#### 121. Best Time to Buy and Sell Stock
-
-You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
-
-You want to maximize your profit by choosing a **single day** to buy one stock and choosing a **different day in the future** to sell that stock.
-
-Return *the maximum profit you can achieve from this transaction*. If you cannot achieve any profit, return `0`.
-
-**Example 1:**
-
-```
-Input: prices = [7,1,5,3,6,4]
-Output: 5
-Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
-Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
-```
-
-```python
-def maxProfit(self, prices: List[int]) -> int:
-    max_profi, min_price = 0, float("inf")
-    for i in prices:
-        min_price = min(min_price, i)
-        max_profi = max(max_profi, i - min_price)
-    return max_profi
-```
-
-
-
-#### 122. Best Time to Buy and Sell Stock
-
-You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
-
-Find the maximum profit you can achieve. You may complete as many transactions as you like (i.e., buy one and sell one share of the stock multiple times).
-
-**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
-
-**Example 1:**
-
-```
-Input: prices = [7,1,5,3,6,4]
-Output: 7
-Explanation: Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-1 = 4.
-Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 = 3.
-```
-
-```python
-def maxProfit(self, prices: List[int]) -> int:
-    profit = 0
-    for i in range(len(prices)-1):
-        if prices[i+1] > prices[i]: profit += prices[i+1] - prices[i]
-    return profit
-```
-
-
-
 #### 128. Longest Consecutive Sequence
 
 Given an unsorted array of integers `nums`, return *the length of the longest consecutive elements sequence.*
@@ -5276,7 +7434,40 @@ class Solution:
         self.reverse(nums, k, n - 1)
 ```
 
+#### 231. Power of Two
 
+Given an integer `n`, return *`true` if it is a power of two. Otherwise, return `false`*.
+
+An integer `n` is a power of two, if there exists an integer `x` such that `n == 2x`.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 1
+Output: true
+Explanation: 20 = 1
+```
+
+```python
+class Solution:
+    BIG = 2**30
+    def isPowerOfTwo(self, n: int) -> bool:
+        return n > 0 and Solution.BIG % n == 0
+```
+
+```python
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        return n > 0 and (n & (n - 1)) == 0
+```
+
+```python
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        return n > 0 and (n & -n) == n
+```
 
 
 
@@ -5620,44 +7811,6 @@ class Solution:
 
 
 
-#### 283. Move Zeroes
-
-Given an integer array `nums`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.
-
-**Note** that you must do this in-place without making a copy of the array.
-
- 
-
-**Example 1:**
-
-```
-Input: nums = [0,1,0,3,12]
-Output: [1,3,12,0,0]
-```
-
-```python
-class Solution:
-    def moveZeroes(self, nums: List[int]) -> None:
-        """
-        Do not return anything, modify nums in-place instead.
-        """
-        slow = 0
-        fast = 0
-        for fast in range(len(nums)):
-            if nums[fast] == 0:
-                fast += 1
-            else:
-                nums[slow], nums[fast] = nums[fast], nums[slow]
-                slow += 1
-                fast += 1
-```
-
-
-
-
-
-
-
 #### 332. Reconstruct Itinerary
 
 You are given a list of airline `tickets` where `tickets[i] = [fromi, toi]` represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.
@@ -5708,6 +7861,78 @@ class Solution:
 
         backtracking("JFK")
         return path
+```
+
+
+
+#### 343. Integer Break
+
+Given an integer `n`, break it into the sum of `k` **positive integers**, where `k >= 2`, and maximize the product of those integers.
+
+Return *the maximum product you can get*.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 2
+Output: 1
+Explanation: 2 = 1 + 1, 1 × 1 = 1.
+```
+
+**Example 2:**
+
+```
+Input: n = 10
+Output: 36
+Explanation: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36.
+```
+
+```python
+# DP
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        dp = [0] * (n + 1)
+        dp[2] = 1
+        for i in range(3, n + 1):
+            # 假设对正整数 i 拆分出的第一个正整数是 j（1 <= j < i），则有以下两种方案：
+            # 1) 将 i 拆分成 j 和 i−j 的和，且 i−j 不再拆分成多个正整数，此时的乘积是 j * (i-j)
+            # 2) 将 i 拆分成 j 和 i−j 的和，且 i−j 继续拆分成多个正整数，此时的乘积是 j * dp[i-j]
+            for j in range(1, i - 1):
+                dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]))
+        return dp[n]
+```
+
+```python
+# 优化DP
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        if n < 4:
+            return n - 1
+        
+        dp = [0] * (n + 1)
+        dp[2] = 1
+        for i in range(3, n + 1):
+            dp[i] = max(2 * (i - 2), 2 * dp[i - 2], 3 * (i - 3), 3 * dp[i - 3])
+        
+        return dp[n]
+```
+
+```python
+# math
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        if n <= 3:
+            return n - 1
+        
+        quotient, remainder = n // 3, n % 3
+        if remainder == 0:
+            return 3 ** quotient
+        elif remainder == 1:
+            return 3 ** (quotient - 1) * 4
+        else:
+            return 3 ** quotient * 2
 ```
 
 
@@ -6204,6 +8429,43 @@ class Solution:
 
 
 
+#### 509. Fibonacci Number
+
+The **Fibonacci numbers**, commonly denoted `F(n)` form a sequence, called the **Fibonacci sequence**, such that each number is the sum of the two preceding ones, starting from `0` and `1`. That is,
+
+```
+F(0) = 0, F(1) = 1
+F(n) = F(n - 1) + F(n - 2), for n > 1.
+```
+
+Given `n`, calculate `F(n)`.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 2
+Output: 1
+Explanation: F(2) = F(1) + F(0) = 1 + 0 = 1.
+```
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n <= 1:
+            return n
+        a, b, c = 0, 1, 0
+        for i in range(n-1):
+            c = a + b
+            a, b = b, c
+        return c
+```
+
+另外两种数学解法见https://leetcode-cn.com/problems/fibonacci-number/solution/fei-bo-na-qi-shu-by-leetcode-solution-o4ze/
+
+
+
 #### 541. Reverse String II
 
 Given a string `s` and an integer `k`, reverse the first `k` characters for every `2k` characters counting from the start of the string.
@@ -6301,49 +8563,6 @@ class Solution:
 
 
 
-#### 714. Best Time to Buy and Sell Stock with Transaction Fee
-
-You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day, and an integer `fee` representing a transaction fee.
-
-Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.
-
-**Note:** You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
-
- 
-
-**Example 1:**
-
-```
-Input: prices = [1,3,2,8,4,9], fee = 2
-Output: 8
-Explanation: The maximum profit can be achieved by:
-- Buying at prices[0] = 1
-- Selling at prices[3] = 8
-- Buying at prices[4] = 4
-- Selling at prices[5] = 9
-The total profit is ((8 - 1) - 2) + ((9 - 4) - 2) = 8.
-```
-
-```python
-class Solution:
-    def maxProfit(self, prices: List[int], fee: int) -> int:
-        profit = 0
-        buy = prices[0]
-        for i in range(1, len(prices)):
-            if prices[i] < buy:
-                buy = prices[i]
-            elif prices[i] >= buy and prices[i] - buy <= fee:
-                continue
-            else:
-                profit += prices[i] - buy - fee
-                buy = prices[i] - fee
-        return profit
-```
-
-
-
-
-
 #### 738. Monotone Increasing Digits
 
 An integer has **monotone increasing digits** if and only if each pair of adjacent digits `x` and `y` satisfy `x <= y`.
@@ -6369,6 +8588,55 @@ class Solution:
                 a[i:] = '9' * (len(a) - i)  #python不需要设置flag值，直接按长度给9就好了
         return int("".join(a)) 
 
+```
+
+
+
+#### 746. Min Cost Climbing Stairs
+
+You are given an integer array `cost` where `cost[i]` is the cost of `ith` step on a staircase. Once you pay the cost, you can either climb one or two steps.
+
+You can either start from the step with index `0`, or the step with index `1`.
+
+Return *the minimum cost to reach the top of the floor*.
+
+ 
+
+**Example 1:**
+
+```
+Input: cost = [10,15,20]
+Output: 15
+Explanation: Cheapest is: start on cost[1], pay that cost, and go to the top.
+```
+
+**Example 2:**
+
+```
+Input: cost = [1,100,1,1,1,100,1,1,100,1]
+Output: 6
+Explanation: Cheapest is: start on cost[0], and only step on 1s, skipping cost[3].
+```
+
+```python
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        dp = [0] * (n + 1)
+        for i in range(2, n + 1):
+            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+        return dp[n]
+```
+
+```python
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        prev, curr = 0, 0
+        for i in range(2, n + 1):
+            nxt = min(curr + cost[i - 1], prev + cost[i - 2])
+            prev, curr = curr, nxt
+        return curr
 ```
 
 
@@ -6408,6 +8676,53 @@ class Solution:
                 result.append(right - left + 1)
                 left = right + 1
         return result
+```
+
+
+
+#### 844. Backspace String Compare
+
+Given two strings `s` and `t`, return `true` *if they are equal when both are typed into empty text editors*. `'#'` means a backspace character.
+
+Note that after backspacing an empty text, the text will continue empty.
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "ab#c", t = "ad#c"
+Output: true
+Explanation: Both s and t become "ac".
+```
+
+```python
+class Solution(object):
+    def backspaceCompare(self, S, T):
+        def build(S):
+            ans = []
+            for c in S:
+                if c != '#':
+                    ans.append(c)
+                elif ans:
+                    ans.pop()
+            return "".join(ans)
+        return build(S) == build(T)
+```
+
+```python
+class Solution(object):
+    def backspaceCompare(self, S, T):
+        def F(S):
+            skip = 0
+            for x in reversed(S):
+                if x == '#':
+                    skip += 1
+                elif skip:
+                    skip -= 1
+                else:
+                    yield x
+        return all(x == y for x, y in itertools.zip_longest(F(S), F(T)))
 ```
 
 
