@@ -837,8 +837,9 @@ class Solution:
         if x < 0:
             return False
         rev = 0
-        while x:
-            x, tail = divmod(x, 10)
+        n = x
+        while n:
+            n, tail = divmod(n, 10)
             rev = rev * 10 + tail
         return True if rev == x else False
 ```
@@ -1494,7 +1495,135 @@ class Solution:
 
 
 
+#### 31. Next Permutation
+
+Implement **next permutation**, which rearranges numbers into the lexicographically next greater permutation of numbers.
+
+If such an arrangement is not possible, it must rearrange it as the lowest possible order (i.e., sorted in ascending order).
+
+The replacement must be **[in place](http://en.wikipedia.org/wiki/In-place_algorithm)** and use only constant extra memory.
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3]
+Output: [1,3,2]
+```
+
+**Example 2:**
+
+```
+Input: nums = [3,2,1]
+Output: [1,2,3]
+```
+
+**Example 3:**
+
+```
+Input: nums = [1,1,5]
+Output: [1,5,1]
+```
+
+```python
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        i = len(nums) - 2
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+        if i >= 0:
+            j = len(nums) - 1
+            while j >= 0 and nums[i] >= nums[j]:
+                j -= 1
+            nums[i], nums[j] = nums[j], nums[i]
+        
+        left, right = i + 1, len(nums) - 1
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+```
+
+
+
+
+
 ### Recursive
+
+#### 112. Path Sum
+
+Given the `root` of a binary tree and an integer `targetSum`, return `true` if the tree has a **root-to-leaf** path such that adding up all the values along the path equals `targetSum`.
+
+A **leaf** is a node with no children.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg)
+
+```
+Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+Output: true
+```
+
+```python
+def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
+    if root is None:
+        return False
+    if root.left is None and root.right is None:
+        return root.val == targetSum
+    return self.hasPathSum(root.left, targetSum - root.val) or self.hasPathSum(root.right, targetSum - root.val)
+```
+
+
+
+
+
+
+
+#### 22. Generate Parentheses
+
+Given `n` pairs of parentheses, write a function to *generate all combinations of well-formed parentheses*.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+```
+
+```python
+class Solution(object):
+    def generateParenthesis(self, n):
+        def generate(l, r, p, result=[]):
+            if l:
+                generate(l-1, r, p+"(")
+            if r > l:
+                generate(l, r-1, p+")")
+            if not r:
+                result.append(p) 
+            return result
+        
+        return generate(n, n, '')
+```
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n == 0:
+            return ['']
+        ans = []
+        for c in range(n):
+            for left in self.generateParenthesis(c):
+                for right in self.generateParenthesis(n-1-c):
+                    ans.append('({}){}'.format(left, right))
+        return ans
+
+```
+
+
 
 
 
@@ -1623,7 +1752,106 @@ class Solution:
 
 
 
-### DFS/BFS/Backtracking
+### Backtracking
+
+
+
+#### 77*. Combinations
+
+Given two integers `n` and `k`, return *all possible combinations of* `k` *numbers out of the range* `[1, n]`.
+
+You may return the answer in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: n = 4, k = 2
+Output:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+```
+
+```python
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        # return list(itertools.combinations(range(1,n+1),k))
+        res=[]  #存放符合条件结果的集合
+        path=[]  #用来存放符合条件结果
+        def backtrack(n,k,startIndex):
+            if len(path) == k:
+                res.append(path[:])
+                return 
+            for i in range(startIndex, n-(k-len(path))+2):  #优化的地方
+                path.append(i)  #处理节点 
+                backtrack(n, k, i+1)  #递归
+                path.pop()  #回溯，撤销处理的节点
+        backtrack(n,k,1)
+        return res
+
+```
+
+#### 216. Combination Sum III
+
+Find all valid combinations of `k` numbers that sum up to `n` such that the following conditions are true:
+
+- Only numbers `1` through `9` are used.
+- Each number is used **at most once**.
+
+Return *a list of all possible valid combinations*. The list must not contain the same combination twice, and the combinations may be returned in any order.
+
+ 
+
+**Example 1:**
+
+```
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+Explanation:
+1 + 2 + 4 = 7
+There are no other valid combinations.
+```
+
+```python
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        res = []  #存放结果集
+        self.findallPath(n,k,0,1,[],res)
+        return res
+    
+    def findallPath(self,n,k,sum,startIndex,path,res):
+            if sum > n: return  #剪枝操作
+            if sum == n and len(path) == k:  #如果path.size() == k 但sum != n 直接返回
+                return res.append(path[:])
+            for i in range(startIndex,9-(k-len(path))+2):  #剪枝操作
+                path.append(i)
+                sum += i 
+                self.findallPath(n,k,sum,i+1,path,res)  #注意i+1调整startIndex
+                sum -= i  #回溯
+                path.pop()  #回溯
+```
+
+```python
+import itertools
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        allNumbers=[i for i in range(1,10)]
+        res=[]
+        for item in itertools.combinations(allNumbers,k):
+            if sum(item)==n:
+                res.append(item)
+                
+        return res  
+```
+
+
 
 #### 17. Letter Combinations of a Phone Number
 
@@ -1641,8 +1869,6 @@ A mapping of digit to letters (just like on the telephone buttons) is given belo
 Input: digits = "23"
 Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
 ```
-
-
 
 ```python
 # Algorithm: Greedy
@@ -1694,118 +1920,6 @@ class Solution:
             path = path[:-1]
 ```
 
-
-
-#### 37. Sudoku Solver
-
-Write a program to solve a Sudoku puzzle by filling the empty cells.
-
-A sudoku solution must satisfy **all of the following rules**:
-
-1. Each of the digits `1-9` must occur exactly once in each row.
-2. Each of the digits `1-9` must occur exactly once in each column.
-3. Each of the digits `1-9` must occur exactly once in each of the 9 `3x3` sub-boxes of the grid.
-
-The `'.'` character indicates empty cells.
-
- 
-
-**Example 1:**
-
-![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png)
-
-```
-Input: board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
-Output: [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
-Explanation: The input board is shown above and the only valid solution is shown below:
-```
-
-```python
-class Solution:
-    def solveSudoku(self, board: List[List[str]]) -> None:
-        """
-        Do not return anything, modify board in-place instead.
-        """
-        def backtrack(board):
-            for i in range(len(board)):  #遍历行
-                for j in range(len(board[0])):  #遍历列
-                    if board[i][j] != ".": continue
-                    for k in range(1,10):  #(i, j) 这个位置放k是否合适
-                        if isValid(i,j,k,board):
-                            board[i][j] = str(k)  #放置k
-                            if backtrack(board): return True  #如果找到合适一组立刻返回
-                            board[i][j] = "."  #回溯，撤销k
-                    return False  #9个数都试完了，都不行，那么就返回false
-            return True  #遍历完没有返回false，说明找到了合适棋盘位置了
-        def isValid(row,col,val,board):
-            for i in range(9):  #判断行里是否重复
-                if board[row][i] == str(val):
-                    return False
-            for j in range(9):  #判断列里是否重复
-                if board[j][col] == str(val):
-                    return False
-            startRow = (row // 3) * 3
-            startcol = (col // 3) * 3
-            for i in range(startRow,startRow + 3):  #判断9方格里是否重复
-                for j in range(startcol,startcol + 3):
-                    if board[i][j] == str(val):
-                        return False
-            return True
-        backtrack(board)
-```
-
-
-
-
-
-
-
-#### 22. Generate Parentheses
-
-Given `n` pairs of parentheses, write a function to *generate all combinations of well-formed parentheses*.
-
- 
-
-**Example 1:**
-
-```
-Input: n = 3
-Output: ["((()))","(()())","(())()","()(())","()()()"]
-```
-
-```python
-class Solution(object):
-    def generateParenthesis(self, n):
-        def generate(l, r, p, result=[]):
-            if l:
-                generate(l-1, r, p+"(")
-            if r > l:
-                generate(l, r-1, p+")")
-            if not r:
-                result.append(p) 
-            return result
-        
-        return generate(n, n, '')
-```
-
-```python
-class Solution:
-    def generateParenthesis(self, n: int) -> List[str]:
-        if n == 0:
-            return ['']
-        ans = []
-        for c in range(n):
-            for left in self.generateParenthesis(c):
-                for right in self.generateParenthesis(n-1-c):
-                    ans.append('({}){}'.format(left, right))
-        return ans
-
-```
-
-
-
-
-
 #### 39. Combination Sum
 
 Given an array of **distinct** integers `candidates` and a target integer `target`, return *a list of all **unique combinations** of* `candidates` *where the chosen numbers sum to* `target`*.* You may return the combinations in **any order**.
@@ -1844,8 +1958,6 @@ def dfs(self, nums, target, index, path, result):
     for i in range(index, len(nums)):
         self.dfs(nums, target - nums[i], i, path + [nums[i]], result)
 ```
-
-
 
 #### 40. Combination Sum II
 
@@ -1890,7 +2002,262 @@ def dfs(self, nums, target, index, path, result):
         self.dfs(nums, target - nums[i], i + 1, path + [nums[i]], result)
 ```
 
+```python
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        path = []
+        res = []
+        
+        candidates.sort()
+        
+        def dfs(candidates, target, index):
+            if sum(path) > target: return
+            if sum(path) == target:
+                res.append(path[:])
+                return
+            for i in range(index, len(candidates)):
+                if i > index and candidates[i] == candidates[i - 1]:
+                    continue
+                path.append(candidates[i])
+                dfs(candidates, target, i + 1)
+                path.pop()
+                
+        dfs(candidates, target, 0)
+        
+        return res
+```
 
+
+
+#### 131. Palindrome Partitioning
+
+Given a string `s`, partition `s` such that every substring of the partition is a **palindrome**. Return all possible palindrome partitioning of `s`.
+
+A **palindrome** string is a string that reads the same backward as forward.
+
+**Example 1:**
+
+```
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+```
+
+```python
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        def dfs(s, index):
+            if index == len(s):
+                return res.append(path[:])
+
+            for i in range(index, len(s)):
+
+                if s[index:i+1] == s[index:i+1][::-1]:
+                    path.append(s[index:i+1])
+                    dfs(s, i+1)
+                    path.pop()
+                
+        res = []
+        path = []
+        dfs(s, 0)
+        
+        return res
+```
+
+```python
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        res = []  
+        path = []  #放已经回文的子串
+        def backtrack(s,startIndex):
+            if startIndex >= len(s):  #如果起始位置已经大于s的大小，说明已经找到了一组分割方案了
+                return res.append(path[:])
+            for i in range(startIndex,len(s)):
+                p = s[startIndex:i+1]  #获取[startIndex,i+1]在s中的子串
+                if p == p[::-1]: path.append(p)  #是回文子串
+                else: continue  #不是回文，跳过
+                backtrack(s,i+1)  #寻找i+1为起始位置的子串
+                path.pop()  #回溯过程，弹出本次已经填在path的子串
+        backtrack(s,0)
+        return res
+```
+
+
+
+#### 93. Restore IP Addresses
+
+Given a string `s` containing only digits, return all possible valid IP addresses that can be obtained from `s`. You can return them in **any** order.
+
+A **valid IP address** consists of exactly four integers, each integer is between `0` and `255`, separated by single dots and cannot have leading zeros. For example, "0.1.2.201" and "192.168.1.1" are **valid** IP addresses and "0.011.255.245", "192.168.1.312" and "192.168@1.1" are **invalid** IP addresses. 
+
+ 
+
+**Example 1:**
+
+```
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+```
+
+```python
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        res = []
+        n = len(s)
+        def dfs(s, dot, pos, path):
+            if dot >= 4: 
+                if pos == n:
+                    res.append(path[1:])
+                return
+            if pos >= n: # 剪枝
+                return
+            for i in range(1, min(3, n-pos) + 1): # 剪枝
+                temp = s[pos:pos+i]
+                if int(temp) <= 255:
+                    if temp[0] == "0" and len(temp) > 1:
+                        continue
+                    dfs(s, dot+1, pos+ len(temp), path + "." + temp)
+        
+        dfs(s,0,0,"")
+        return res
+```
+
+```python
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        ans = []
+        path = []
+        def backtrack(path, startIndex):
+            if len(path) == 4:
+                if startIndex == len(s):
+                    ans.append(".".join(path[:]))
+                    return
+            for i in range(startIndex+1, min(startIndex+4, len(s)+1)):  # 剪枝
+                string = s[startIndex:i]
+                if not 0 <= int(string) <= 255:
+                    continue
+                if not string == "0" and not string.lstrip('0') == string:
+                    continue
+                path.append(string)
+                backtrack(path, i)
+                path.pop()
+
+        backtrack([], 0)
+        return ans
+```
+
+
+
+#### 78*. Subsets
+
+Given an integer array `nums` of **unique** elements, return *all possible subsets (the power set)*.
+
+The solution set **must not** contain duplicate subsets. Return the solution in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+```
+
+```python
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []  
+        path = []  
+        def backtrack(nums,startIndex):
+            res.append(path[:])  #收集子集，要放在终止添加的上面，否则会漏掉自己
+            for i in range(startIndex,len(nums)):  
+                #当startIndex已经大于数组的长度了，就终止了，for循环本来也结束了，所以不需要终止条件
+                path.append(nums[i])
+                backtrack(nums,i+1)  #递归
+                path.pop()  #回溯
+        backtrack(nums,0)
+        return res
+```
+
+
+
+#### 90. Subsets II
+
+Given an integer array `nums` that may contain duplicates, return *all possible subsets (the power set)*.
+
+The solution set **must not** contain duplicate subsets. Return the solution in **any order**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+```
+
+```python
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        nums.sort()
+        
+        def dfs(nums, index, path):
+            res.append(path[:])
+            
+            for i in range(index, n):
+                if i > index and nums[i] == nums[i-1]:
+                    continue
+                dfs(nums, i+1, path + [nums[i]])
+                
+        dfs(nums, 0, [])
+        return res
+```
+
+
+
+
+
+#### 491. Increasing Subsequences
+
+Given an integer array `nums`, return all the different possible increasing subsequences of the given array with **at least two elements**. You may return the answer in **any order**.
+
+The given array may contain duplicates, and two equal integers should also be considered a special case of increasing sequence.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [4,6,7,7]
+Output: [[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
+```
+
+```python
+class Solution:
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        def dfs(nums, index, path):
+            if len(path) >= 2:
+                res.append(path[:])
+                
+            used = []
+            for i in range(index, n):
+                if nums[i] in used:
+                    continue
+                if not path or nums[i] >= path[-1]:
+                    used.append(nums[i])
+                    dfs(nums, i+1, path + [nums[i]])
+                    
+        dfs(nums, 0, [])
+        
+        return res
+```
 
 #### 46. Permutations
 
@@ -1933,6 +2300,45 @@ class Solution:
         return res
 ```
 
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = []  #存放符合条件结果的集合
+        path = []  #用来存放符合条件的结果
+        def backtrack(nums):
+            if len(path) == len(nums):
+                return res.append(path[:])  #此时说明找到了一组
+            for i in range(0,len(nums)):
+                if nums[i] in path:  #path里已经收录的元素，直接跳过
+                    continue
+                path.append(nums[i])
+                backtrack(nums)  #递归
+                path.pop()  #回溯
+        backtrack(nums)
+        return res
+```
+
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = []  #存放符合条件结果的集合
+        path = []  #用来存放符合条件的结果
+        used = []  #用来存放已经用过的数字
+        def backtrack(nums,used):
+            if len(path) == len(nums):
+                return res.append(path[:])  #此时说明找到了一组
+            for i in range(0,len(nums)):
+                if nums[i] in used:
+                    continue  #used里已经收录的元素，直接跳过
+                path.append(nums[i])
+                used.append(nums[i])
+                backtrack(nums,used)
+                used.pop()
+                path.pop()
+        backtrack(nums,used)
+        return res
+```
+
 
 
 
@@ -1967,6 +2373,11 @@ class Solution:
                 return
 
             for i in range(n):
+            # used[i - 1] == true，说明同一树支nums[i - 1]使用过
+            # used[i - 1] == false，说明同一树层nums[i - 1]使用过
+            # 如果同一树层nums[i - 1]使用过则直接跳过
+            # 树层去重：重复数字只会在同一树枝出现，不会在同一树层出现
+            # 由于i是从小到大遍历，重复数字永远用在上一层刚刚出现的同一数字的紧接着下一个（看例子（1,1,1））
                 if not used[i]:
                     if (i > 0 and nums[i] == nums[i-1] and not used[i-1]):
                         continue
@@ -1984,6 +2395,62 @@ class Solution:
 ```
 
 
+
+
+
+
+
+#### 332. Reconstruct Itinerary
+
+You are given a list of airline `tickets` where `tickets[i] = [fromi, toi]` represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.
+
+All of the tickets belong to a man who departs from `"JFK"`, thus, the itinerary must begin with `"JFK"`. If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string.
+
+- For example, the itinerary `["JFK", "LGA"]` has a smaller lexical order than `["JFK", "LGB"]`.
+
+You may assume all tickets form at least one valid itinerary. You must use all the tickets once and only once.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/14/itinerary1-graph.jpg)
+
+```
+Input: tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
+Output: ["JFK","MUC","LHR","SFO","SJC"]
+```
+
+```python
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        # defaultdic(list) 是为了方便直接append
+        tickets_dict = defaultdict(list)
+        for item in tickets:
+            tickets_dict[item[0]].append(item[1])
+        '''
+        tickets_dict里面的内容是这样的
+         {'JFK': ['SFO', 'ATL'], 'SFO': ['ATL'], 'ATL': ['JFK', 'SFO']})
+        '''
+        path = ["JFK"]
+        def backtracking(start_point):
+            # 终止条件
+            if len(path) == len(tickets) + 1:
+                return True
+            tickets_dict[start_point].sort()
+            for _ in tickets_dict[start_point]:
+                # 必须及时删除，避免出现死循环
+                end_point = tickets_dict[start_point].pop(0)
+                path.append(end_point)
+                # 只要找到一个就可以返回了
+                if backtracking(end_point):
+                    return True
+                path.pop()
+                tickets_dict[start_point].append(end_point)
+
+        backtracking("JFK")
+        return path
+```
 
 #### 51. N-Queens
 
@@ -2054,95 +2521,70 @@ class Solution:
 
 
 
+#### 37. Sudoku Solver
 
+Write a program to solve a Sudoku puzzle by filling the empty cells.
 
-#### 77*. Combinations
+A sudoku solution must satisfy **all of the following rules**:
 
-Given two integers `n` and `k`, return *all possible combinations of* `k` *numbers out of the range* `[1, n]`.
+1. Each of the digits `1-9` must occur exactly once in each row.
+2. Each of the digits `1-9` must occur exactly once in each column.
+3. Each of the digits `1-9` must occur exactly once in each of the 9 `3x3` sub-boxes of the grid.
 
-You may return the answer in **any order**.
-
- 
-
-**Example 1:**
-
-```
-Input: n = 4, k = 2
-Output:
-[
-  [2,4],
-  [3,4],
-  [2,3],
-  [1,2],
-  [1,3],
-  [1,4],
-]
-```
-
-```python
-class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
-        # return list(itertools.combinations(range(1,n+1),k))
-        res=[]  #存放符合条件结果的集合
-        path=[]  #用来存放符合条件结果
-        def backtrack(n,k,startIndex):
-            if len(path) == k:
-                res.append(path[:])
-                return 
-            for i in range(startIndex,n-(k-len(path))+2):  #优化的地方
-                path.append(i)  #处理节点 
-                backtrack(n,k,i+1)  #递归
-                path.pop()  #回溯，撤销处理的节点
-        backtrack(n,k,1)
-        return res
-
-```
-
-
-
-#### 78*. Subsets
-
-Given an integer array `nums` of **unique** elements, return *all possible subsets (the power set)*.
-
-The solution set **must not** contain duplicate subsets. Return the solution in **any order**.
+The `'.'` character indicates empty cells.
 
  
 
 **Example 1:**
 
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png)
+
 ```
-Input: nums = [1,2,3]
-Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+Input: board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+Output: [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
+Explanation: The input board is shown above and the only valid solution is shown below:
 ```
 
 ```python
 class Solution:
-    def subsets(self, nums: List[int]) -> List[List[int]]:
-        res = []
-        path = []
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def backtrack(board):
+            for i in range(len(board)):  #遍历行
+                for j in range(len(board[0])):  #遍历列
+                    if board[i][j] != ".": continue
+                    for k in range(1,10):  #(i, j) 这个位置放k是否合适
+                        if isValid(i,j,k,board):
+                            board[i][j] = str(k)  #放置k
+                            if backtrack(board): return True  #如果找到合适一组立刻返回
+                            board[i][j] = "."  #回溯，撤销k
+                    return False  #9个数都试完了，都不行，那么就返回false
+            return True  #遍历完没有返回false，说明找到了合适棋盘位置了
         
-        n = len(nums)
-        def dfs(nums, index):
-            res.append(path[:])
-            for i in range(index, n):
-                path.append(nums[i])
-                dfs(nums, i + 1) # NOT index + 1
-                path.pop()
-                
-        dfs(nums, 0)
-        
-        return res
+        def isValid(row,col,val,board):
+            for i in range(9):  #判断行里是否重复
+                if board[row][i] == str(val):
+                    return False
+            for j in range(9):  #判断列里是否重复
+                if board[j][col] == str(val):
+                    return False
+            startRow = (row // 3) * 3
+            startcol = (col // 3) * 3
+            for i in range(startRow,startRow + 3):  #判断9方格里是否重复
+                for j in range(startcol,startcol + 3):
+                    if board[i][j] == str(val):
+                        return False
+            return True
+        backtrack(board)
 ```
-
-
-
-
 
 
 
 #### 79. Word Search
 
-Algorithm: DFS
+
 
 ```python
 def exist(self, board: List[List[str]], word: str) -> bool:
@@ -2172,39 +2614,6 @@ def helper(self, board, word, wordIndex, i, j):
 
 
 
-#### 90. Subsets II
-
-Given an integer array `nums` that may contain duplicates, return *all possible subsets (the power set)*.
-
-The solution set **must not** contain duplicate subsets. Return the solution in **any order**.
-
- 
-
-**Example 1:**
-
-```
-Input: nums = [1,2,2]
-Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
-```
-
-```python
-class Solution:
-    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        res = []
-        n = len(nums)
-        nums.sort()
-        
-        def dfs(nums, index, path):
-            res.append(path[:])
-            
-            for i in range(index, n):
-                if i > index and nums[i] == nums[i-1]:
-                    continue
-                dfs(nums, i+1, path + [nums[i]])
-                
-        dfs(nums, 0, [])
-        return res
-```
 
 
 
@@ -2212,168 +2621,6 @@ class Solution:
 
 
 
-#### 93. Restore IP Addresses
-
-Given a string `s` containing only digits, return all possible valid IP addresses that can be obtained from `s`. You can return them in **any** order.
-
-A **valid IP address** consists of exactly four integers, each integer is between `0` and `255`, separated by single dots and cannot have leading zeros. For example, "0.1.2.201" and "192.168.1.1" are **valid** IP addresses and "0.011.255.245", "192.168.1.312" and "192.168@1.1" are **invalid** IP addresses. 
-
- 
-
-**Example 1:**
-
-```
-Input: s = "25525511135"
-Output: ["255.255.11.135","255.255.111.35"]
-```
-
-```python
-class Solution:
-    def restoreIpAddresses(self, s: str) -> List[str]:
-        res = []
-        n = len(s)
-        def dfs(s, dot, pos, path):
-            if dot >= 4: 
-                if pos == n:
-                    res.append(path[1:])
-                return
-            if pos >= n: # 剪枝
-                return
-            for i in range(1, min(3, n-pos) + 1): # 剪枝
-                temp = s[pos:pos+i]
-                if int(temp) <= 255:
-                    if temp[0] == "0" and len(temp) > 1:
-                        continue
-                    dfs(s, dot+1, pos+ len(temp), path + "." + temp)
-        
-        dfs(s,0,0,"")
-        return res
-```
-
-
-
-
-
-#### 112. Path Sum
-
-Given the `root` of a binary tree and an integer `targetSum`, return `true` if the tree has a **root-to-leaf** path such that adding up all the values along the path equals `targetSum`.
-
-A **leaf** is a node with no children.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg)
-
-```
-Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
-Output: true
-```
-
-```python
-def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
-    if root is None:
-        return False
-    if root.left is None and root.right is None:
-        return root.val == targetSum
-    return self.hasPathSum(root.left, targetSum - root.val) or self.hasPathSum(root.right, targetSum - root.val)
-```
-
-
-
-#### 131. Palindrome Partitioning
-
-Given a string `s`, partition `s` such that every substring of the partition is a **palindrome**. Return all possible palindrome partitioning of `s`.
-
-A **palindrome** string is a string that reads the same backward as forward.
-
-**Example 1:**
-
-```
-Input: s = "aab"
-Output: [["a","a","b"],["aa","b"]]
-```
-
-```python
-class Solution:
-    def partition(self, s: str) -> List[List[str]]:
-        def dfs(s, index):
-            if index == len(s):
-                return res.append(path[:])
-
-            for i in range(index, len(s)):
-
-                if s[index:i+1] == s[index:i+1][::-1]:
-                    path.append(s[index:i+1])
-                    dfs(s, i+1)
-                    path.pop()
-                
-        res = []
-        path = []
-        dfs(s, 0)
-        
-        return res
-```
-
-
-
-
-
-
-
-#### 216. Combination Sum III
-
-Find all valid combinations of `k` numbers that sum up to `n` such that the following conditions are true:
-
-- Only numbers `1` through `9` are used.
-- Each number is used **at most once**.
-
-Return *a list of all possible valid combinations*. The list must not contain the same combination twice, and the combinations may be returned in any order.
-
- 
-
-**Example 1:**
-
-```
-Input: k = 3, n = 7
-Output: [[1,2,4]]
-Explanation:
-1 + 2 + 4 = 7
-There are no other valid combinations.
-```
-
-```python
-class Solution:
-    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        res = []  #存放结果集
-        self.findallPath(n,k,0,1,[],res)
-        return res
-    
-    def findallPath(self,n,k,sum,startIndex,path,res):
-            if sum > n: return  #剪枝操作
-            if sum == n and len(path) == k:  #如果path.size() == k 但sum != n 直接返回
-                return res.append(path[:])
-            for i in range(startIndex,9-(k-len(path))+2):  #剪枝操作
-                path.append(i)
-                sum += i 
-                self.findallPath(n,k,sum,i+1,path,res)  #注意i+1调整startIndex
-                sum -= i  #回溯
-                path.pop()  #回溯
-```
-
-```python
-import itertools
-class Solution:
-    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        allNumbers=[i for i in range(1,10)]
-        res=[]
-        for item in itertools.combinations(allNumbers,k):
-            if sum(item)==n:
-                res.append(item)
-                
-        return res  
-```
 
 
 
@@ -3015,9 +3262,7 @@ class Solution:
         if target % 2 == 1: return False
         target //= 2
         # 套到本题，dp[i]表示 背包总容量是i，最大可以凑成i的子集总和为dp[i]
-        # 题目中说：每个数组中的元素不会超过 100，数组的大小不会超过 200
-        # 总和不会大于20000，背包最大只需要其中一半，所以10001大小就可以了
-        dp = [0] * 10001
+        dp = [0] * target
         # 本题，相当于背包里放入数值，那么物品i的重量是nums[i]，其价值也是nums[i]
         # 所以递推公式：dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
         for i in range(len(nums)):
@@ -7811,58 +8056,6 @@ class Solution:
 
 
 
-#### 332. Reconstruct Itinerary
-
-You are given a list of airline `tickets` where `tickets[i] = [fromi, toi]` represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.
-
-All of the tickets belong to a man who departs from `"JFK"`, thus, the itinerary must begin with `"JFK"`. If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string.
-
-- For example, the itinerary `["JFK", "LGA"]` has a smaller lexical order than `["JFK", "LGB"]`.
-
-You may assume all tickets form at least one valid itinerary. You must use all the tickets once and only once.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/03/14/itinerary1-graph.jpg)
-
-```
-Input: tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
-Output: ["JFK","MUC","LHR","SFO","SJC"]
-```
-
-```python
-class Solution:
-    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        # defaultdic(list) 是为了方便直接append
-        tickets_dict = defaultdict(list)
-        for item in tickets:
-            tickets_dict[item[0]].append(item[1])
-        '''
-        tickets_dict里面的内容是这样的
-         {'JFK': ['SFO', 'ATL'], 'SFO': ['ATL'], 'ATL': ['JFK', 'SFO']})
-        '''
-        path = ["JFK"]
-        def backtracking(start_point):
-            # 终止条件
-            if len(path) == len(tickets) + 1:
-                return True
-            tickets_dict[start_point].sort()
-            for _ in tickets_dict[start_point]:
-                #必须及时删除，避免出现死循环
-                end_point = tickets_dict[start_point].pop(0)
-                path.append(end_point)
-                # 只要找到一个就可以返回了
-                if backtracking(end_point):
-                    return True
-                path.pop()
-                tickets_dict[start_point].append(end_point)
-
-        backtracking("JFK")
-        return path
-```
-
 
 
 #### 343. Integer Break
@@ -7910,7 +8103,6 @@ class Solution:
     def integerBreak(self, n: int) -> int:
         if n < 4:
             return n - 1
-        
         dp = [0] * (n + 1)
         dp[2] = 1
         for i in range(3, n + 1):
@@ -8389,43 +8581,6 @@ class Solution:
 
 
 
-
-#### 491. Increasing Subsequences
-
-Given an integer array `nums`, return all the different possible increasing subsequences of the given array with **at least two elements**. You may return the answer in **any order**.
-
-The given array may contain duplicates, and two equal integers should also be considered a special case of increasing sequence.
-
- 
-
-**Example 1:**
-
-```
-Input: nums = [4,6,7,7]
-Output: [[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
-```
-
-```python
-class Solution:
-    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
-        res = []
-        n = len(nums)
-        def dfs(nums, index, path):
-            if len(path) >= 2:
-                res.append(path[:])
-                
-            used = []
-            for i in range(index, n):
-                if nums[i] in used:
-                    continue
-                if not path or nums[i] >= path[-1]:
-                    used.append(nums[i])
-                    dfs(nums, i+1, path + [nums[i]])
-                    
-        dfs(nums, 0, [])
-        
-        return res
-```
 
 
 
