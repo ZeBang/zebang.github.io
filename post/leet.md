@@ -30,109 +30,9 @@ Monotone Queue 239
 
 Standard binary search: 704 - 35 - 34 - 69 - 367
 
-#### 4. Median of Two Sorted Arrays
+#### 704. Binary Search
 
-Given two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively, return **the median** of the two sorted arrays.
-
-The overall run time complexity should be `O(log (m+n))`.
-
- 
-
-**Example 1:**
-
-```
-Input: nums1 = [1,3], nums2 = [2]
-Output: 2.00000
-Explanation: merged array = [1,2,3] and median is 2.
-```
-
-**Example 2:**
-
-```
-Input: nums1 = [1,2], nums2 = [3,4]
-Output: 2.50000
-Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
-```
-
-```python
-class Solution:
-    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        if len(nums1) > len(nums2):
-            return self.findMedianSortedArrays(nums2, nums1)
-
-        infinty = float('inf')
-        m, n = len(nums1), len(nums2)
-        left, right = 0, m
-        # median1：前一部分的最大值
-        # median2：后一部分的最小值
-        median1, median2 = 0, 0
-
-        while left <= right:
-            # 前一部分包含 nums1[0 .. i-1] 和 nums2[0 .. j-1]
-            # 后一部分包含 nums1[i .. m-1] 和 nums2[j .. n-1]
-            i = left + (right - left) // 2
-            j = (m + n + 1) // 2 - i
-            
-            # nums_im1, nums_i, nums_jm1, nums_j 分别表示 nums1[i-1], nums1[i], nums2[j-1], nums2[j]
-            nums_im1 = (-infinty if i == 0 else nums1[i - 1])
-            nums_i = (infinty if i == m else nums1[i])
-            nums_jm1 = (-infinty if j == 0 else nums2[j - 1])
-            nums_j = (infinty if j == n else nums2[j])
-
-            if nums_im1 > nums_j:
-                right = i - 1
-            else:
-                left = i + 1
-                median1, median2 = max(nums_im1, nums_jm1), min(nums_i, nums_j)
-
-        return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
-```
-
-
-
-```python
-class Solution:
-    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        
-        if len(nums1) > len(nums2):
-            nums1, nums2 = nums2, nums1
-
-        m, n = len(nums1), len(nums2)
-        totalLeft = (m + n + 1) // 2
-        left = 0
-        right = m
-
-        while (left < right):
-            i = left + (right - left + 1) // 2
-            j = totalLeft - i
-            if nums1[i - 1] > nums2[j]:
-                right = i - 1
-            else:
-                left = i
-
-        i = left
-        j = totalLeft - i
-
-        nums1LeftMax = -float('inf') if i==0 else nums1[i-1]
-        nums1RightMin = float('inf') if i==m else nums1[i]
-        nums2LeftMax = -float('inf') if j==0 else nums2[j-1]
-        nums2RightMin = float('inf') if j==n else nums2[j]
-
-        if (m + n) % 2 == 1:
-            return max(nums1LeftMax, nums2LeftMax)
-        else:
-            return (max(nums1LeftMax, nums2LeftMax) + min(nums1RightMin, nums2RightMin))/2
-```
-
-
-
-#### 33. Search in Rotated Sorted Array
-
-There is an integer array `nums` sorted in ascending order (with **distinct** values).
-
-Prior to being passed to your function, `nums` is **rotated** at an unknown pivot index `k` (`0 <= k < nums.length`) such that the resulting array is `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]` (**0-indexed**). For example, `[0,1,2,4,5,6,7]` might be rotated at pivot index `3` and become `[4,5,6,7,0,1,2]`.
-
-Given the array `nums` **after** the rotation and an integer `target`, return *the index of* `target` *if it is in* `nums`*, or* `-1` *if it is not in* `nums`.
+Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.
 
 You must write an algorithm with `O(log n)` runtime complexity.
 
@@ -141,77 +41,71 @@ You must write an algorithm with `O(log n)` runtime complexity.
 **Example 1:**
 
 ```
-Input: nums = [4,5,6,7,0,1,2], target = 0
+Input: nums = [-1,0,3,5,9,12], target = 9
 Output: 4
+Explanation: 9 exists in nums and its index is 4
 ```
 
 ```python
-# Approach 1: Binary search
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
- 		def rotate_index_search(start, end, nums):
-            while start + 1 < end:
-                mid = start + (end - start) // 2
-                if nums[mid] > nums[end]:
-                    start = mid
-                else:
-                    end = mid
-            if nums[start] > nums[end]:
-                return end
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            middle = (left + right) // 2
+            if nums[middle] < target:
+                left = middle + 1
+            elif nums[middle] > target:
+                right = middle - 1
             else:
-                return start
-        
-        def bisearch(start, end, nums, target):
-            while start + 1 < end:
-                mid = start + (end - start) // 2
-                if nums[mid] < target:
-                    start = mid
-                else:
-                    end = mid
-            if nums[start] == target:
-                return start
-            if nums[end] == target:
-                return end
-            return -1
-        
-        start = 0
-        end = len(nums) - 1
-        rotate_index = rotate_index_search(start, end, nums)
-        
-        if rotate_index == 0:
-            return bisearch(start, end, nums, target)
-        if target >= nums[0]:
-            return bisearch(start, len(nums[0:rotate_index]) - 1, nums[0:rotate_index], target)
-        else:
-            ans = bisearch(start, len(nums[rotate_index:]) - 1 , nums[rotate_index:], target)
-            return -1 if ans == -1 else rotate_index + ans
-```
-
-```python
-# Approach 2: One-pass Binary Search
-class Solution:
-    def search(self, nums: List[int], target: int) -> int:
-        start, end = 0, len(nums) - 1
-        while start <= end:
-            mid = start + (end - start) // 2
-            if nums[mid] == target:
-                return mid
-            elif nums[mid] >= nums[start]:
-                if target >= nums[start] and target < nums[mid]:
-                    end = mid - 1
-                else:
-                    start = mid + 1
-            else:
-                if target <= nums[end] and target > nums[mid]:
-                    start = mid + 1
-                else:
-                    end = mid - 1
+                return middle
         return -1
 ```
 
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left, right  = 0, len(nums)
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = mid
+            else:
+                return mid
+        return -1
 
+```
 
+#### 35. Search Insert Position
 
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+
+You must write an algorithm with `O(log n)` runtime complexity.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,3,5,6], target = 5
+Output: 2
+```
+
+```python
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = left + (right - left) // 2 # mid = (right + left) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = right - 1
+            else:
+                return mid
+        return left
+```
 
 #### 34. Find First and Last Position of Element in Sorted Array
 
@@ -375,40 +269,6 @@ class Solution:
         return [-1, -1]
 ```
 
-
-
-#### 35. Search Insert Position
-
-Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
-
-You must write an algorithm with `O(log n)` runtime complexity.
-
- 
-
-**Example 1:**
-
-```
-Input: nums = [1,3,5,6], target = 5
-Output: 2
-```
-
-```python
-class Solution:
-    def searchInsert(self, nums: List[int], target: int) -> int:
-        left, right = 0, len(nums) - 1
-        while left <= right:
-            mid = left + (right - left) // 2 # mid = (right + left) // 2
-            if nums[mid] < target:
-                left = mid + 1
-            elif nums[mid] > target:
-                right = right - 1
-            else:
-                return mid
-        return left
-```
-
-
-
 #### 69. Sqrt(x)
 
 Given a non-negative integer `x`, compute and return *the square root of* `x`.
@@ -441,60 +301,133 @@ class Solution:
         return start - 1
 ```
 
+#### 367. Valid Perfect Square
+
+Given a **positive** integer *num*, write a function which returns True if *num* is a perfect square else False.
+
+**Follow up:** **Do not** use any built-in library function such as `sqrt`.
 
 
-#### 74. Search a 2D Matrix
 
-Write an efficient algorithm that searches for a value in an `m x n` matrix. This matrix has the following properties:
+**Example 1:**
 
-- Integers in each row are sorted from left to right.
-- The first integer of each row is greater than the last integer of the previous row.
+```
+Input: num = 16
+Output: true
+```
+
+```python
+class Solution:
+    def isPerfectSquare(self, num: int) -> bool:
+        start = 1
+        end = num
+        while start <= end:
+            mid = start + (end - start) // 2
+            if mid*mid == num:
+                return True
+            if mid*mid < num:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return False
+```
+
+
+
+
+
+#### 33. Search in Rotated Sorted Array
+
+There is an integer array `nums` sorted in ascending order (with **distinct** values).
+
+Prior to being passed to your function, `nums` is **rotated** at an unknown pivot index `k` (`0 <= k < nums.length`) such that the resulting array is `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]` (**0-indexed**). For example, `[0,1,2,4,5,6,7]` might be rotated at pivot index `3` and become `[4,5,6,7,0,1,2]`.
+
+Given the array `nums` **after** the rotation and an integer `target`, return *the index of* `target` *if it is in* `nums`*, or* `-1` *if it is not in* `nums`.
+
+You must write an algorithm with `O(log n)` runtime complexity.
 
  
 
 **Example 1:**
 
-![img](https://assets.leetcode.com/uploads/2020/10/05/mat.jpg)
-
 ```
-Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
-Output: true
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
 ```
 
 ```python
-# two bisect
-class Solution(object):
-    def searchMatrix(self, matrix, target):
-        M, N = len(matrix), len(matrix[0])
-        col0 = [row[0] for row in matrix]
-        target_row = bisect.bisect_right(col0, target) - 1
-        if target_row < 0:
-            return False
-        target_col = bisect.bisect_left(matrix[target_row], target)
-        if target_col >= N:
-            return False
-        if matrix[target_row][target_col] == target:
-            return True
-        return False
-```
-
-```python
-# Global bisect
-class Solution(object):
-    def searchMatrix(self, matrix, target):
-        M, N = len(matrix), len(matrix[0])
-        left, right = 0, M * N - 1
-        while left <= right:
-            mid = left + (right - left) // 2
-            cur = matrix[mid // N][mid % N]
-            if cur == target:
-                return True
-            elif cur < target:
-                left = mid + 1
+# Approach 1: Binary search
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+ 		def rotate_index_search(start, end, nums):
+            while start + 1 < end:
+                mid = start + (end - start) // 2
+                if nums[mid] > nums[end]:
+                    start = mid
+                else:
+                    end = mid
+            if nums[start] > nums[end]:
+                return end
             else:
-                right = mid - 1
-        return False
+                return start
+        
+        def bisearch(start, end, nums, target):
+            while start + 1 < end:
+                mid = start + (end - start) // 2
+                if nums[mid] < target:
+                    start = mid
+                else:
+                    end = mid
+            if nums[start] == target:
+                return start
+            if nums[end] == target:
+                return end
+            return -1
+        
+        start = 0
+        end = len(nums) - 1
+        rotate_index = rotate_index_search(start, end, nums)
+        
+        if rotate_index == 0:
+            return bisearch(start, end, nums, target)
+        if target >= nums[0]:
+            return bisearch(start, len(nums[0:rotate_index]) - 1, nums[0:rotate_index], target)
+        else:
+            ans = bisearch(start, len(nums[rotate_index:]) - 1 , nums[rotate_index:], target)
+            return -1 if ans == -1 else rotate_index + ans
 ```
+
+```python
+# Approach 2: One-pass Binary Search
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start, end = 0, len(nums) - 1
+        while start <= end:
+            mid = start + (end - start) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] >= nums[start]:
+                if target >= nums[start] and target < nums[mid]:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            else:
+                if target <= nums[end] and target > nums[mid]:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+        return -1
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -595,6 +528,59 @@ class Solution:
         return min(nums[start], nums[end])
 ```
 
+#### 74. Search a 2D Matrix
+
+Write an efficient algorithm that searches for a value in an `m x n` matrix. This matrix has the following properties:
+
+- Integers in each row are sorted from left to right.
+- The first integer of each row is greater than the last integer of the previous row.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/05/mat.jpg)
+
+```
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+Output: true
+```
+
+```python
+# two bisect
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        M, N = len(matrix), len(matrix[0])
+        col0 = [row[0] for row in matrix]
+        target_row = bisect.bisect_right(col0, target) - 1
+        if target_row < 0:
+            return False
+        target_col = bisect.bisect_left(matrix[target_row], target)
+        if target_col >= N:
+            return False
+        if matrix[target_row][target_col] == target:
+            return True
+        return False
+```
+
+```python
+# Global bisect
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        M, N = len(matrix), len(matrix[0])
+        left, right = 0, M * N - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            cur = matrix[mid // N][mid % N]
+            if cur == target:
+                return True
+            elif cur < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+```
+
 
 
 #### 162. Find Peak Element
@@ -692,10 +678,123 @@ class Solution:
                 start = mid + 1
             else:
                 end = mid - 1
-        if isBadVersion(start): # 看最后那一步，每次更新start意味着start有可能是坏(start-1一定不是坏)，所以先检查start
+        if isBadVersion(start):
             return start
         else:
             return end
+```
+
+```python
+class Solution:
+    def firstBadVersion(self, n):
+        start = 0
+        end = n
+        while start <= end:
+            mid = (start + end) // 2
+            if isBadVersion(mid):
+                end = mid - 1
+            else:
+                start = mid + 1
+        if isBadVersion(end):
+            return end
+        else:
+            return end + 1
+```
+
+
+
+#### 4. Median of Two Sorted Arrays
+
+Given two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively, return **the median** of the two sorted arrays.
+
+The overall run time complexity should be `O(log (m+n))`.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+```
+
+**Example 2:**
+
+```
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 2.50000
+Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+```
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1) > len(nums2):
+            return self.findMedianSortedArrays(nums2, nums1)
+
+        infinty = float('inf')
+        m, n = len(nums1), len(nums2)
+        left, right = 0, m
+        # median1：前一部分的最大值
+        # median2：后一部分的最小值
+        median1, median2 = 0, 0
+
+        while left <= right:
+            # 前一部分包含 nums1[0 .. i-1] 和 nums2[0 .. j-1]
+            # 后一部分包含 nums1[i .. m-1] 和 nums2[j .. n-1]
+            i = left + (right - left) // 2
+            j = (m + n + 1) // 2 - i
+            
+            # nums_im1, nums_i, nums_jm1, nums_j 分别表示 nums1[i-1], nums1[i], nums2[j-1], nums2[j]
+            nums_im1 = (-infinty if i == 0 else nums1[i - 1])
+            nums_i = (infinty if i == m else nums1[i])
+            nums_jm1 = (-infinty if j == 0 else nums2[j - 1])
+            nums_j = (infinty if j == n else nums2[j])
+
+            if nums_im1 > nums_j:
+                right = i - 1
+            else:
+                left = i + 1
+                median1, median2 = max(nums_im1, nums_jm1), min(nums_i, nums_j)
+
+        return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
+```
+
+
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+
+        m, n = len(nums1), len(nums2)
+        totalLeft = (m + n + 1) // 2
+        left = 0
+        right = m
+
+        while (left < right):
+            i = left + (right - left + 1) // 2
+            j = totalLeft - i
+            if nums1[i - 1] > nums2[j]:
+                right = i - 1
+            else:
+                left = i
+
+        i = left
+        j = totalLeft - i
+
+        nums1LeftMax = -float('inf') if i==0 else nums1[i-1]
+        nums1RightMin = float('inf') if i==m else nums1[i]
+        nums2LeftMax = -float('inf') if j==0 else nums2[j-1]
+        nums2RightMin = float('inf') if j==n else nums2[j]
+
+        if (m + n) % 2 == 1:
+            return max(nums1LeftMax, nums2LeftMax)
+        else:
+            return (max(nums1LeftMax, nums2LeftMax) + min(nums1RightMin, nums2RightMin))/2
 ```
 
 
@@ -1167,7 +1266,7 @@ def removeDuplicates(nums):
     slow = 0
     for fast in range(1, len(nums)):
         if nums[fast] != nums[slow]:
-            slow += 1
+            slow += 1                  # 必须先slow += 1
             nums[slow] = nums[fast]
     return slow + 1
 ```
@@ -1417,7 +1516,7 @@ class Solution:
         end = len(numbers) - 1
         sum = 0
         
-        while start <= end:
+        while start < end:
             sum = numbers[start] + numbers[end]
             if sum > target:
                 end = end - 1
@@ -1450,7 +1549,7 @@ class Solution:
         length = float("inf")
         slow = 0
         sum = 0
-        for fast in range(len(nums)):
+        for fast in range(len(nums # if range(1, len(nums)): sum += nums[fast] doesnot include nums[0]
             sum += nums[fast]
             while sum >= target:
                 length = min(length, fast - slow + 1)
@@ -1484,7 +1583,7 @@ class Solution:
         """
         slow = 0
         fast = 0
-        for fast in range(len(nums)):
+        for fast in range(len(nums): #双指针把后面的移到前面一般fast都从slow开始，也就是说fast=slow开始
             if nums[fast] == 0:
                 fast += 1
             else:
@@ -6485,6 +6584,7 @@ class Solution:
     
     def reverList(self, head):
         prev = None
+        curr = head
         while curr:
             temp = head.next
             head.next = prev
@@ -8196,37 +8296,6 @@ class Solution:
 
 
 
-#### 367. Valid Perfect Square
-
-Given a **positive** integer *num*, write a function which returns True if *num* is a perfect square else False.
-
-**Follow up:** **Do not** use any built-in library function such as `sqrt`.
-
-
-
-**Example 1:**
-
-```
-Input: num = 16
-Output: true
-```
-
-```python
-class Solution:
-    def isPerfectSquare(self, num: int) -> bool:
-        start = 1
-        end = num
-        while start <= end:
-            mid = start + (end - start) // 2
-            if mid*mid == num:
-                return True
-            if mid*mid < num:
-                start = mid + 1
-            else:
-                end = mid - 1
-        return False
-```
-
 
 
 #### 376. Wiggle Subsequence
@@ -8666,55 +8735,6 @@ class Solution(object):
 ```
 
 
-
-
-
-#### 704. Binary Search
-
-Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.
-
-You must write an algorithm with `O(log n)` runtime complexity.
-
- 
-
-**Example 1:**
-
-```
-Input: nums = [-1,0,3,5,9,12], target = 9
-Output: 4
-Explanation: 9 exists in nums and its index is 4
-```
-
-```python
-class Solution:
-    def search(self, nums: List[int], target: int) -> int:
-        left, right = 0, len(nums) - 1
-        while left <= right:
-            middle = (left + right) // 2
-            if nums[middle] < target:
-                left = middle + 1
-            elif nums[middle] > target:
-                right = middle - 1
-            else:
-                return middle
-        return -1
-```
-
-```python
-class Solution:
-    def search(self, nums: List[int], target: int) -> int:
-        left, right  = 0, len(nums)
-        while left < right:
-            mid = (left + right) // 2
-            if nums[mid] < target:
-                left = mid + 1
-            elif nums[mid] > target:
-                right = mid
-            else:
-                return mid
-        return -1
-
-```
 
 
 
