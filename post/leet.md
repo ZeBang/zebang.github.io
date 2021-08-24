@@ -5906,43 +5906,6 @@ class Solution:
 
 ### List
 
-#### 2. Add Two Numbers
-
-You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order**, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
-
-You may assume the two numbers do not contain any leading zero, except the number 0 itself.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2020/10/02/addtwonumber1.jpg)
-
-```
-Input: l1 = [2,4,3], l2 = [5,6,4]
-Output: [7,0,8]
-Explanation: 342 + 465 = 807.
-```
-
-```python
-class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        dummy = tail = ListNode(0)
-        s = 0
-        while l1 or l2 or s: # or s 保证了最后的进位
-            s += (l1.val if l1 else 0) + (l2.val if l2 else 0)
-            tail.next = ListNode(s % 10)
-            tail = tail.next
-            s //= 10
-            l1 = l1.next if l1 else None
-            l2 = l2.next if l2 else None
-        return dummy.next
-```
-
-
-
-
-
 #### 19. Remove Nth Node From End of List
 
 Given the `head` of a linked list, remove the `nth` node from the end of the list and return its head.
@@ -6051,451 +6014,6 @@ class Solution:
             l2.next = self.mergeTwoLists(l1, l2.next)
             return l2
 ```
-
-
-
-
-
-#### 24. Swap Nodes in Pairs
-
-Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
-
-```
-Input: head = [1,2,3,4]
-Output: [2,1,4,3]
-```
-
-**Example 2:**
-
-```
-Input: head = []
-Output: []
-```
-
-```python
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-class Solution:
-    def swapPairs(self, head: ListNode) -> ListNode:
-        dummyHead = ListNode(0, head)
-        temp = dummyHead
-        while temp.next and temp.next.next:
-            node1 = temp.next
-            node2 = temp.next.next
-            temp.next = node2          # step 1
-            node1.next = node2.next    # step 2
-            node2.next = node1         # step 3
-            temp = node1               # update starting point
-        return dummyHead.next
-```
-
-```python
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-class Solution:
-    def swapPairs(self, head: ListNode) -> ListNode:
-        if not head or not head.next:
-            return head
-        newHead = head.next
-        head.next = self.swapPairs(newHead.next)
-        newHead.next = head
-        return newHead
-```
-
-
-
-#### 61. Rotate List
-
-Given the `head` of a linked list, rotate the list to the right by `k` places.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2020/11/13/rotate1.jpg)
-
-```
-Input: head = [1,2,3,4,5], k = 2
-Output: [4,5,1,2,3]
-```
-
-```python
-class Solution:
-    def rotateRight(self, head: ListNode, k: int) -> ListNode:
-        if not head or not head.next:
-            return head
-        n = 0
-        p = head
-        while p:
-            n += 1
-            p = p.next
-        k = k % n
-        
-        if k == 0:
-            return head
-        
-        p1, p2 = self.kthFromEnd(head, k)
-        newHead = p1.next
-        
-        p1.next = None
-        p2.next = head
-        
-        return newHead
-        
-    def kthFromEnd(self, head, k):
-        slow = fast = head
-        for _ in range(k):
-            fast = fast.next
-        if not fast:
-            return head.next
-        while fast.next:
-            slow = slow.next
-            fast = fast.next
-        return slow, fast
-```
-
-```python
-# 方法2： 闭合为环做剪切
-class Solution:
-    def rotateRight(self, head: ListNode, k: int) -> ListNode:
-        if k == 0 or not head or not head.next:
-            return head
-        
-        n = 1
-        cur = head
-        while cur.next:             # 计算List长度并把curr指向末尾
-            cur = cur.next
-            n += 1
-        
-        if (add := n - k % n) == n: # 如果k是n的倍数，则什么都不必做
-            return head
-        
-        cur.next = head             # 闭合成环
-        while add:                  # 将curr移到add处
-            cur = cur.next
-            add -= 1
-        
-        head = cur.next             # 在curr处剪断闭环
-        cur.next = None
-        return head
-```
-
-
-
-
-
-
-
-#### 82. Remove Duplicates from Sorted List II
-
-Given the `head` of a sorted linked list, *delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list*. Return *the linked list **sorted** as well*.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/01/04/linkedlist1.jpg)
-
-```
-Input: head = [1,2,3,3,4,4,5]
-Output: [1,2,5]
-```
-
-**Example 2:**
-
-![img](https://assets.leetcode.com/uploads/2021/01/04/linkedlist2.jpg)
-
-```
-Input: head = [1,1,1,2,3]
-Output: [2,3]
-```
-
-```python
-class Solution:
-    def deleteDuplicates(self, head: ListNode) -> ListNode:
-        if not head or not head.next:
-            return head
-                    
-        prev = ListNode(0, head)
-        
-        curr = prev
-        while curr.next and curr.next.next:
-            if curr.next.val == curr.next.next.val:
-                x = curr.next.val
-                while curr.next and curr.next.val == x:
-                    curr.next = curr.next.next # curr does not change
-            else:
-                curr = curr.next
-        
-        return prev.next
-```
-
-
-
-#### 83. Remove Duplicates from Sorted List
-
-Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return *the linked list **sorted** as well*.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/01/04/list1.jpg)
-
-```
-Input: head = [1,1,2]
-Output: [1,2]
-```
-
-**Example 2:**
-
-![img](https://assets.leetcode.com/uploads/2021/01/04/list2.jpg)
-
-```
-Input: head = [1,1,2,3,3]
-Output: [1,2,3]
-```
-
-```python
-class Solution:
-    def deleteDuplicates(self, head: ListNode) -> ListNode:
-        if not head:
-            return head
-        curr = head.next
-        prev = head
-        while curr:
-            if curr.val == prev.val:
-                prev.next = curr.next
-            else:
-                prev = curr
-            curr = curr.next
-        return head
-```
-
-
-
-
-
-#### 86. Partition List
-
-Given the `head` of a linked list and a value `x`, partition it such that all nodes **less than** `x` come before nodes **greater than or equal** to `x`.
-
-You should **preserve** the original relative order of the nodes in each of the two partitions.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/01/04/partition.jpg)
-
-```
-Input: head = [1,4,3,2,5,2], x = 3
-Output: [1,2,2,4,3,5]
-```
-
-**Example 2:**
-
-```
-Input: head = [2,1], x = 2
-Output: [1,2]
-```
-
-```python
-class Solution:
-    def partition(self, head: ListNode, x: int) -> ListNode:
-        # 1. two list
-        # 2. one pass
-        # 3. merge
-        
-        head1 = ListNode(0)
-        head2 = ListNode(0)
-        
-        curr = head
-        l1, l2 = head1, head2
-        while curr:
-            if curr.val < x:
-                l1.next = curr
-                l1 = curr
-            else:
-                l2.next = curr
-                l2 = curr
-            
-            curr = curr.next
-        l2.next = None
-        l1.next = head2.next
-        
-        return head1.next
-```
-
-
-
-#### 92. Reverse Linked List II
-
-Given the `head` of a singly linked list and two integers `left` and `right` where `left <= right`, reverse the nodes of the list from position `left` to position `right`, and return *the reversed list*.
-
- **Note**: re-connect after reverse.
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg)
-
-```
-Input: head = [1,2,3,4,5], left = 2, right = 4
-Output: [1,4,3,2,5]
-```
-
-**Example 2:**
-
-```
-Input: head = [5], left = 1, right = 1
-Output: [5]
-```
-
-```python
-class Solution:
-    def reverseBetween(self, head: ListNode, left: int, right: int) -> ListNode:
-        dummyNode = ListNode(-1, head)
-        m_prev = self.findkth(dummyNode, left-1)
-        m = m_prev.next
-        n = self.findkth(m, right-left)
-        n_next = n.next
-        n.next = None
-        
-        self.reverse(m)
-        
-        m_prev.next = n
-        m.next = n_next
-        
-        return dummyNode.next
-    
-    def reverse(self, head):
-        prev = None
-        while head:
-            temp = head.next
-            head.next = prev
-            prev = head
-            head = temp
-        return prev
-    
-    def findkth(self, head, k):
-        for i in range(k):
-            if head is None:
-                return None
-            head = head.next
-        return head
-```
-
-
-
-#### 141. Linked List Cycle
-
-Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
-
-There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
-
-Return `true` *if there is a cycle in the linked list*. Otherwise, return `false`.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
-
-```
-Input: head = [3,2,0,-4], pos = 1
-Output: true
-Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
-```
-
-```python
-# 方法一：哈希表
-class Solution:
-    def hasCycle(self, head: ListNode) -> bool:
-        seen = set()
-        while head:
-            if head in seen:
-                return True
-            seen.add(head)
-            head = head.next
-        return False
-```
-
-```python
-# 方法二：快慢指针
-class Solution:
-    def hasCycle(self, head: ListNode) -> bool:
-        fast = slow = head
-        while fast and fast.next:
-            slow, fast = slow.next, fast.next.next
-            if slow == fast:
-                return True
-        return False
-        
-```
-
-
-
-#### 142. Linked List Cycle II
-
-Given a linked list, return the node where the cycle begins. If there is no cycle, return `null`.
-
-There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
-
-**Notice** that you **should not modify** the linked list.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
-
-```
-Input: head = [3,2,0,-4], pos = 1
-Output: tail connects to node index 1
-Explanation: There is a cycle in the linked list, where tail connects to the second node.
-```
-
-```python
-class Solution:
-    def detectCycle(self, head: ListNode) -> ListNode:
-        seen = set()
-        while head:
-            if head not in seen:
-                seen.add(head)
-            else:
-                return head
-            head = head.next
-        return None
-```
-
-```python
-class Solution:
-    def detectCycle(self, head: ListNode) -> ListNode:
-        slow = fast = head
-        while fast and fast.next:
-            slow, fast = slow.next, fast.next.next
-            if slow == fast:
-                curr = head
-                while curr != slow:
-                    curr = curr.next
-                    slow = slow.next
-                return curr
-        return None 
-```
-
-
 
 
 
@@ -6642,9 +6160,9 @@ class Solution:
         curr = head.next
 
         while curr:
-            if lastSorted.val <= curr.val:
+            if lastSorted.val <= curr.val: # curr不需要插入
                 lastSorted = lastSorted.next
-            else:
+            else: # 需要插入curr到前面的某一位置
                 prev = dummyHead
                 while prev.next.val <= curr.val: # 找到应该插入的位置
                     prev = prev.next
@@ -6657,6 +6175,496 @@ class Solution:
 ```
 
 
+
+#### 2. Add Two Numbers
+
+You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order**, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/02/addtwonumber1.jpg)
+
+```
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+```
+
+```python
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        dummy = tail = ListNode(0)
+        s = 0
+        while l1 or l2 or s: # or s 保证了最后的进位
+            s += (l1.val if l1 else 0) + (l2.val if l2 else 0)
+            tail.next = ListNode(s % 10)
+            tail = tail.next
+            s //= 10
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        return dummy.next
+```
+
+
+
+#### 82. Remove Duplicates from Sorted List II
+
+Given the `head` of a sorted linked list, *delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list*. Return *the linked list **sorted** as well*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/linkedlist1.jpg)
+
+```
+Input: head = [1,2,3,3,4,4,5]
+Output: [1,2,5]
+```
+
+**Example 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/linkedlist2.jpg)
+
+```
+Input: head = [1,1,1,2,3]
+Output: [2,3]
+```
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+                    
+        prev = ListNode(0, head)
+        
+        curr = prev
+        while curr.next and curr.next.next:
+            if curr.next.val == curr.next.next.val:
+                x = curr.next.val
+                while curr.next and curr.next.val == x:
+                    curr.next = curr.next.next # curr does not change
+            else:
+                curr = curr.next
+        
+        return prev.next
+```
+
+
+
+#### 83. Remove Duplicates from Sorted List
+
+Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return *the linked list **sorted** as well*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/list1.jpg)
+
+```
+Input: head = [1,1,2]
+Output: [1,2]
+```
+
+**Example 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/list2.jpg)
+
+```
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+```
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head:
+            return head
+        curr = head.next
+        prev = head
+        while curr:
+            if curr.val == prev.val:
+                prev.next = curr.next
+            else:
+                prev = curr
+            curr = curr.next
+        return head
+```
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        curr = head
+        while curr and curr.next:
+            if curr.next.val == curr.val:
+                x = curr.val
+                while curr.next and curr.next.val == x:
+                    curr.next = curr.next.next # curr does not change
+            else:
+                curr = curr.next
+        return head
+```
+
+
+
+#### 86. Partition List
+
+Given the `head` of a linked list and a value `x`, partition it such that all nodes **less than** `x` come before nodes **greater than or equal** to `x`.
+
+You should **preserve** the original relative order of the nodes in each of the two partitions.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/partition.jpg)
+
+```
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+```
+
+**Example 2:**
+
+```
+Input: head = [2,1], x = 2
+Output: [1,2]
+```
+
+```python
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        # 1. two list
+        # 2. one pass
+        # 3. merge
+        
+        head1 = ListNode(0)
+        head2 = ListNode(0)
+        
+        curr = head
+        l1, l2 = head1, head2
+        while curr:
+            if curr.val < x:
+                l1.next = curr
+                l1 = curr
+            else:
+                l2.next = curr
+                l2 = curr
+            
+            curr = curr.next
+        l2.next = None
+        l1.next = head2.next
+        
+        return head1.next
+```
+
+
+
+
+
+#### 24. Swap Nodes in Pairs
+
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
+
+```
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+```
+
+**Example 2:**
+
+```
+Input: head = []
+Output: []
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        dummyHead = ListNode(0, head)
+        temp = dummyHead
+        while temp.next and temp.next.next:
+            node1 = temp.next
+            node2 = temp.next.next
+            temp.next = node2          # step 1
+            node1.next = node2.next    # step 2
+            node2.next = node1         # step 3
+            temp = node1               # update starting point
+        return dummyHead.next
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        newHead = head.next
+        head.next = self.swapPairs(newHead.next)
+        newHead.next = head
+        return newHead
+```
+
+#### 92. Reverse Linked List II
+
+Given the `head` of a singly linked list and two integers `left` and `right` where `left <= right`, reverse the nodes of the list from position `left` to position `right`, and return *the reversed list*.
+
+ **Note**: re-connect after reverse.
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg)
+
+```
+Input: head = [1,2,3,4,5], left = 2, right = 4
+Output: [1,4,3,2,5]
+```
+
+**Example 2:**
+
+```
+Input: head = [5], left = 1, right = 1
+Output: [5]
+```
+
+```python
+class Solution:
+    def reverseBetween(self, head: ListNode, left: int, right: int) -> ListNode:
+        dummyNode = ListNode(-1, head)
+        m_prev = self.findkth(dummyNode, left-1)
+        m = m_prev.next
+        n = self.findkth(m, right-left)
+        n_next = n.next
+        n.next = None
+        
+        self.reverse(m)
+        
+        m_prev.next = n
+        m.next = n_next
+        
+        return dummyNode.next
+    
+    def reverse(self, head):
+        prev = None
+        while head:
+            temp = head.next
+            head.next = prev
+            prev = head
+            head = temp
+        return prev
+    
+    def findkth(self, head, k):
+        for i in range(k):
+            if head is None:
+                return None
+            head = head.next
+        return head
+```
+
+
+
+#### 61. Rotate List
+
+Given the `head` of a linked list, rotate the list to the right by `k` places.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/rotate1.jpg)
+
+```
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+```
+
+```python
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if not head or not head.next:
+            return head
+        n = 0
+        p = head
+        while p:
+            n += 1
+            p = p.next
+        k = k % n
+        
+        if k == 0:
+            return head
+        
+        p1, p2 = self.kthFromEnd(head, k)
+        newHead = p1.next
+        
+        p1.next = None
+        p2.next = head
+        
+        return newHead
+        
+    def kthFromEnd(self, head, k):
+        slow = fast = head
+        for _ in range(k):
+            fast = fast.next
+        if not fast:
+            return head.next
+        while fast.next:
+            slow = slow.next
+            fast = fast.next
+        return slow, fast
+```
+
+```python
+# 方法2： 闭合为环做剪切
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if k == 0 or not head or not head.next:
+            return head
+        
+        n = 1
+        cur = head
+        while cur.next:             # 计算List长度并把curr指向末尾
+            cur = cur.next
+            n += 1
+        
+        if (add := n - k % n) == n: # 如果k是n的倍数，则什么都不必做
+            return head
+        
+        cur.next = head             # 闭合成环
+        while add:                  # 将curr移到add处
+            cur = cur.next
+            add -= 1
+        
+        head = cur.next             # 在curr处剪断闭环
+        cur.next = None
+        return head
+```
+
+
+
+
+
+
+
+
+
+#### 141. Linked List Cycle
+
+Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
+
+Return `true` *if there is a cycle in the linked list*. Otherwise, return `false`.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+```
+
+```python
+# 方法一：哈希表
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        seen = set()
+        while head:
+            if head in seen:
+                return True
+            seen.add(head)
+            head = head.next
+        return False
+```
+
+```python
+# 方法二：快慢指针
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        fast = slow = head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            if slow == fast:
+                return True
+        return False
+        
+```
+
+
+
+#### 142. Linked List Cycle II
+
+Given a linked list, return the node where the cycle begins. If there is no cycle, return `null`.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
+
+**Notice** that you **should not modify** the linked list.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+```
+
+```python
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        seen = set()
+        while head:
+            if head not in seen:
+                seen.add(head)
+            else:
+                return head
+            head = head.next
+        return None
+```
+
+```python
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        slow = fast = head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            if slow == fast:
+                curr = head
+                while curr != slow:
+                    curr = curr.next
+                    slow = slow.next
+                return curr
+        return None 
+```
 
 
 
@@ -6707,65 +6715,7 @@ class Solution:
         return dummyhead.next
 ```
 
-```python
-class Solution:
-    def sortList(self, head: ListNode) -> ListNode:
-        def merge(head1: ListNode, head2: ListNode) -> ListNode:
-            dummyhead = curr = ListNode(0)
-            while head1 and head2:
-                if head1.val < head2.val:
-                    curr.next = head1
-                    head1 = head1.next
-                else:
-                    curr.next = head2
-                    head2 = head2.next
-                curr = curr.next
-            curr.next = head1 or head2
-            return dummyhead.next
-        
-        if not head:
-            return head
-        
-        length = 0
-        node = head
-        while node:
-            length += 1
-            node = node.next
-        
-        dummyHead = ListNode(0, head)
-        subLength = 1
-        while subLength < length:
-            prev, curr = dummyHead, dummyHead.next
-            while curr:
-                head1 = curr
-                for i in range(1, subLength):
-                    if curr.next:
-                        curr = curr.next
-                    else:
-                        break
-                head2 = curr.next
-                curr.next = None
-                curr = head2
-                for i in range(1, subLength):
-                    if curr and curr.next:
-                        curr = curr.next
-                    else:
-                        break
-                
-                succ = None
-                if curr:
-                    succ = curr.next
-                    curr.next = None
-                
-                merged = merge(head1, head2)
-                prev.next = merged
-                while prev.next:
-                    prev = prev.next
-                curr = succ
-            subLength <<= 1
-        
-        return dummyHead.next
-```
+
 
 
 
@@ -6794,41 +6744,6 @@ class Solution:
             p2 = p2.next if p2 else headA
         
         return p1
-```
-
-
-
-#### 206. Reverse Linked List
-
-Given the `head` of a singly linked list, reverse the list, and return *the reversed list*.
-
- 
-
-**Example 1:**
-
-![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
-
-```
-Input: head = [1,2,3,4,5]
-Output: [5,4,3,2,1]
-```
-
-```python
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
-        prev = None
-        curr = head
-        while curr:
-            temp = curr.next
-            curr.next = prev
-            prev = curr
-            curr = temp
-        return prev
 ```
 
 
