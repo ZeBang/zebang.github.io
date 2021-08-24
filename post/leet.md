@@ -3247,9 +3247,55 @@ class Solution:
         return dp[n]
 ```
 
+#### 152. Maximum Product Subarray
+
+Given an integer array `nums`, find a contiguous non-empty subarray within the array that has the largest product, and return *the product*.
+
+It is **guaranteed** that the answer will fit in a **32-bit** integer.
+
+A **subarray** is a contiguous subsequence of the array.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+```
+
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        n = len(nums)
+        maxdp = [0] * n
+        mindp = [0] * n
+        maxdp[0] = nums[0]
+        mindp[0] = nums[0]
+        for i in range(1, n):
+            temp = [nums[i], maxdp[i-1]*nums[i], mindp[i-1]*nums[i]]
+            mindp[i] = min(temp)
+            maxdp[i] = max(temp)
+        return max(maxdp)
+```
+
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        n = len(nums)
+        maxdp, mindp, ans = nums[0], nums[0], nums[0]
+        for i in range(1, n):
+            temp = [nums[i], maxdp*nums[i], mindp*nums[i]]
+            mindp = min(temp)
+            maxdp = max(temp)
+            ans = max(maxdp, ans)
+        return ans
+```
 
 
-#### ##. 01背包
+
+#### 01背包
 
 背包最大重量为4。
 
@@ -3535,7 +3581,7 @@ class Solution:
         return dp[m][n]
 ```
 
-#### ##. 完全背包
+#### 完全背包
 
 ```python
 # 先遍历物品，再遍历背包
@@ -6764,7 +6810,36 @@ def isBalanced(self, root: TreeNode) -> bool:
     return get_height(root) >= 0
 ```
 
+#### 653. Two Sum IV - Input is a BST
 
+Given the `root` of a Binary Search Tree and a target number `k`, return *`true` if there exist two elements in the BST such that their sum is equal to the given target*.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/09/21/sum_tree_1.jpg)
+
+```
+Input: root = [5,3,6,2,4,null,7], k = 9
+Output: true
+```
+
+```python
+# hashmap
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+        def find(root, k, h):
+            if not root:
+                return False
+            if k - root.val in h:
+                return True
+            h.add(root.val)
+            return find(root.left, k, h) or find(root.right, k, h) 
+        
+        h = {root.val}
+        return find(root, k, h)
+```
 
 
 
@@ -9201,7 +9276,9 @@ class Solution:
 
 #### References
 
-代码随想录 https://github.com/youngyangyang04/leetcode-master
+https://programmercarl.com/
+
+https://github.com/youngyangyang04/leetcode-master
 
 https://runestone.academy/runestone/books/published/pythonds/index.html
 
