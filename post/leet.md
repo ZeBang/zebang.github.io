@@ -1,5 +1,7 @@
 
 
+
+
 ## leetCode in Python
 
 
@@ -1764,54 +1766,6 @@ class Solution:
 
 
 
-
-#### 100. Same Tree
-
-```python
-def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
-    if p is None and q is None:
-        return True
-    if p is not None and q is not None:
-        return p.val == q.val and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
-    return False
-```
-
-#### 101. Symmetric Tree
-
-```python
-def isSymmetric(self, root: TreeNode) -> bool:
-    if root is None:
-        return True
-    return self.helper(root.left, root.right)
-
-def helper(self, left, right):
-    if left is None and right is None:
-        return True
-    if left is None or right is None or left.val != right.val:
-        return False
-    return self.helper(left.left, right.right) and self.helper(left.right, right.left)
-```
-
-#### 104. Maximum Depth of Binary Tree
-
-```python
-def maxDepth(self, root: TreeNode) -> int:
-    if root is None:
-        return 0 
-    return max(self.maxDepth(root.left), self.maxDepth(root.right)) + 1
-```
-
-#### 111. Minimum Depth of Binary Tree
-
-```python
-def minDepth(self, root: TreeNode) -> int:
-    if root is None:
-        return 0
-    if root.left and root.right:
-        return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
-    else:
-        return max(self.minDepth(root.left), self.minDepth(root.right)) + 1
-```
 
 
 
@@ -6796,7 +6750,313 @@ class Solution:
 
 ### Tree
 
+#### 144. Binary Tree Preorder Traversal
+
+Given the `root` of a binary tree, return *the preorder traversal of its nodes' values*.
+
+```python
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        # 保存结果
+        result = []
+        
+        def traversal(root: TreeNode):
+            if root == None:
+                return
+            result.append(root.val) # 前序
+            traversal(root.left)    # 左
+            traversal(root.right)   # 右
+
+        traversal(root)
+        return result
+```
+
+```python
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        # 根结点为空则返回空列表
+        if not root:
+            return []
+        stack = [root]
+        result = []
+        while stack:
+            node = stack.pop()
+            result.append(node.val) # 中结点先处理
+            if node.right:
+                stack.append(node.right) # 右孩子先入栈
+            if node.left:
+                stack.append(node.left) # 左孩子后入栈
+        return result
+```
+
+```python
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        result = []
+        st= []
+        if root:
+            st.append(root)
+        while st:
+            node = st.pop()
+            if node != None:
+                if node.right: #右
+                    st.append(node.right)
+                if node.left: #左
+                    st.append(node.left)
+                st.append(node) #中
+                st.append(None)
+            else:
+                node = st.pop()
+                result.append(node.val)
+        return result
+```
+
+
+
+#### 145. Binary Tree Postorder Traversal
+
+Given the `root` of a binary tree, return *the postorder traversal of its nodes' values*.
+
+```python
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        result = []
+
+        def traversal(root: TreeNode):
+            if root == None:
+                return
+            traversal(root.left)    # 左
+            traversal(root.right)   # 右
+            result.append(root.val) # 中
+
+        traversal(root)
+        return result
+```
+
+```python
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        stack = [root]
+        result = []
+        while stack:
+            node = stack.pop()
+            # 中结点先处理
+            result.append(node.val)
+            # 左孩子先入栈
+            if node.left:
+                stack.append(node.left)
+            # 右孩子后入栈
+            if node.right:
+                stack.append(node.right)
+        # 将最终的数组翻转
+        return result[::-1]
+```
+
+```python
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        result = []
+        st = []
+        if root:
+            st.append(root)
+        while st:
+            node = st.pop()
+            if node != None:
+                st.append(node) #中
+                st.append(None)
+                
+                if node.right: #右
+                    st.append(node.right)
+                if node.left: #左
+                    st.append(node.left)
+            else:
+                node = st.pop()
+                result.append(node.val)
+        return result
+```
+
+
+
+
+
+#### 94. Binary Tree Inorder Traversal
+
+Given the `root` of a binary tree, return *the inorder traversal of its nodes' values*.
+
+```python
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        result = []
+
+        def traversal(root: TreeNode):
+            if root == None:
+                return
+            traversal(root.left)    # 左
+            result.append(root.val) # 中
+            traversal(root.right)   # 右
+
+        traversal(root)
+        return result
+```
+
+```python
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        stack = []  # 不能提前将root结点加入stack中
+        result = []
+        cur = root
+        while cur or stack:
+            # 先迭代访问最底层的左子树结点
+            if cur:     
+                stack.append(cur)
+                cur = cur.left		
+            # 到达最左结点后处理栈顶结点    
+            else:		
+                cur = stack.pop()
+                result.append(cur.val)
+                # 取栈顶元素右结点
+                cur = cur.right	
+        return result
+```
+
+```python
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        result = []
+        st = []
+        if root:
+            st.append(root)
+        while st:
+            node = st.pop()
+            if node != None:
+                if node.right: #添加右节点（空节点不入栈）
+                    st.append(node.right)
+                
+                st.append(node) #添加中节点
+                st.append(None) #中节点访问过，但是还没有处理，加入空节点做为标记。
+                
+                if node.left: #添加左节点（空节点不入栈）
+                    st.append(node.left)
+            else: #只有遇到空节点的时候，才将下一个节点放进结果集
+                node = st.pop() #重新取出栈中元素
+                result.append(node.val) #加入到结果集
+        return result
+```
+
+#### 102. Binary Tree Level Order Traversal
+
+Given the `root` of a binary tree, return *the level order traversal of its nodes' values*. (i.e., from left to right, level by level).
+
+```python
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        queue = [root]
+        result = []
+        while queue:
+            length = len(queue)  
+            layer = []
+            for _ in range(length):
+                curr = queue.pop(0)
+                layer.append(curr.val)
+                if curr.left: queue.append(curr.left)
+                if curr.right: queue.append(curr.right)
+            result.append(layer)
+        return result
+```
+
+#### 107. Binary Tree Level Order Traversal II
+
+#### 199. Binary Tree Right Side View
+
+#### 637. Average of Levels in Binary Tree
+
+#### 429. N-ary Tree Level Order Traversal
+
+#### 515. Find Largest Value in Each Tree Row
+
+#### 116. Populating Next Right Pointers in Each Node
+
+#### 117. Populating Next Right Pointers in Each Node II
+
+#### 104. Maximum Depth of Binary Tree
+
+```python
+def maxDepth(self, root: TreeNode) -> int:
+    if root is None:
+        return 0 
+    return max(self.maxDepth(root.left), self.maxDepth(root.right)) + 1
+```
+
+```python
+class solution:
+    def maxdepth(self, root: treenode) -> int:
+        if not root:
+            return 0
+        depth = 0 #记录深度
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            size = len(queue)
+            depth += 1
+            for i in range(size):
+                node = queue.popleft()
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return depth
+```
+
+#### 559. Maximum Depth of N-ary Tree
+
+#### 111. Minimum Depth of Binary Tree
+
+只有当左右孩子都为空的时候，才说明遍历的最低点了。如果其中一个孩子为空则不是最低点
+
+```python
+def minDepth(self, root: TreeNode) -> int:
+    if root is None:
+        return 0
+    if root.left and root.right:
+        return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
+    else:
+        return max(self.minDepth(root.left), self.minDepth(root.right)) + 1
+```
+
+```python
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        que = deque()
+        que.append(root)
+        res = 1
+
+        while que:
+            for _ in range(len(que)):
+                node = que.popleft()
+                # 当左右孩子都为空的时候，说明是最低点的一层了，退出
+                if not node.left and not node.right:
+                    return res
+                if node.left is not None:
+                    que.append(node.left)
+                if node.right is not None:
+                    que.append(node.right)
+            res += 1
+        return res
+```
+
+
+
 #### 110. Balanced Binary Tree
+
+递归法
 
 ```python
 def isBalanced(self, root: TreeNode) -> bool:
@@ -6809,6 +7069,347 @@ def isBalanced(self, root: TreeNode) -> bool:
         return max(left_height, right_height) + 1
     return get_height(root) >= 0
 ```
+
+```python
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        return True if self.getDepth(root) != -1 else False
+    
+    #返回以该节点为根节点的二叉树的高度，如果不是二叉搜索树了则返回-1
+    def getDepth(self, node):
+        if not node:
+            return 0
+        leftDepth = self.getDepth(node.left)
+        if leftDepth == -1: return -1 #说明左子树已经不是二叉平衡树
+        rightDepth = self.getDepth(node.right)
+        if rightDepth == -1: return -1 #说明右子树已经不是二叉平衡树
+        return -1 if abs(leftDepth - rightDepth)>1 else 1 + max(leftDepth, rightDepth)
+```
+
+迭代法
+
+```python
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        st = []
+        if not root:
+            return True
+        st.append(root)
+        while st:
+            node = st.pop() #中
+            if abs(self.getDepth(node.left) - self.getDepth(node.right)) > 1:
+                return False
+            if node.right:
+                st.append(node.right) #右（空节点不入栈）
+            if node.left:
+                st.append(node.left) #左（空节点不入栈）
+        return True
+    
+    def getDepth(self, cur):
+        st = []
+        if cur:
+            st.append(cur)
+        depth = 0
+        result = 0
+        while st:
+            node = st.pop()
+            if node:
+                st.append(node) #中
+                st.append(None)
+                depth += 1
+                if node.right: st.append(node.right) #右
+                if node.left: st.append(node.left) #左
+            else:
+                node = st.pop()
+                depth -= 1
+            result = max(result, depth)
+        return result
+```
+
+
+
+#### 589. N-ary Tree Preorder Traversal
+
+Given the `root` of an n-ary tree, return *the preorder traversal of its nodes' values*.
+
+Nary-Tree input serialization is represented in their level order traversal. Each group of children is separated by the null value (See examples)
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/narytreeexample.png)
+
+```
+Input: root = [1,null,3,2,4,null,5,6]
+Output: [1,3,5,6,2,4]
+```
+
+```python
+class Solution:
+    def preorder(self, root: 'Node') -> List[int]:
+        result = []
+        def traversal(roots):
+            if not roots:
+                return
+            for node in roots:
+                if node:
+                    result.append(node.val)
+                    traversal(node.children)
+        traversal([root])
+        return result
+```
+
+#### 226. Invert Binary Tree
+
+递归法：前序遍历：
+
+```python
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return None
+        root.left, root.right = root.right, root.left #中
+        self.invertTree(root.left) #左
+        self.invertTree(root.right) #右
+        return root
+```
+
+迭代法：深度优先遍历（前序遍历）：
+
+```python
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return root
+        st = []
+        st.append(root)
+        while st:
+            node = st.pop()
+            node.left, node.right = node.right, node.left #中
+            if node.right:
+                st.append(node.right) #右
+            if node.left:
+                st.append(node.left) #左
+        return root
+```
+
+迭代法：广度优先遍历（层序遍历）：
+
+```python
+import collections
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        queue = collections.deque() #使用deque()
+        if root:
+            queue.append(root)
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                node.left, node.right = node.right, node.left #节点处理
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return root
+```
+
+#### 101. Symmetric Tree
+
+递归法
+
+```python
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        return self.compare(root.left, root.right)
+        
+    def compare(self, left, right):
+        #首先排除空节点的情况
+        if left == None and right != None: return False
+        elif left != None and right == None: return False
+        elif left == None and right == None: return True
+        #排除了空节点，再排除数值不相同的情况
+        elif left.val != right.val: return False
+        
+        #此时就是：左右节点都不为空，且数值相同的情况
+        #此时才做递归，做下一层的判断
+        outside = self.compare(left.left, right.right) #左子树：左、 右子树：右
+        inside = self.compare(left.right, right.left) #左子树：右、 右子树：左
+        isSame = outside and inside #左子树：中、 右子树：中 （逻辑处理）
+        return isSame
+```
+
+迭代法： 使用队列
+
+```python
+import collections
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        queue = collections.deque()
+        queue.append(root.left) #将左子树头结点加入队列
+        queue.append(root.right) #将右子树头结点加入队列
+        while queue: #接下来就要判断这这两个树是否相互翻转
+            leftNode = queue.popleft()
+            rightNode = queue.popleft()
+            if not leftNode and not rightNode: #左节点为空、右节点为空，此时说明是对称的
+                continue
+            
+            #左右一个节点不为空，或者都不为空但数值不相同，返回false
+            if not leftNode or not rightNode or leftNode.val != rightNode.val:
+                return False
+            queue.append(leftNode.left) #加入左节点左孩子
+            queue.append(rightNode.right) #加入右节点右孩子
+            queue.append(leftNode.right) #加入左节点右孩子
+            queue.append(rightNode.left) #加入右节点左孩子
+        return True
+```
+
+迭代法：使用栈
+
+```python
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        st = [] #这里改成了栈
+        st.append(root.left)
+        st.append(root.right)
+        while st:
+            leftNode = st.pop()
+            rightNode = st.pop()
+            if not leftNode and not rightNode:
+                continue
+            if not leftNode or not rightNode or leftNode.val != rightNode.val:
+                return False
+            st.append(leftNode.left)
+            st.append(rightNode.right)
+            st.append(leftNode.right)
+            st.append(rightNode.left)
+        return True
+```
+
+#### 100. Same Tree
+
+```python
+def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+    if p is None and q is None:
+        return True
+    if p is not None and q is not None:
+        return p.val == q.val and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+    return False
+```
+
+#### 572. Subtree of Another Tree
+
+```python
+class Solution:
+    def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+        return str(t) in str(s)
+```
+
+```python
+class Solution(object):
+    def isSubtree(self, s, t):
+        def ser(root):
+            if not root:    return '#'
+            st = str(root.val) + str(ser(root.left)) + str(ser(root.right)) 
+            return ' ' + st + ' ' #前后加空格，避免[12][1]的情况误判
+        return ser(t) in ser(s)
+```
+
+```python
+class Solution:
+    def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+        def dfs_sequence(root, li):
+            """
+            返回 DFS 序列
+            """
+            if root is None:
+                return li
+            li.append('{' + str(root.val) + '}')
+            if root.left is None:
+                li.append('LeftNone')
+            else:
+                dfs_sequence(root.left, li)
+            if root.right is None:
+                li.append('RightNone')
+            else:
+                dfs_sequence(root.right, li)
+            return li
+        
+        s = ','.join(dfs_sequence(s, []))
+        t = ','.join(dfs_sequence(t, []))
+        return t in s
+```
+
+```python
+class Solution:
+    def isSubtree(self, s: Optional[TreeNode], t: Optional[TreeNode]) -> bool:
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
+
+    
+    def isSameTree(self, p, q):
+        if p is None and q is None:
+            return True
+        if p is not None and q is not None:
+            return p.val == q.val and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+        return False
+```
+
+#### 222. Count Complete Tree Nodes
+
+```python
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+```
+
+#### 257. Binary Tree Paths
+
+回溯法
+
+```python
+class Solution:
+    def binaryTreePaths(self, root: TreeNode) -> List[str]:
+        if not root:
+            return
+        
+        path=[root.val]
+        res=[]
+        def backtrace(root, path):
+            if not root:return 
+            if (not root.left) and (not root.right):
+               res.append(path[:])
+  
+            for way in [root.left, root.right]:
+                if not way: continue
+                path.append(way.val)
+                backtrace(way, path)
+                path.pop()
+        backtrace(root,path)
+        return ["->".join(list(map(str,i))) for i in res]
+```
+
+
+
+
+
+
+
+
+
+
 
 #### 653. Two Sum IV - Input is a BST
 
@@ -6840,6 +7441,10 @@ class Solution:
         h = {root.val}
         return find(root, k, h)
 ```
+
+
+
+
 
 
 
@@ -7044,6 +7649,60 @@ class Solution:
             
 ```
 
+#### 200. Number of Islands
+
+```python
+# DFS
+class Solution:
+    def dfs(self, grid, r, c):
+        grid[r][c] = 0
+        nr, nc = len(grid), len(grid[0])
+        for x, y in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
+            if 0 <= x < nr and 0 <= y < nc and grid[x][y] == "1":
+                self.dfs(grid, x, y)
+
+    def numIslands(self, grid: List[List[str]]) -> int:
+        nr = len(grid)
+        if nr == 0:
+            return 0
+        nc = len(grid[0])
+
+        num_islands = 0
+        for r in range(nr):
+            for c in range(nc):
+                if grid[r][c] == "1":
+                    num_islands += 1
+                    self.dfs(grid, r, c)
+        
+        return num_islands
+```
+
+```python
+# BFS
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        nr = len(grid)
+        if nr == 0:
+            return 0
+        nc = len(grid[0])
+
+        num_islands = 0
+        for r in range(nr):
+            for c in range(nc):
+                if grid[r][c] == "1":
+                    num_islands += 1
+                    grid[r][c] = "0"
+                    neighbors = collections.deque([(r, c)])
+                    while neighbors:
+                        row, col = neighbors.popleft()
+                        for x, y in [(row - 1, col), (row + 1, col), (row, col - 1), (row, col + 1)]:
+                            if 0 <= x < nr and 0 <= y < nc and grid[x][y] == "1":
+                                neighbors.append((x, y))
+                                grid[x][y] = "0"
+        
+        return num_islands
+```
+
 
 
 ### Math
@@ -7207,6 +7866,203 @@ class Solution:
                     pointers[j] += 1
         
         return dp[n]
+```
+
+#### 633. Sum of Square Numbers
+
+```python
+class Solution(object):
+    def judgeSquareSum(self, c):
+        """
+        :type c: int
+        :rtype: bool
+        """
+        if c == 0: return True
+        for a in range(1, int(math.sqrt(c) + 1)):
+            b = c - a * a
+            if int(math.sqrt(b)) ** 2 == b:
+                return True
+        return False
+```
+
+```python
+class Solution:
+    def judgeSquareSum(self, c: int) -> bool:
+        if not c:
+            return True
+        # (a - b) ^ 2 + (a + b) ^ 2 = 2 * (a ^ 2 + b ^ 2) = 2 * c
+        while c % 2 == 0:
+            c //= 2
+        # 费马平方和定理
+        if c % 4 == 3:
+            return False
+        sqrt = int(math.sqrt(c))
+        for i in range(3, sqrt + 1, 4):
+            count = 0
+            while c % i == 0:
+                c //= i
+                count += 1
+            if count % 2 != 0:
+                return False
+        return True
+```
+
+### Graph
+
+#### 207. Course Schedule
+
+BFS
+
+```python
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # 存储有向图
+        edges = collections.defaultdict(list)
+        # 存储每个节点入度
+        indeg = [0] * numCourses
+        
+        for course in prerequisites:
+            edges[course[1]].append(course[0])
+            indeg[course[0]] += 1
+            
+        q = collections.deque([u for u in range(numCourses) if indeg[u] == 0])
+        visited = 0
+        
+        while q:
+            curr = q.popleft()
+            visited += 1
+            for v in edges[curr]:
+                indeg[v] -= 1
+                if indeg[v] == 0:
+                    q.append(v)
+        print(visited)
+        return visited == numCourses
+```
+
+DFS
+
+```python
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        edges = collections.defaultdict(list)
+        visited = [0] * numCourses
+        #[未搜索0]：我们还没有搜索到这个节点；
+        #[搜索中1]：我们搜索过这个节点，但还没有回溯到该节点，即该节点还没有入栈，还有相邻的节点没有搜索完成）；
+        #[已完成2]：我们搜索过并且回溯过这个节点，即该节点已经入栈，并且所有该节点的相邻节点都出现在栈的更底部的位置，满足拓扑排序的要求。
+
+        result = list()
+        valid = True
+
+        for info in prerequisites:
+            edges[info[1]].append(info[0])
+        
+        def dfs(u: int):
+            nonlocal valid
+            visited[u] = 1
+            for v in edges[u]:
+                if visited[v] == 0:
+                    dfs(v)
+                    if not valid:
+                        return
+                elif visited[v] == 1:
+                    valid = False
+                    return
+            visited[u] = 2
+            result.append(u)
+        
+        for i in range(numCourses):
+            if valid and not visited[i]:
+                dfs(i)
+        
+        return valid
+```
+
+#### 210. Course Schedule II
+
+DFS
+
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # 存储有向图
+        edges = collections.defaultdict(list)
+        # 标记每个节点的状态：0=未搜索，1=搜索中，2=已完成
+        visited = [0] * numCourses
+        # 用数组来模拟栈，下标 0 为栈底，n-1 为栈顶
+        result = list()
+        # 判断有向图中是否有环
+        valid = True
+        
+        for info in prerequisites:
+            edges[info[0]].append(info[1]) # 如果info[1]->info[0]则最后return result[::-1]
+        
+        def dfs(u: int):
+            nonlocal valid
+            # 将节点标记为「搜索中」
+            visited[u] = 1
+            # 搜索其相邻节点
+            # 只要发现有环，立刻停止搜索
+            for v in edges[u]:
+                # 如果「未搜索」那么搜索相邻节点
+                if visited[v] == 0:
+                    dfs(v)
+                    if not valid:
+                        return
+                # 如果「搜索中」说明找到了环
+                elif visited[v] == 1:
+                    valid = False
+                    return
+            # 将节点标记为「已完成」
+            visited[u] = 2
+            # 将节点入栈
+            result.append(u)
+        
+        # 每次挑选一个「未搜索」的节点，开始进行深度优先搜索
+        for i in range(numCourses):
+            if valid and not visited[i]:
+                dfs(i)
+        
+        if not valid:
+            return list()
+        
+        # 如果没有环，那么就有拓扑排序
+        # 注意下标 0 为栈底，因此需要将数组反序输出
+        return result
+```
+
+BFS
+
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # 存储有向图
+        edges = collections.defaultdict(list)
+        # 存储每个节点的入度
+        indeg = [0] * numCourses
+        # 存储答案
+        result = list()
+
+        for info in prerequisites:
+            edges[info[1]].append(info[0])
+            indeg[info[0]] += 1
+        
+        # 将所有入度为 0 的节点放入队列中
+        q = collections.deque([u for u in range(numCourses) if indeg[u] == 0])
+
+        while q:
+            # 从队首取出一个节点
+            u = q.popleft()
+            # 放入答案中
+            result.append(u)
+            for v in edges[u]:
+                indeg[v] -= 1
+                # 如果相邻节点 v 的入度为 0，就可以选 v 对应的课程了
+                if indeg[v] == 0:
+                    q.append(v)
+
+        if len(result) != numCourses:
+            result = list()
+        return result
 ```
 
 
@@ -8677,6 +9533,35 @@ class Solution:
 ```
 
 另外两种数学解法见https://leetcode-cn.com/problems/fibonacci-number/solution/fei-bo-na-qi-shu-by-leetcode-solution-o4ze/
+
+#### 537. Complex Number Multiplication
+
+A [complex number](https://en.wikipedia.org/wiki/Complex_number) can be represented as a string on the form `"**real**+**imaginary**i"` where:
+
+- `real` is the real part and is an integer in the range `[-100, 100]`.
+- `imaginary` is the imaginary part and is an integer in the range `[-100, 100]`.
+- `i2 == -1`.
+
+Given two complex numbers `num1` and `num2` as strings, return *a string of the complex number that represents their multiplications*.
+
+ 
+
+**Example 1:**
+
+```
+Input: num1 = "1+1i", num2 = "1+1i"
+Output: "0+2i"
+Explanation: (1 + i) * (1 + i) = 1 + i2 + 2 * i = 2i, and you need convert it to the form of 0+2i.
+```
+
+```python
+class Solution(object):
+    def complexNumberMultiply(self, a, b):
+        a_t, a_f = int(a.split('+')[0]), int(a.split('+')[1].split('i')[0])
+        b_t, b_f = int(b.split('+')[0]), int(b.split('+')[1].split('i')[0])
+        res_t, res_f = a_t * b_t - a_f * b_f, a_t * b_f + a_f * b_t
+        return str(res_t) + "+" + str(res_f) + "i"
+```
 
 
 
