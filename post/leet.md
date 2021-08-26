@@ -7409,6 +7409,245 @@ class Solution:
 
 
 
+#### 501. Find Mode in Binary Search Tree
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# 递归法
+class Solution:
+    def findMode(self, root: TreeNode) -> List[int]:
+        if not root: return
+        self.pre = root
+        self.count = 0   //统计频率
+        self.countMax = 0  //最大频率
+        self.res = []
+        def findNumber(root):
+            if not root: return None  // 第一个节点
+            findNumber(root.left)  //左
+            if self.pre.val == root.val:  //中: 与前一个节点数值相同
+                self.count += 1
+            else:  // 与前一个节点数值不同
+                self.pre = root
+                self.count = 1
+            if self.count > self.countMax:  // 如果计数大于最大值频率
+                self.countMax = self.count  // 更新最大频率
+                self.res = [root.val]  //更新res
+            elif self.count == self.countMax:  // 如果和最大值相同，放进res中
+                self.res.append(root.val)
+            findNumber(root.right)  //右
+            return
+        findNumber(root)
+        return self.res
+	
+
+# 迭代法-中序遍历-使用额外空间map的方法：
+class Solution:
+    def findMode(self, root: TreeNode) -> List[int]:
+        stack = []
+        cur = root
+        pre = None
+        dist = {}
+        while cur or stack:
+            if cur:  # 指针来访问节点，访问到最底层
+                stack.append(cur)
+                cur = cur.left
+            else:  # 逐一处理节点
+                cur = stack.pop()
+                if cur.val in dist:
+                    dist[cur.val] += 1
+                else:
+                    dist[cur.val] = 1
+                pre = cur
+                cur = cur.right
+
+        # 找出字典中最大的key
+        res = []
+        for key, value in dist.items():
+            if (value == max(dist.values())):
+                res.append(key)
+        return res
+
+# 迭代法-中序遍历-不使用额外空间，利用二叉搜索树特性：
+class Solution:
+    def findMode(self, root: TreeNode) -> List[int]:
+        stack = []
+        cur = root
+        pre = None
+        maxCount, count = 0, 0
+        res = []
+        while cur or stack:
+            if cur:  # 指针来访问节点，访问到最底层
+                stack.append(cur)
+                cur = cur.left
+            else:  # 逐一处理节点
+                cur = stack.pop()
+                if pre == None:  # 第一个节点
+                    count = 1
+                elif pre.val == cur.val:  # 与前一个节点数值相同
+                    count += 1
+                else:
+                    count = 1
+                if count == maxCount:
+                    res.append(cur.val)
+                if count > maxCount:
+                    maxCount = count
+                    res.clear()
+                    res.append(cur.val)
+
+                pre = cur
+                cur = cur.right
+        return res	
+```
+
+
+
+#### 404. Sum of Left Leaves
+
+```python
+# 递归
+class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        left = self.sumOfLeftLeaves(root.left)
+        right = self.sumOfLeftLeaves(root.right)
+        leaf = 0
+        if root.left and not root.left.left and not root.left.right:
+            leaf = root.left.val
+        return leaf + left + right
+```
+
+```python
+# 迭代
+class Solution:
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        stack = []
+        if root: 
+            stack.append(root)
+        res = 0
+        while stack: 
+            # 每次都把当前节点的左节点加进去. 
+            cur_node = stack.pop()
+            if cur_node.left and not cur_node.left.left and not cur_node.left.right: 
+                res += cur_node.left.val
+            if cur_node.left: 
+                stack.append(cur_node.left)
+            if cur_node.right: 
+                stack.append(cur_node.right)
+        return res
+```
+
+
+
+#### 513. Find Bottom Left Tree Value
+
+```python
+# 迭代（层序遍历BFS）
+class Solution:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return
+        queue = collections.deque([root])
+        ans = root.val
+        while queue:
+            n = len(queue)
+            for i in range(n):
+                curr = queue.popleft()
+                if i== 0: ans = curr.val
+                if curr.left: queue.append(curr.left)
+                if curr.right: queue.append(curr.right)
+        return ans
+```
+
+```python
+# 递归（回溯）
+class Solution:
+    def findBottomLeftValue(self, root: TreeNode) -> int:
+        self.max_depth = -float("INF")
+        self.leftmost_val = 0
+
+        def __traverse(root, cur_depth): 
+            if not root.left and not root.right: 
+                if cur_depth > self.max_depth: 
+                    self.max_depth = cur_depth
+                    self.leftmost_val = root.val  
+            if root.left: 
+                cur_depth += 1
+                __traverse(root.left, cur_depth)
+                cur_depth -= 1
+            if root.right: 
+                cur_depth += 1
+                __traverse(root.right, cur_depth)
+                cur_depth -= 1
+                
+        __traverse(root, 0)
+        return self.leftmost_val
+```
+
+
+
+---
+
+#### 331. Verify Preorder Serialization of a Binary Tree
+
+One way to serialize a binary tree is to use **preorder traversal**. When we encounter a non-null node, we record the node's value. If it is a null node, we record using a sentinel value such as `'#'`.
+
+![img](https://assets.leetcode.com/uploads/2021/03/12/pre-tree.jpg)
+
+For example, the above binary tree can be serialized to the string `"9,3,4,#,#,1,#,#,2,#,6,#,#"`, where `'#'` represents a null node.
+
+Given a string of comma-separated values `preorder`, return `true` if it is a correct preorder traversal serialization of a binary tree.
+
+It is **guaranteed** that each comma-separated value in the string must be either an integer or a character `'#'` representing null pointer.
+
+You may assume that the input format is always valid.
+
+- For example, it could never contain two consecutive commas, such as `"1,,3"`.
+
+**Note:** You are not allowed to reconstruct the tree.
+
+ 
+
+**Example 1:**
+
+```
+Input: preorder = "9,3,4,#,#,1,#,#,2,#,6,#,#"
+Output: true
+```
+
+```python
+class Solution(object):
+    def isValidSerialization(self, preorder):
+        stack = []
+        for node in preorder.split(','):
+            stack.append(node)
+            while len(stack) >= 3 and stack[-1] == stack[-2] == '#' and stack[-3] != '#':
+                stack.pop(), stack.pop(), stack.pop()
+                stack.append('#')
+        return len(stack) == 1 and stack.pop() == '#'
+```
+
+```python
+class Solution:
+    def isValidSerialization(self, preorder: str) -> bool:
+        diff = 1
+        # diff = 出度 - 入度
+        for node in preorder.split(','):
+            diff -= 1
+            if diff < 0:
+                return False
+            if node != '#':
+                diff += 2
+        return diff == 0
+```
+
+
+
 
 
 #### 653. Two Sum IV - Input is a BST
