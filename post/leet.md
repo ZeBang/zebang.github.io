@@ -801,6 +801,63 @@ class Solution:
 
 
 
+#### 287. Find the Duplicate Number
+
+Given an array of integers `nums` containing `n + 1` integers where each integer is in the range `[1, n]` inclusive.
+
+There is only **one repeated number** in `nums`, return *this repeated number*.
+
+You must solve the problem **without** modifying the array `nums` and uses only constant extra space.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,3,4,2,2]
+Output: 2
+```
+
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow, fast = 0, 0
+        while True:
+            slow, fast = nums[slow], nums[nums[fast]]
+            if slow == fast:
+                break
+        slow = 0
+        while slow != fast:
+            slow, fast = nums[slow], nums[fast]
+        return slow
+```
+
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        n = len(nums)
+        left = 0
+        right = n - 1
+        
+        while left <= right:
+            mid = (left + right) // 2
+            count = 0
+            for i in range(n):
+                if nums[i] <= mid:
+                    count += 1
+            if count <= mid:
+                left = mid + 1
+            else:
+                right = mid - 1
+                ans = mid
+
+        return ans
+```
+
+
+
+
+
 ### Two Pointer
 
 Slow and Fast two pointer: 26 - 27 - 283 - 844 - 977 
