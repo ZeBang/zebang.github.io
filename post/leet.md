@@ -1701,6 +1701,26 @@ class Solution:
             right -= 1
 ```
 
+#### 925. Long Pressed Name
+
+```python
+class Solution:
+    def isLongPressedName(self, name: str, typed: str) -> bool:
+        slow = 0
+        fast = 0
+        
+        while fast < len(typed):
+            if slow < len(name) and name[slow] == typed[fast]:
+                slow += 1
+                fast += 1
+            elif fast > 0 and typed[fast] == typed[fast-1]:
+                fast += 1
+            else:
+                return False
+            
+        return slow == len(name)
+```
+
 
 
 
@@ -5083,7 +5103,7 @@ class Solution:
         n = len(nums)
         q = collections.deque()
         for i in range(k):
-            while q and nums[i] >= nums[q[-1]]:
+            while q and nums[i] >= nums[q[-1]]: # 单调队列
                 q.pop()
             q.append(i)
 
@@ -5092,7 +5112,7 @@ class Solution:
             while q and nums[i] >= nums[q[-1]]:
                 q.pop()
             q.append(i)
-            while q[0] <= i - k:
+            while q[0] <= i - k: # 滑动窗口
                 q.popleft()
             ans.append(nums[q[0]])
         
@@ -5135,6 +5155,52 @@ class Solution:
         return result
 ```
 
+#### 341. Flatten Nested List Iterator
+
+```python
+class NestedIterator(object):
+    def dfs(self, nests):
+        for nest in nests:
+            if nest.isInteger():
+                self.queue.append(nest.getInteger())
+            else:
+                self.dfs(nest.getList())
+                    
+    def __init__(self, nestedList):
+        self.queue = collections.deque()
+        self.dfs(nestedList)
+
+    def next(self):
+        return self.queue.popleft()
+
+    def hasNext(self):
+        return len(self.queue)
+```
+
+```python
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        self.stack = []
+        for i in range(len(nestedList) - 1, -1, -1):
+            self.stack.append(nestedList[i])
+        
+
+    def next(self):
+        cur = self.stack.pop()
+        return cur.getInteger()
+
+    def hasNext(self):
+        while self.stack:
+            cur = self.stack[-1]
+            if cur.isInteger():
+                return True
+            self.stack.pop()
+            for i in range(len(cur.getList()) - 1, -1, -1):
+                self.stack.append(cur.getList()[i])
+        return False
+```
+
 
 
 
@@ -5172,6 +5238,23 @@ class Solution:
             # intervals.
                 merged[-1][1] = max(merged[-1][1], interval[1])
 
+        return merged
+```
+
+```python
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        intervals.append(newInterval) 
+        intervals.sort(key = lambda x: x[0])
+
+        merged = []
+        
+        for interval in intervals:
+            if not merged or merged[-1][1] < interval[0]:
+                merged.append(interval)
+            else:
+                merged[-1][1] = max(merged[-1][1], interval[1])
+                
         return merged
 ```
 
@@ -6805,6 +6888,29 @@ class Solution:
 
 
 
+#### 234. Palindrome Linked List
+
+```python
+
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+
+        self.front_pointer = head
+
+        def recursively_check(current_node=head):
+            if current_node is not None:
+                if not recursively_check(current_node.next):
+                    return False
+                if self.front_pointer.val != current_node.val:
+                    return False
+                self.front_pointer = self.front_pointer.next
+            return True
+
+        return recursively_check()
+```
+
+
+
 ### Tree
 
 #### 144. Binary Tree Preorder Traversal
@@ -7999,6 +8105,32 @@ class Solution:
         return num_islands
 ```
 
+#### 240. Search a 2D Matrix II
+
+```python
+class Solution:
+    def searchMatrix(self, matrix, target):
+        if len(matrix) == 0 or len(matrix[0]) == 0:
+            return False
+
+        height = len(matrix)
+        width = len(matrix[0])
+
+        # start our "pointer" in the bottom-left
+        row = height-1
+        col = 0
+
+        while col < width and row >= 0:
+            if matrix[row][col] > target:
+                row -= 1
+            elif matrix[row][col] < target:
+                col += 1
+            else: # found it
+                return True
+        
+        return False
+```
+
 
 
 ### Math
@@ -8363,6 +8495,495 @@ class Solution:
 
 
 
+#### 565. Array Nesting
+
+```mysql
+# mysolution
+class Solution:
+    def arrayNesting(self, nums: List[int]) -> int:
+        result = 1
+        for i in range(len(nums)):
+            if nums[i] != -1: # not visited
+                length = 0
+                temp = nums[i]
+                nums[i] = -1
+                while temp != -1:
+                    pos = temp
+                    temp = nums[temp]
+                    nums[pos] = -1
+                    length += 1
+
+                result = max(result, length)
+        return result
+```
+
+```mysql
+class Solution:
+    def arrayNesting(self, nums: List[int]) -> int:  
+        cache = {}
+
+        def dfs(i, visited):
+            if nums[i] in visited:
+                return 0
+            if i in cache: return cache[i]
+            visited.add(nums[i])
+            ans = 1 + dfs(nums[i], visited)
+            cache[i] = ans
+            return ans
+
+        res = 0
+        for i in range(len(nums)):
+            res = max(res, dfs(i, set()))
+        return res
+```
+
+```mysql
+class Solution:
+    def arrayNesting(self, nums: List[int]) -> int:  
+        n = len(nums)
+        visited = [0] * n
+        res = 0
+        for i in range(n):
+            cur, cnt = i, 0
+            while not visited[cur]:
+                visited[cur] = 1
+                cur = nums[cur]
+                cnt += 1
+            res = max(res, cnt)
+        return res
+```
+
+#### 并查集
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        self.root = [i for i in range(size)]
+        # Use a rank array to record the height of each vertex, i.e., the "rank" of each vertex.
+        # The initial "rank" of each vertex is 1, because each of them is
+        # a standalone vertex with no connection to other vertices.
+        self.rank = [1] * size
+
+    # The find function here is the same as that in the disjoint set with path compression.
+    def find(self, x):
+        if x == self.root[x]:
+            return x
+        self.root[x] = self.find(self.root[x])
+        return self.root[x]
+
+    # The union function with union by rank
+    def union(self, x, y):
+        rootX = self.find(x)
+        rootY = self.find(y)
+        if rootX != rootY:
+            if self.rank[rootX] > self.rank[rootY]:
+                self.root[rootY] = rootX
+            elif self.rank[rootX] < self.rank[rootY]:
+                self.root[rootX] = rootY
+            else:
+                self.root[rootY] = rootX
+                self.rank[rootX] += 1
+
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+```
+
+
+
+```python
+class UnionFind:
+    def __init__(self):
+        self.father = {}
+    
+    def find(self,x):
+        root = x
+
+        while self.father[root] != None:
+            root = self.father[root]
+
+        while x != root:
+            original_father = self.father[x]
+            self.father[x] = root
+            x = original_father
+         
+        return root
+    
+    def merge(self,x,y,val):
+        root_x,root_y = self.find(x),self.find(y)
+        if root_x != root_y:
+            self.father[root_x] = root_y
+
+    def is_connected(self,x,y):
+        return self.find(x) == self.find(y)
+    
+    def add(self,x):
+        if x not in self.father:
+            self.father[x] = None
+```
+
+#### 547. Number of Province
+
+#### 323. Number of Connected Components in an Undirected Graph
+
+```python
+class UnionFind():
+    def __init__(self, n):
+        self.father = [i for i in range(n)]
+        self.size = [1] * n
+        self.count = n
+        
+    def find(self, x):
+        while x != self.father[x]:
+            # self.father[x] = self.find(self.father[x]) # 压缩路径
+            x = self.father[x]
+        return self.father[x]
+
+    def union(self, x, y):
+        father_x, father_y = self.find(x), self.find(y)
+        if father_x != father_y:
+            # if self.size[father_x] > self.size[father_y]:
+            #     father_x, father_y = father_y, father_x
+            self.father[father_x] = father_y
+            self.size[father_y] += self.size[father_x]
+            self.count -= 1
+
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        uf = unionfind(n)
+                
+        for x, y in edges:
+            uf.union(x, y)
+        return uf.count
+
+```
+
+```python
+class unionfind():
+    def __init__(self,n):
+        self.father={}
+        for i in range(n): self.father[i]=None
+    def find(self, i):
+        root=i
+        while self.father[root]!=None:
+            root=self.father[root]
+        return root
+    def union(self,u, v):
+        root1, root2=self.find(u), self.find(v)
+        if root1!=root2:
+            self.father[root1]=root2
+            
+def countComponents(n, edges):
+    uf=unionfind(n)
+    groups=n
+    for u,v in edges:
+        if uf.find(u)!=uf.find(v):
+            groups-=1
+            uf.union(u, v)
+    return groups
+```
+
+#### 261. Graph Valid Tree
+
+```python
+class unionfind():
+    def __init__(self, n):
+        self.father = [i for i in range(n)]
+        self.size = [1] * n
+        self.count = n
+        
+    def find(self, x):
+        while x != self.father[x]:
+            # self.father[x] = self.find(father[x]) # 压缩路径
+            x = self.father[x]
+        return self.father[x]
+
+    def union(self, x, y):
+        father_x, father_y = self.find(x), self.find(y)
+        if father_x == father_y: return True
+        if father_x != father_y:
+            # if self.size[father_x] > self.size[father_y]:
+            #     father_x, father_y = father_y, father_x
+            self.father[father_x] = father_y
+            self.size[father_y] += self.size[father_x]
+            self.count -= 1
+            return False
+       
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        uf = unionfind(n)
+        for x, y in edges:
+            if uf.union(x, y):
+                return False
+        
+        return True if uf.count == 1 else False
+```
+
+#### DFS
+
+```PYTHON
+def dfs(start, end):
+    if SOMETHING
+    if start == end:
+        return
+    visited.add(start)
+    for next_move in graph[start]:
+        if next_move not in visited:
+            dfs(next_move, end)
+```
+
+
+
+#### 797. All Paths From Source to Target
+
+```python
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        def dfs(start, end, path):
+            if start == end:
+                result.append(path)
+                return 
+                
+            for i in graph[start]:
+                dfs(i, end, path + [i])
+        n = len(graph)
+        path = [0]
+        result = []
+        dfs(0, n-1, path)
+        
+        return result
+```
+
+
+
+#### 1971. Find if Path Exists in Graph
+
+```python
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], start: int, end: int) -> bool:
+        if start == end:
+            return True
+        graph = collections.defaultdict(list)
+        for x,y in edges:
+            graph[x].append(y)
+            graph[y].append(x)
+
+        queue = [start]
+        visited = {start}
+        while queue:
+            
+            p = queue.pop(0)
+            if p == end:
+                return True
+            for q in graph[p]:
+                if q not in visited:
+                    visited.add(q)
+                    queue.append(q)
+        return False
+```
+
+```python
+#dfs
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], start: int, end: int) -> bool:
+        
+        def dfs(start, end):
+            if self.found == True:
+                return
+            if start == end:
+                self.found = True
+                return
+            visited.add(start)
+            for next_move in graph[start]:
+                if next_move not in visited:
+                    dfs(next_move, end)
+                    
+        if start == end: return True
+        
+        self.found = False
+        visited = set()
+        graph = defaultdict(list)
+        
+        for x,y in edges:
+            graph[x].append(y)
+            graph[y].append(x)
+            
+        dfs(start, end)
+        return self.found
+```
+
+#### 133. Clone Graph
+
+#### BFS
+
+我们都知道 BFS 需要使用队列，代码框架是这样子的（伪代码）：
+
+```python
+while queue 非空:
+	node = queue.pop()
+    for node 的所有相邻结点 m:
+        if m 未访问过:
+            queue.push(m)
+```
+
+但是用 BFS 来求最短路径的话，这个队列中第 1 层和第 2 层的结点会紧挨在一起，无法区分。因此，我们需要稍微修改一下代码，在每一层遍历开始前，记录队列中的结点数量 nn ，然后一口气处理完这一层的 nn 个结点。代码框架是这样的：
+
+```python
+
+depth = 0 # 记录遍历到第几层
+while queue 非空:
+    depth++
+    n = queue 中的元素个数
+    循环 n 次:
+        node = queue.pop()
+        for node 的所有相邻结点 m:
+            if m 未访问过:
+                queue.push(m)
+```
+
+
+
+#### 1059. All Paths from Source Lead to Destination
+
+```python
+class Solution:
+    def leadsToDestination(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
+        self.result = True
+        graph = defaultdict(list)
+        for x,y in edges:
+            graph[x].append(y)
+        visited = [0] * n
+        
+        def dfs(node, result):
+            if visited[node] != 0:
+                self.result = (visited[node] == 2)
+                return 
+            if len(graph[node]) == 0:
+                self.result = (node == destination)
+                return 
+            visited[node] = 1
+            for i in graph[node]:
+                dfs(i, self.result)
+                if not self.result:
+                    return
+            visited[node] = 2
+            
+        dfs(source, self.result)
+        
+        return self.result
+```
+
+```python
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        n = len(graph)
+        result = []
+        queue = [[0]]
+        while queue:
+            p = queue.pop(0)
+            if p[-1] == n - 1:
+                result.append(p)
+            for q in graph[p[-1]]:
+                queue.append(p + [q])
+        return result
+```
+
+#### 1091. Shortest Path in Binary Matrix
+
+```python
+class Solution:
+    
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:  
+        
+        max_row = len(grid) - 1
+        max_col = len(grid[0]) - 1
+        directions = [
+            (-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        
+        # Helper function to find the neighbors of a given cell.
+        def get_neighbours(row, col):
+            for row_difference, col_difference in directions:
+                new_row = row + row_difference
+                new_col = col + col_difference
+                if not(0 <= new_row <= max_row and 0 <= new_col <= max_col):
+                    continue
+                if grid[new_row][new_col] != 0:
+                    continue
+                yield (new_row, new_col)
+        
+        # Check that the first and last cells are open. 
+        if grid[0][0] != 0 or grid[max_row][max_col] != 0:
+            return -1
+        
+        # Set up the BFS.
+        queue = deque([(0, 0)])
+        visited = {(0, 0)}
+        current_distance = 1
+        
+        # Do the BFS.
+        while queue:
+            # Process all nodes at current_distance from the top-left cell.
+            nodes_of_current_distance = len(queue)
+            for _ in range(nodes_of_current_distance):
+                row, col = queue.popleft()
+                if (row, col) == (max_row, max_col):
+                    return current_distance
+                for neighbour in get_neighbours(row, col):
+                    if neighbour in visited:
+                        continue
+                    visited.add(neighbour)
+                    queue.append(neighbour)
+            # We'll now be processing all nodes at current_distance + 1
+            current_distance += 1
+                    
+        # There was no path.
+        return -1 
+```
+
+#### 994. Rotting Oranges
+
+```PYTHON
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        M = len(grid)
+        N = len(grid[0])
+        queue = []
+        direc = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+    
+        def neighbors(row, col):
+            for x, y in direc:
+                new_row, new_col = row + x, col + y
+                if M > new_row >= 0 and N > new_col >= 0:
+                    yield (new_row, new_col)
+
+        count = 0 # count 表示新鲜橘子的数量
+        for r in range(M):
+            for c in range(N):
+                if grid[r][c] == 1:
+                    count += 1
+                elif grid[r][c] == 2:
+                    queue.append((r, c))
+
+        round = 0 # round 表示腐烂的轮数，或者分钟数
+        while count > 0 and len(queue) > 0:
+            round += 1 
+            n = len(queue)
+            for i in range(n):
+                r, c = queue.pop(0)
+                for x, y in neighbors(r, c):
+                    if grid[x][y] == 1:
+                        grid[x][y] = 2
+                        count -= 1
+                        queue.append((x, y))
+
+
+        if count > 0:
+            return -1
+        else:
+            return round
+```
+
+
+
 ### Divide
 
 #### 215. Kth Largest Element in an Array
@@ -8500,6 +9121,55 @@ print(topk_sort_right(arr, k))
 
 
 
+
+### Bit
+
+#### 191. Number of 1 Bits
+
+```python
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        ans = 0
+        while n != 0:
+            n &= n - 1
+            ans += 1
+        return ans
+```
+
+#### 338. Counting Bits
+
+```python
+class Solution:
+    def countBits(self, n: int) -> List[int]:
+        def bitcount(x):
+            count = 0
+            while x != 0:
+                x &= x - 1
+                count += 1
+            return count
+        
+        ans = []
+        for i in range(n + 1):
+            ans.append(bitcount(i))
+        
+        return ans
+```
+
+
+
+#### 89. Gray Code
+
+```python
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        res, head = [0], 1
+        for i in range(n):
+            for j in range(len(res) - 1, -1, -1):
+                res.append(head + res[j])
+                print(head, res[j])
+            head <<= 1
+        return res
+```
 
 
 
@@ -9316,6 +9986,23 @@ class MyQueue:
         """
         return self.stack1 == [] and self.stack2 == []
 
+```
+
+#### 238. Product of Array Except Self
+
+```python
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        ans = [1] * n 
+        for i in range(1, n):
+            ans[i] = ans[i-1] * nums[i-1]
+            
+        R = 1
+        for i in reversed(range(n)):
+            ans[i] *= R
+            R *= nums[i]
+        return ans
 ```
 
 
@@ -10361,11 +11048,13 @@ class Solution:
         return "".join(t)  # 字符串拼接
 ```
 
+#### 1086. High Five
+
+dict and sort
 
 
 
-
-#### 1306. [Jump Game III](https://leetcode.com/problems/jump-game-iii) 
+#### 1306. Jump Game III
 
 Given an array of non-negative integers `arr`, you are initially positioned at `start` index of the array. When you are at index `i`, you can jump to `i + arr[i]` or `i - arr[i]`, check if you can reach to **any** index with value 0.
 
@@ -10591,9 +11280,937 @@ class Solution:
 
 
 
+### SQL
+
+#### 180. Consecutive Numbers
+
+```mysql
+with t as 
+(
+    select 
+        Num, Id + 1 - row_number() over(partition by Num) diff
+    from Logs
+)
+
+select distinct Num as ConsecutiveNums
+from
+    t
+group by Num, diff
+having count(*) >= 3
+```
 
 
 
+#### 185. Department Top Three Salaries
+
+```mysql
+select 
+    Department, Employee, Salary
+from 
+(
+    select
+        a.Name as Employee,
+        b.Name as Department,
+        a.Salary,
+        dense_rank() over(partition by DepartmentId order by Salary desc) as rk
+    from 
+        Employee a join Department b on a.DepartmentId = b.Id
+) t
+where rk <= 3
+```
+
+
+
+#### 511
+
+```mysql
+select player_id, min(device_id) first_login 
+from Activity
+group by player_id
+```
+
+#### 512
+
+```mysql
+select player_id, device_id 
+from Activity
+where (player_id, event_date) in 
+(
+    select player_id, min(event_date) event_date from Activity group by player_id
+)
+```
+
+```mysql
+select
+    player_id, device_id
+from
+(
+    select 
+        player_id, device_id,
+        row_number() over(partition by player_id order by event_date) as rn
+    from 
+        Activity
+) t
+where 
+    rn = 1
+```
+
+#### 534. Game Play Analysis III
+
+```mysql
+# 内联
+select t1.player_id, t1.event_date, sum(t2.games_played) as games_played_so_far
+from Activity t1, Activity t2
+where t1.player_id = t2.player_id
+and t1.event_date >= t2.event_date
+group by t1.player_id, t1.event_date
+```
+
+```mysql
+select 
+    player_id, event_date, 
+    sum(games_played) over(partition by player_id order by event_date) as games_played_so_far
+from 
+    Activity
+```
+
+
+
+#### 550
+
+```mysql
+with t as 
+(
+    select 
+        player_id,
+        lead(event_date, 1) over(partition by player_id order by event_date) -
+        min(event_date) over(partition by player_id order by event_date) diff
+    from 
+        Activity
+)
+
+select round((select count(*) from t where diff = 1) /
+             (select count(distinct player_id) from Activity), 2) fraction
+```
+
+```mysql
+# 外联
+select round(avg(t1.event_date is not null), 2) as fraction
+from Activity t1 right join 
+(
+    select player_id, min(event_date) as login
+    from Activity
+    group by player_id
+) t2
+on t1.player_id = t2.player_id 
+and datediff(t1.event_date, login) = 1
+```
+
+#### 569. Median Employee Salary
+
+```mysql
+with t as(
+    select 
+        Id, Company, Salary,
+        row_number() over(partition by Company order by salary) as rk,
+        count(salary) over(partition by company) as cnt
+    from 
+        Employee
+)
+
+select
+    Id, Company, Salary
+from
+    t
+where
+    rk between cnt/2 and cnt/2+1
+order by
+    company, salary
+```
+
+
+
+#### 570
+
+```mysql
+select Name
+from Employee t1 join (
+    select ManagerId 
+    from Employee
+    group by ManagerId
+    having count(ManagerId) >= 5
+) t2
+on t1.Id = t2.ManagerId
+```
+
+#### 571
+
+```mysql
+select avg(number) median
+from
+    (select number,
+        sum(frequency) over(order by number) asc_accum,
+        sum(frequency) over(order by number desc) desc_accum
+        from numbers) t1,
+    (select sum(frequency) as total from numbers) t2
+where t1.asc_accum >= total/2 and t1.desc_accum >= total/2
+```
+
+#### 574. Winning Candidate M
+
+```mysql
+select Name
+from (
+  select CandidateId as id
+  from Vote
+  group by CandidateId
+  order by count(id) desc
+  limit 1
+) as Winner join Candidate
+on Winner.id = Candidate.id
+```
+
+#### 577. Employee Bonus
+
+```mysql
+select name, bonus
+from Employee t1 left join Bonus t2
+using(empId)
+where bonus is NULL or bonus < 1000
+```
+
+#### 578. Get Highest Answer Rate Question
+
+```mysql
+select t1.question_id as survey_log from
+(
+    select question_id, count(*) as total
+    from survey_log
+    where action = 'show'
+    group by question_id
+) t1
+join
+(
+    select question_id, count(*) as answered
+    from survey_log
+    where action = 'answer'
+    group by question_id
+) t2
+on t1.question_id = t2.question_id
+order by answered/total desc
+limit 1
+```
+
+```mysql
+select question_id as survey_log
+from survey_log
+group by question_id
+order by sum(if(action = 'answer', 1, 0)) / sum(if(action = 'show', 1, 0)) desc
+limit 1
+```
+
+#### 580. Count Student Number in Departments
+
+```mysql
+select dept_name, sum(if(student_id is not null, 1, 0)) as student_number from
+# COUNT(student_id) AS student_number
+department left join student using(dept_id)
+group by department.dept_id
+order by student_number desc, dept_name
+```
+
+#### 584. Find Customer Referee
+
+```mysql
+select name 
+from customer 
+where referee_id != 2 or referee_id is NULL
+```
+
+#### 585. Investments in 2016
+
+```mysql
+select sum(tiv_2016) as TIV_2016 from insurance 
+where tiv_2015 in 
+(
+    select tiv_2015 from insurance
+    group by tiv_2015
+    having count(*) > 1
+)  
+and concat(LAT,LON) in
+(
+    select concat(LAT,LON) from insurance
+    group by LAT, LON
+    having count(*) = 1
+)
+```
+
+```mysql
+select round(sum(tiv_2016), 2) as TIV_2016 from
+(
+    select *,
+    count(*) over(partition by TIV_2015) as c1,
+    count(*) over(partition by LAT, LON) as c2
+    from insurance
+) a
+where a.c1 > 1 and a.c2 < 2
+```
+
+
+
+#### 586
+
+```mysql
+select customer_number
+from Orders 
+group by customer_number
+order by count(*) desc
+limit 1
+```
+
+#### 597. Friend Requests I: Overall Acceptance Rate
+
+```mysql
+with t1 as
+(
+    select count(distinct requester_id, accepter_id) as accept
+    from RequestAccepted
+),
+
+t2 as
+(
+    select count(distinct sender_id, send_to_id) as send
+    from FriendRequest
+)
+
+select round(
+    ifnull((select accept from t1)/
+    (select send from t2), 0), 2
+)  accept_rate
+```
+
+#### 602. Friend Requests II: Who Has the Most Friends
+
+```mysql
+with t1 as
+(
+    select requester_id as id, count(*) as num
+    from request_accepted
+    group by requester_id 
+),
+t2 as 
+(
+    select accepter_id as id, count(*) as num
+    from request_accepted
+    group by accepter_id 
+),
+t3 as(
+    select t1.id, (ifnull(t1.num, 0) + ifnull(t2.num, 0)) as num
+    from t1 left join t2 using(id)
+)
+
+select id, num
+from t3 
+order by num desc
+limit 1
+```
+
+
+
+#### 603. Consecutive Available Seats
+
+```mysql
+select distinct a.seat_id
+from cinema a join cinema b 
+on 
+    abs(a.seat_id - b.seat_id) = 1
+    and a.free = true and b.free = true
+order by 
+    a.seat_id
+```
+
+#### 607
+
+```mysql
+select s.name
+from 
+    salesperson s 
+    left join orders o on s.sales_id = o.sales_id
+    left join company c on c.com_id = o.com_id
+group by
+    s.name
+having
+    SUM(IF(c.name = 'RED', 1, 0))  = 0
+order by
+    s.sales_id
+```
+
+```python
+select s.name
+from salesperson s
+where
+s.sales_id in (
+    select o.sales_id
+    from orders o left join company c
+    on c.com_id = o.com_id
+    where c.name not in ('RED')
+)
+```
+
+#### 608. Tree Node
+
+```mysql
+select distinct t1.id,
+    case
+        when t1.p_id is null then 'Root' 
+        when t2.id is null then 'Leaf'
+        else 'Inner'
+    end Type
+from tree t1 left join tree t2 on t1.id = t2.p_id
+order by t1.id
+```
+
+
+
+#### 610
+
+```mysql
+select x, y, z, 
+    case
+        when x + y > z and x + z > y and z + y > x then 'Yes'
+        else 'No'
+    end as triangle
+from triangle;
+```
+
+```mysql
+select x, y, z, 
+    if(x + y > z and x + z > y and z + y > x, 'Yes', 'No') as triangle
+from triangle;
+```
+
+#### 612. Shortest Distance in a Plane
+
+```mysql
+select round(sqrt(min(power(a.x - b.x, 2) + power(a.y - b.y, 2))),2) as shortest 
+from point_2d a join point_2d b
+where a.x < b.x or a.y < b.y
+```
+
+
+
+#### 613
+
+```mysql
+select min(abs(t1.x - t2.x)) as shortest
+from point t1, point t2
+where t1.x != t2.x
+```
+
+#### 614. Second Degree Follower
+
+```mysql
+select t1.follower, count(distinct t2.follower) as num
+from follow t1 join follow t2 on t1.follower = t2.followee
+group by t1.follower
+```
+
+#### 619. Biggest Single Number
+
+```mysql
+with t1 as
+(
+    select num, count(*) as freq
+    from my_numbers
+    group by num
+    having freq = 1
+)
+
+select max(num) as num from t1
+```
+
+#### 1045. Customers Who Bought All Products
+
+```mysql
+select customer_id
+from Customer
+group by customer_id
+having count(distinct product_key) in 
+(select count(distinct product_key) from Product)
+```
+
+#### 1050. Actors and Directors Who Cooperated At Least Three Times
+
+```mysql
+select actor_id, director_id
+from ActorDirector
+group by actor_id, director_id
+having count(concat(actor_id, director_id)) >= 3
+```
+
+#### 1164. Product Price at a Given Date
+
+```mysql
+with t2 as(
+    select product_id, new_price,
+        row_number() over(partition by product_id order by change_date desc) rn
+    from Products
+    where change_date <= '2019-08-16'
+),
+
+t3 as(
+    select product_id, new_price
+    from t2
+    where rn = 1
+)
+
+select distinct t1.product_id, ifnull(t3.new_price, 10) as price
+from products t1 left join t3 on t1.product_id = t3.product_id
+```
+
+```mysql
+select p1.product_id, ifnull(p2.new_price, 10) as price
+from (
+    select distinct product_id
+    from products
+) as p1 -- 所有的产品
+left join (
+    select product_id, new_price 
+    from products
+    where (product_id, change_date) in (
+        select product_id, max(change_date)
+        from products
+        where change_date <= '2019-08-16'
+        group by product_id
+    )
+) as p2 -- 在 2019-08-16 之前有过修改的产品和最新的价格
+on p1.product_id = p2.product_id
+```
+
+
+
+#### 1070. Product Sales Analysis III
+
+```mysql
+with t1 as(
+    select product_id, year, quantity, price,
+    rank() over(partition by product_id order by year) as rk
+    from Sales
+)
+
+select product_id, year first_year, quantity, price
+from t1
+where rk=1
+```
+
+#### 1173 Immediate Food Delivery I
+
+```mysql
+select round (
+    sum(order_date = customer_pref_delivery_date) /
+    count(*) * 100,
+    2
+) as immediate_percentage
+from Delivery
+```
+
+#### 1174. Immediate Food Delivery II
+
+```mysql
+select round(sum(if(order_date = customer_pref_delivery_date, 1, 0))/
+     count(*) * 100, 2) immediate_percentage
+from Delivery
+where (customer_id, order_date) in (
+    select customer_id, min(order_date)
+    from Delivery
+    group by customer_id
+)
+```
+
+
+
+#### 1075. Project Employees I
+
+```mysql
+select project_id, round(avg(experience_years),2) as average_years
+from Project left join Employee using(employee_id)
+group by project_id
+```
+
+#### 1076. Project Employees II
+
+```mysql
+select project_id
+from project
+group by project_id
+having count(*) >=all 
+(select count(*) amount
+from project 
+group by project_id)
+```
+
+```mysql
+with t1 as (
+    select 
+        project_id,
+        rank() over(order by count(*) desc) rk
+    from project
+    group by project_id
+)
+
+select project_id from t1 where rk = 1
+```
+
+#### 1077. Project Employees III
+
+```mysql
+with t1 as(
+    select 
+        project_id, employee_id, 
+        rank() over(partition by project_id order by experience_years desc) as rk
+    from project join employee using(employee_id)
+)
+
+select project_id, employee_id
+from t1
+where rk = 1
+```
+
+#### 1082. Sales Analysis I
+
+```mysql
+select seller_id
+from sales
+group by seller_id
+having sum(price) >= all(
+    select sum(price)
+    from sales
+    group by seller_id
+)
+```
+
+```mysql
+with t1 as(
+    select 
+        seller_id, 
+        rank() over(order by sum(price) desc) as rk
+    from sales
+    group by seller_id
+)
+
+select seller_id from t1 where rk = 1
+```
+
+#### 1083. Sales Analysis II
+
+```mysql
+with t1 as(
+    select buyer_id,
+    case when product_name = 'S8' then 1 else 0 end s8,
+    case when product_name = 'iPhone' then 1 else 0 end ip
+    from sales s left join product p using(product_id)
+)
+
+select buyer_id
+from t1
+group by buyer_id
+having sum(s8) > 0 and sum(ip) = 0
+```
+
+```mysql
+select buyer_id   
+from Sales left join Product using(product_id)
+group by buyer_id 
+having sum(product_name='S8')>0 and sum(product_name='iPhone')=0
+```
+
+```mysql
+select distinct buyer_id
+from Sales
+where buyer_id not in (
+    select buyer_id
+    from Product p,Sales s
+    where p.product_id = s.product_id
+    and p.product_name = "iPhone"
+) 
+and buyer_id in (
+    select buyer_id
+    from Product p,Sales s
+    where p.product_id = s.product_id
+    and p.product_name = "S8"
+)
+```
+
+#### 1084. Sales Analysis III
+
+```mysql
+select product_id, product_name
+from sales left join product using(product_id)
+group by product_id
+having max(sale_date) <= '2019-03-31' and min(sale_date) >= '2019-01-01'
+```
+
+```mysql
+select p.product_id, p.product_name
+from Product p, Sales s
+where p.product_id = s.product_id
+group by s.product_id
+having(sum(sale_date between '2019-01-01' and '2019.03-31') = count(*))
+```
+
+
+
+#### 1098. Unpopular Books
+
+```mysql
+select t1.book_id, t1.name
+from Books t1 left join Orders on t1.book_id = Orders.book_id 
+and dispatch_date >= date('2018-06-23') # 这个条件不能在where后否则忽略null
+where available_from < date('2019-05-23')
+group by book_id
+having ifnull(sum(quantity), 0) < 10
+```
+
+```mysql
+with t1 as
+(
+    select *
+    from books
+    where available_from <= date('2019-05-23')
+)
+
+select t1.book_id, t1.name
+from t1 left join orders t2 on t1.book_id = t2.book_id
+and dispatch_date > date('2018-06-23')
+group by t1.book_id
+having ifnull(sum(quantity),0) < 10
+```
+
+
+
+#### 1107. New Users Daily Count
+
+```mysql
+with t as 
+(
+    select user_id, min(activity_date) as login_date
+    from Traffic
+    where activity = 'login'
+    group by user_id
+) 
+
+select login_date, count(user_id) as user_count
+from t
+where datediff(@today := '2019-06-30', t.login_date) <= 90
+group by login_date
+```
+
+#### 1112. Highest Grade For Each Student
+
+```mysql
+with t1 as(
+    select 
+        student_id, course_id, grade,
+        row_number() over(partition by student_id order by grade desc, course_id) rn
+    from 
+        Enrollments
+)
+
+select student_id, course_id, grade
+from t1 where rn = 1
+```
+
+#### 1113. Reported Posts
+
+```mysql
+select extra as report_reason, count(distinct post_id) as report_count
+from Actions
+where action = 'report' and action_date = '2019-07-04'
+group by extra
+```
+
+#### 1126. Active Businesses
+
+```mysql
+with t1 as(
+    select event_type, avg(occurences) as avg
+    from Events
+    group by event_type
+)
+
+select business_id
+from Events join t1 using(event_type)
+group by business_id
+having sum(if(occurences > avg, 1, 0)) >= 2
+```
+
+#### 1132. Reported Posts II
+
+```mysql
+SELECT ROUND(AVG(proportion) * 100, 2) AS average_daily_percent  
+FROM (
+    SELECT actions.action_date, COUNT(DISTINCT removals.post_id)/COUNT(DISTINCT actions.post_id) AS proportion
+    FROM actions
+    LEFT JOIN removals
+    ON actions.post_id = removals.post_id
+    WHERE extra = 'spam' 
+    GROUP BY actions.action_date
+) a
+```
+
+```mysql
+SELECT ROUND(AVG(IFNULL(remove.cnt, 0)/total.cnt) * 100, 2) AS average_daily_percent
+FROM (
+    SELECT action_date, COUNT(DISTINCT post_id) AS cnt
+    FROM actions
+    WHERE extra = 'spam'
+    GROUP BY action_date
+) total
+LEFT JOIN (
+    SELECT action_date, COUNT(DISTINCT post_id) AS cnt
+    FROM actions
+    WHERE extra = 'spam' AND post_id IN (SELECT post_id FROM Removals)
+    GROUP BY action_date
+) remove 
+ON total.action_date = remove.action_date
+```
+
+#### 1142. User Activity for the Past 30 Days II
+
+```mysql
+select round(ifnull(count(distinct session_id)/count(distinct user_id), 0), 2) as average_sessions_per_user 
+from Activity
+where activity_date > '2019-06-27'
+```
+
+#### 1148. Article Views I
+
+```mysql
+select distinct author_id as id
+from Views
+where author_id = viewer_id
+order by author_id
+```
+
+#### 1149. Article Views II
+
+```mysql
+select distinct viewer_id as id
+from Views
+group by view_date, viewer_id
+having count(distinct article_id) > 1
+order by viewer_id
+```
+
+#### 1158. Market Analysis I
+
+```mysql
+select Users.user_id as buyer_id, join_date, ifnull(UserBuy.cnt, 0) as orders_in_2019
+from Users
+left join (
+    select buyer_id, count(order_id) cnt 
+    from Orders
+    where order_date between '2019-01-01' and '2019-12-31'
+    group by buyer_id
+) UserBuy
+on Users.user_id = UserBuy.buyer_id
+```
+
+
+
+#### 1179
+
+```mysql
+SELECT id,
+IF(`month`='Jan',revenue,NULL) Jan_Revenue,
+IF(`month`='Feb',revenue,NULL) Feb_Revenue,
+IF(`month`='Mar',revenue,NULL) Mar_Revenue,
+IF(`month`='Apr',revenue,NULL) Apr_Revenue,
+IF(`month`='May',revenue,NULL) May_Revenue,
+IF(`month`='Jun',revenue,NULL) Jun_Revenue,
+IF(`month`='Jul',revenue,NULL) Jul_Revenue,
+IF(`month`='Aug',revenue,NULL) Aug_Revenue,
+IF(`month`='Sep',revenue,NULL) Sep_Revenue,
+IF(`month`='Oct',revenue,NULL) Oct_Revenue,
+IF(`month`='Nov',revenue,NULL) Nov_Revenue,
+IF(`month`='Dec',revenue,NULL) Dec_Revenue
+FROM Department
+GROUP BY id;
+```
+
+```mysql
+SELECT id,
+SUM(CASE `month` WHEN 'Jan' THEN revenue END) Jan_Revenue,
+SUM(CASE `month` WHEN 'Feb' THEN revenue END) Feb_Revenue,
+SUM(CASE `month` WHEN 'Mar' THEN revenue END) Mar_Revenue,
+SUM(CASE `month` WHEN 'Apr' THEN revenue END) Apr_Revenue,
+SUM(CASE `month` WHEN 'May' THEN revenue END) May_Revenue,
+SUM(CASE `month` WHEN 'Jun' THEN revenue END) Jun_Revenue,
+SUM(CASE `month` WHEN 'Jul' THEN revenue END) Jul_Revenue,
+SUM(CASE `month` WHEN 'Aug' THEN revenue END) Aug_Revenue,
+SUM(CASE `month` WHEN 'Sep' THEN revenue END) Sep_Revenue,
+SUM(CASE `month` WHEN 'Oct' THEN revenue END) Oct_Revenue,
+SUM(CASE `month` WHEN 'Nov' THEN revenue END) Nov_Revenue,
+SUM(CASE `month` WHEN 'Dec' THEN revenue END) Dec_Revenue
+FROM Department
+GROUP BY id;
+```
+
+#### 1193. Monthly Transactions I
+
+```mytsql
+SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month,
+    country,
+    COUNT(*) AS trans_count,
+    sum(IF(state = 'approved', 1, 0)) AS approved_count,
+    SUM(amount) AS trans_total_amount,
+    SUM(IF(state = 'approved', amount, 0)) AS approved_total_amount
+FROM Transactions
+GROUP BY month, country
+```
+
+#### 1204. Last Person to Fit in the Bus
+
+```mysql
+select t1.person_name
+from queue t1 left join queue t2 on t1.turn >= t2.turn
+group by t1.person_id
+having sum(t2.weight) <= 1000
+order by t1.turn desc
+limit 1 
+```
+
+```mysql
+select t.person_name
+from (
+    select person_name, @pre := @pre + weight as weight
+    from queue join (select @pre := 0) tmp
+    order by turn
+) t
+where t.weight <= 1000
+order by weight desc
+limit 1
+```
+
+
+
+#### 1613. Find the Missing IDs
+
+```mysql
+with recursive t(n) as(
+    select 1
+    union all
+    select 1 + n from t where n < (select max(customer_id) from Customers)
+)
+
+select n as ids
+from Customers c right join t on c.customer_id = t.n
+where c.customer_id is null
+```
+
+#### Basics
+
+![img](https://pica.zhimg.com/80/v2-b92f60067804733195466a192e0b3603_720w.jpg?source=1940ef5c)
 
 #### References
 
