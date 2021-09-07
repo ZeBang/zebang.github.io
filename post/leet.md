@@ -5201,7 +5201,28 @@ class NestedIterator(object):
         return False
 ```
 
+#### 单调栈
 
+#### 739. Daily Temperatures
+
+```python
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        n = len(temperatures)
+        ans = [0] * n
+        stack = []
+        
+        for i in range(n):
+            temp = temperatures[i]
+            while stack and temp > temperatures[stack[-1]]:
+                index = stack.pop()
+                ans[index] = i - index
+            stack.append(i)
+        
+        return ans
+```
+
+#### 1996. The Number of Weak Characters in the Game
 
 
 
@@ -8982,6 +9003,168 @@ class Solution:
             return round
 ```
 
+#### Minimal Spanning Tree
+
+#### 1584. Min Cost to Connect All Points
+
+Kruskal Algorithm
+
+![image-20210906095551742](C:\Users\zeban\AppData\Roaming\Typora\typora-user-images\image-20210906095551742.png)
+
+```python
+class UnionFind():
+    def __init__(self, n):
+        self.father = [i for i in range(n)]
+        self.size = [1] * n
+        self.count = n
+        
+    def find(self, x):
+        while x != self.father[x]:
+            self.father[x] = self.find(self.father[x]) # 压缩路径
+            x = self.father[x]
+        return self.father[x]
+
+    def union(self, x, y):
+        father_x, father_y = self.find(x), self.find(y)
+        if father_x != father_y:
+            if self.size[father_x] > self.size[father_y]:
+                father_x, father_y = father_y, father_x
+            self.father[father_x] = father_y
+            self.size[father_y] += self.size[father_x]
+            self.count -= 1
+    def is_connected(self,x, y):
+        return self.find(x) == self.find(y)
+
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        dist = lambda x, y: abs(points[x][0] - points[y][0]) + abs(points[x][1] - points[y][1])
+
+        n = len(points)
+        u = UnionFind(n)
+        edges = list()
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                edges.append((dist(i, j), i, j))
+        
+        edges.sort()
+        
+        result, num = 0, 1
+        for length, x, y in edges:
+            if not u.is_connected(x, y):
+                u.union(x, y)
+                result += length
+                num += 1
+                if num == n:
+                    break
+        
+        return result
+
+```
+
+Prim Algorithm
+
+![image-20210906095857339](C:\Users\zeban\AppData\Roaming\Typora\typora-user-images\image-20210906095857339.png)
+
+```python
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        #Prim算法
+        n = len(points)
+        d = [float("inf")] * n # 表示各个顶点与加入最小生成树的顶点之间的最小距离.
+        vis = [False] * n # 表示是否已经加入到了最小生成树里面
+        d[0] = 0
+        ans = 0
+        for _ in range(n):
+            # 寻找目前这轮的最小d
+            M = float("inf") 
+            for i in range(n):
+                if not vis[i] and d[i] < M:
+                    node = i
+                    M = d[i]
+            vis[node] = True
+            ans += M
+            # 更新与这个顶点相连接的顶点的d.
+            for i in range(n):
+                if not vis[i]:
+                    d[i] = min(d[i], abs(points[i][0] - points[node][0]) + abs(points[i][1] - points[node][1]))
+        return ans
+```
+
+#### Dijkstra's Algorithm
+
+#### 743. Network Delay Time
+
+Dijkstra
+
+```python
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        g = [[] for _ in range(n)]
+        for x, y, time in times:
+            g[x - 1].append((y - 1, time))
+
+        dist = [float('inf')] * n
+        dist[k - 1] = 0
+        q = [(0, k - 1)]
+        while q:
+            time, x = heapq.heappop(q)
+            if dist[x] < time:
+                continue
+            for y, time in g[x]:
+                if (d := dist[x] + time) < dist[y]:
+                    dist[y] = d
+                    heapq.heappush(q, (d, y))
+
+        ans = max(dist)
+        return ans if ans < float('inf') else -1
+```
+
+
+
+BFS
+
+```python
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w))
+        
+        dist = [float('inf')] * n
+        
+        def dfs(p, time):
+            if time >= dist[p-1]: return
+            dist[p-1] = time
+            
+            for v, w in sorted(graph[p], key=lambda x: x[1]):
+                dfs(v, time + w)
+        
+        dfs(k, 0)
+        ans = max(dist)
+        return ans if ans < float('inf') else -1
+```
+
+#### Bellman-Ford
+
+#### 787. Cheapest Flights Within K Stops
+
+```python
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        p = [float("inf")] * n
+        p[src] = 0
+        c = p.copy()
+        ans = float("inf")
+        for t in range(1, k + 2):
+            for j, i, cost in flights:
+                c[i] = min(c[i], p[j] + cost)
+            p = c.copy()
+            ans = min(ans, p[dst])
+        
+        return -1 if ans == float("inf") else ans
+```
+
 
 
 ### Divide
@@ -9171,7 +9354,80 @@ class Solution:
         return res
 ```
 
+### Prefix
 
+https://leetcode-cn.com/problems/subarray-sum-equals-k/solution/de-liao-yi-wen-jiang-qian-zhui-he-an-pai-yhyf/
+
+#### 724
+
+#### 1
+
+#### 560. Subarray Sum Equals K
+
+```python
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        
+        p = [0]
+        for i in nums: p.append(p[-1] + i)
+        count = collections.Counter()
+        # count[0] = 1 # 这一步不需要，因为初始化 p = [0] 包含了后面i从0开始,必定有count[0]+=1
+        
+        ans = 0
+        for i in p:
+            if i - k in count:
+                ans += count[i - k]
+            count[i] += 1
+        
+        return ans
+```
+
+另外一种简便的写法，本质都是 j - i = k 等价于 i = j - k or j = i + k
+
+```python
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+
+        p = [0]
+        for i in nums: p.append(p[-1] + i)
+        count = collections.Counter()
+        
+        ans = 0
+        for i in p:
+            ans += count[i]
+            count[i + k] += 1
+            
+        return ans
+```
+
+
+
+#### 1248
+
+#### 974
+
+#### 523
+
+#### 930. Binary Subarrays With Sum
+
+```python
+class Solution:
+    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+        p = [0]
+        for i in nums: p.append(p[-1] + i)
+        count = collections.Counter()
+        
+        ans = 0
+        for j in p:
+            ans += count[j]
+            count[j + goal] += 1
+            
+        return ans
+```
+
+
+
+#### 
 
 ### Others
 
@@ -9764,6 +10020,20 @@ class Solution:
 class Solution:
     def isPowerOfTwo(self, n: int) -> bool:
         return n > 0 and (n & -n) == n
+```
+
+### Brainteasers
+
+#### 621. Task Scheduler
+
+```python
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        dict_count = list(collections.Counter(tasks).values())
+        M = max(dict_count)
+        N = len(tasks)
+        K = dict_count.count(M)
+        return max(N, (M - 1)*(n + 1) + K)
 ```
 
 
@@ -12208,11 +12478,138 @@ from Customers c right join t on c.customer_id = t.n
 where c.customer_id is null
 ```
 
+#### Weekly Contest
+
+##### Weekly Contest 257
+
+#### 1995. Count Special Quadruplets
+
+BruteForce
+
+```python
+class Solution:
+    def countQuadruplets(self, nums: List[int]) -> int:
+        n = len(nums)
+        count = 0
+        for i in range(n):
+            for j in range(i+1, n):
+                for k in range(j+1, n):
+                    temp = nums[i] + nums[j] + nums[k]
+                    count += nums[(k+1):].count(temp)
+        return count
+```
+
+
+
+#### 1996. The Number of Weak Characters in the Game
+
+two way sort
+
+```python
+class Solution:
+    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
+        
+        properties.sort(key = lambda x: (-x[0], x[1]))
+        
+        count = 0
+        maxdf = 0
+        
+        for p in properties:
+            if p[1] < maxdf:
+                count += 1 
+            maxdf = max(p[1], maxdf)
+        return count
+```
+
+```python
+class Solution:
+    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
+        
+        properties.sort(key=lambda x: (x[0], -x[1]))
+        
+        stack = []
+        ans = 0
+        
+        for a, d in properties:
+            while stack and stack[-1][0] < a and stack[-1][1] < d:
+                stack.pop()
+                ans += 1
+            stack.append((a, d))
+        return ans
+```
+
+#### 1997. First Day Where You Have Been in All the Rooms
+
+DP
+
+```python
+class Solution:
+    def firstDayBeenInAllRooms(self, nextVisit: List[int]) -> int:
+        n = len(nextVisit)
+        dp = [0] * n
+        
+        for i in range(1, n):
+            dp[i] = (dp[i-1] + 1 + dp[i-1] - dp[nextVisit[i-1]] + 1)%1000000007
+        
+        return dp[-1]
+```
+
+#### 1998. GCD Sort of an Array
+
+UnionFind
+
+```python
+class Solution:
+    def gcdSort(self, nums: List[int]) -> bool:
+        target = sorted(nums)
+        a = set(nums)
+        max_v = max(a)
+        uf = UnionFind(max_v + 1)
+        for i in range(2,max_v + 1):
+            # 枚举i的倍数
+            for j in range(i,max_v + 1,i):
+                if j in a:
+                    uf.union(j,i)
+        
+        for i in range(len(nums)):
+            ux,uy = uf.find(nums[i]),uf.find(target[i])
+            # 目标位置与当前位置未连通
+            if ux != uy:
+                return False
+        return True
+
+
+class UnionFind():
+    def __init__(self, n):
+        self.father = [i for i in range(n)]
+        self.size = [1] * n
+        self.count = n
+        
+    def find(self, x):
+        while x != self.father[x]:
+            self.father[x] = self.find(self.father[x]) # 压缩路径
+            x = self.father[x]
+        return self.father[x]
+
+    def union(self, x, y):
+        father_x, father_y = self.find(x), self.find(y)
+        if father_x != father_y:
+            if self.size[father_x] > self.size[father_y]:
+                father_x, father_y = father_y, father_x
+            self.father[father_x] = father_y
+            self.size[father_y] += self.size[father_x]
+            self.count -= 1
+```
+
+
+
 #### Basics
 
 ![img](https://pica.zhimg.com/80/v2-b92f60067804733195466a192e0b3603_720w.jpg?source=1940ef5c)
 
 #### References
+
+https://github.com/SharingSource/LogicStack-LeetCode/wiki
 
 https://programmercarl.com/
 
