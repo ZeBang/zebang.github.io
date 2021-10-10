@@ -2050,6 +2050,28 @@ class Solution:
             path = path[:-1]
 ```
 
+```python
+# 函数内定义DFS（只需要传入path,i作为参数）
+class Solution:
+    def letterCombinations(self, digits):
+        if len(digits) == 0:
+            return []
+        dic = {"2":"abc", '3':"def", '4':"ghi", '5':"jkl", '6':"mno", '7':"pqrs", '8':"tuv", '9':"wxyz"}
+        result = []
+        def dfs(path, i):
+            if i == len(digits):
+                result.append(path)
+                return
+            for c in dic[digits[i]]:
+                path += c
+                dfs(path, i+1)
+                path = path[:-1]
+        dfs("",0)
+        return result
+```
+
+
+
 #### 39. Combination Sum
 
 Given an array of **distinct** integers `candidates` and a target integer `target`, return *a list of all **unique combinations** of* `candidates` *where the chosen numbers sum to* `target`*.* You may return the combinations in **any order**.
@@ -3006,6 +3028,43 @@ class Solution:
             l -= 1
             r += 1
         return s[l+1 : r]
+```
+
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        
+        size = len(s)
+        # 特殊处理
+        if size == 1:
+            return s
+        # 创建动态规划dynamic programing表
+        dp = [[False for _ in range(size)] for _ in range(size)]
+        # 初始长度为1，这样万一不存在回文，就返回第一个值（初始条件设置的时候一定要考虑输出）
+        max_len = 1
+        start = 0
+        for j in range(1,size):
+            for i in range(j):
+                # 边界条件：
+                # 只要头尾相等（s[i]==s[j]）就能返回True
+                if j-i<=2:
+                    if s[i]==s[j]:
+                        dp[i][j] = True
+                        cur_len = j-i+1
+                # 状态转移方程 
+                # 当前dp[i][j]状态：头尾相等（s[i]==s[j]）
+                # 过去dp[i][j]状态：去掉头尾之后还是一个回文（dp[i+1][j-1] is True）
+                else:
+                    if s[i]==s[j] and dp[i+1][j-1]:
+                        dp[i][j] = True
+                        cur_len = j-i+1
+                # 出现回文更新输出
+                if dp[i][j]:
+                    if cur_len > max_len:
+                        max_len = cur_len
+                        start = i
+
+        return s[start:start+max_len]
 ```
 
 
@@ -4781,7 +4840,7 @@ class Solution:
         for i in range(1, m+1):
             for j in range(1, n+1):
                 if s[i-1] == t[j-1]:
-                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j] # 用s[i-1] + 不用s[i-1]
                 else:
                     dp[i][j] = dp[i-1][j]
         return dp[-1][-1]
@@ -8152,6 +8211,59 @@ class Solution:
         return False
 ```
 
+#### 764. Largest Plus Sign
+
+```python
+class Solution(object):
+    def orderOfLargestPlusSign(self, N, mines):
+        banned = {tuple(mine) for mine in mines}
+        ans = 0
+        for r in range(N):
+            for c in range(N):
+                k = 0
+                while (k <= r < N-k and k <= c < N-k and
+                        (r-k, c) not in banned and
+                        (r+k, c) not in banned and
+                        (r, c-k) not in banned and
+                        (r, c+k) not in banned):
+                    k += 1
+                ans = max(ans, k)
+        return ans
+```
+
+```python
+class Solution(object):
+    def orderOfLargestPlusSign(self, N, mines):
+        banned = {tuple(mine) for mine in mines}
+        dp = [[0] * N for _ in range(N)]
+        ans = 0
+        
+        for r in range(N):
+            count = 0
+            for c in range(N):
+                count = 0 if (r,c) in banned else count+1
+                dp[r][c] = count
+            
+            count = 0
+            for c in range(N-1, -1, -1):
+                count = 0 if (r,c) in banned else count+1
+                if count < dp[r][c]: dp[r][c] = count
+        
+        for c in range(N):
+            count = 0
+            for r in range(N):
+                count = 0 if (r,c) in banned else count+1
+                if count < dp[r][c]: dp[r][c] = count
+            
+            count = 0
+            for r in range(N-1, -1, -1):
+                count = 0 if (r, c) in banned else count+1
+                if count < dp[r][c]: dp[r][c] = count
+                if dp[r][c] > ans: ans = dp[r][c]
+        
+        return ans
+```
+
 
 
 ### Math
@@ -9003,6 +9115,54 @@ class Solution:
             return round
 ```
 
+#### 733. Flood Fill
+
+```python
+class Solution(object):
+    def floodFill(self, image, sr, sc, newColor):
+        R, C = len(image), len(image[0])
+        color = image[sr][sc]
+        if color == newColor: return image
+        visited = []
+        
+        queue = collections.deque()
+        queue.append([sr, sc])
+        
+        while len(queue) > 0:
+            r, c = queue.popleft()
+            visited.append([r, c])
+            image[r][c] = newColor
+            if r + 1 < R and image[r + 1][c] == color and [r + 1, c] not in visited:
+                queue.append([r + 1, c])
+            if r - 1 >= 0 and image[r - 1][c] == color and [r - 1, c] not in visited:
+                queue.append([r - 1, c])
+            if c + 1 < C and image[r][c + 1] == color and [r, c + 1] not in visited:
+                queue.append([r, c + 1])
+            if c - 1 >= 0 and image[r][c - 1] == color and [r, c - 1] not in visited:
+                queue.append([r, c - 1])
+        return image
+```
+
+```python
+class Solution(object):
+    def floodFill(self, image, sr, sc, newColor):
+        R, C = len(image), len(image[0])
+        color = image[sr][sc]
+        if color == newColor: return image
+        def dfs(r, c):
+            if image[r][c] == color:
+                image[r][c] = newColor
+                if r >= 1: dfs(r-1, c)
+                if r+1 < R: dfs(r+1, c)
+                if c >= 1: dfs(r, c-1)
+                if c+1 < C: dfs(r, c+1)
+
+        dfs(sr, sc)
+        return image
+```
+
+
+
 #### Minimal Spanning Tree
 
 #### 1584. Min Cost to Connect All Points
@@ -9358,9 +9518,7 @@ class Solution:
 
 https://leetcode-cn.com/problems/subarray-sum-equals-k/solution/de-liao-yi-wen-jiang-qian-zhui-he-an-pai-yhyf/
 
-#### 724
-
-#### 1
+#### 724. Find Pivot Index
 
 #### 560. Subarray Sum Equals K
 
@@ -9375,8 +9533,7 @@ class Solution:
         
         ans = 0
         for i in p:
-            if i - k in count:
-                ans += count[i - k]
+            ans += count[i - k]
             count[i] += 1
         
         return ans
@@ -9400,13 +9557,60 @@ class Solution:
         return ans
 ```
 
+#### 1248. Count Number of Nice Subarrays
+
+```python
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        p = [0]
+        for i in nums: p.append(p[-1] + i % 2)
+            
+        count = collections.Counter()
+        
+        ans = 0
+        for i in p:
+            ans += count[i]
+            count[i + k] += 1
+        return ans
+```
+
+#### 974. Subarray Sums Divisible by K
+
+```python
+class Solution:
+    def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        
+        p = [0]
+        for i in nums: p.append(p[-1] + i)
+        count = collections.Counter()
+        
+        ans = 0
+        for i in p:
+            ans += count[i % k]
+            count[i % k] += 1
+            
+        return ans
+```
+
+#### 523. Continuous Subarray Sum
+
+```python
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        p = [0]
+        for i in nums: p.append(p[-1] + i)
+        count = collections.defaultdict(list)
+        
+        for i in range(len(p)):
+            rem = p[i] % k
+            if count[rem] != [] and i - min(count[rem]) > 1:
+                return True
+            count[p[i] % k].append(i)
+            
+        return False
+```
 
 
-#### 1248
-
-#### 974
-
-#### 523
 
 #### 930. Binary Subarrays With Sum
 
@@ -9424,10 +9628,6 @@ class Solution:
             
         return ans
 ```
-
-
-
-#### 
 
 ### Others
 
