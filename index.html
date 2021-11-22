@@ -13,11 +13,13 @@
          margin: 0;
          }
       </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
    </head>
    <body>
 
 <div id="page-container">
-   
+   	
       <header id="header">
       	<a href="bait_click_one"><div id="logo" style="background-image: url(\images\\dog.jpg);"></div></a> 
       	<div id="title">
@@ -32,14 +34,38 @@
       			<li><a href="#projects" style="font-size: 15px">Writing</a></li>
       		</ul>
       	</div>
-      	<l><p>殊途以同归.</p></l>
+      	<!-- <l><p>殊途以同归.</p></l> -->
       </header>
-      	
+
+
+
+
+
+
+
+
       	<div id="content-wrap">
 
-        
 
-	      <div id="contact">
+
+	      
+	      <div style="clear: both;" id="mindmap">
+
+				<svg id="mindmap", width=device-width, height=250pt></svg>
+				<script src="https://cdn.jsdelivr.net/npm/d3@6.6.0"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.3"></script><script>((e,t,r)=>{const{Markmap:n}=e();window.mm=n.create("svg#mindmap",null==t?void 0:t(),r)})(()=>window.markmap,t=>{return t=t||window.d3,{color:(n=t.scaleOrdinal(t.schemeCategory10),t=>n(t.p.i))};var n},{"t":"root","d":0,"v":"","c":[{"t":"heading","d":1,"p":{"lines":[0,1]},"v":"Machine Learning","c":[{"t":"heading","d":2,"p":{"lines":[2,3]},"v":"Regression"},{"t":"heading","d":2,"p":{"lines":[4,5]},"v":"Classification"},{"t":"heading","d":2,"p":{"lines":[6,7]},"v":"Clustering"},{"t":"heading","d":2,"p":{"lines":[8,9]},"v":"Associations"},{"t":"heading","d":2,"p":{"lines":[11,12]},"v":"Deep Learning"},{"t":"heading","d":2,"p":{"lines":[13,14]},"v":"Other","c":[{"t":"heading","d":3,"p":{"lines":[15,16]},"v":"Sequence Mining"},{"t":"heading","d":3,"p":{"lines":[17,18]},"v":"Dimension Reduction"},{"t":"heading","d":3,"p":{"lines":[19,20]},"v":"Anomaly Detection"},{"t":"heading","d":3,"p":{"lines":[21,22]},"v":"Recommendation Systems"}]}]},{"t":"heading","d":1,"p":{"lines":[23,24]},"v":"Experiment","c":[{"t":"heading","d":2,"p":{"lines":[25,26]},"v":"Hypothesis Testing"},{"t":"heading","d":2,"p":{"lines":[28,29]},"v":"AB Testing"},{"t":"heading","d":2,"p":{"lines":[30,31]},"v":"Sampling"},{"t":"heading","d":2,"p":{"lines":[32,33]},"v":"Data Augmentation","c":[{"t":"heading","d":3,"p":{"lines":[33,34]},"v":"Image Transformation"},{"t":"heading","d":3,"p":{"lines":[34,35]},"v":"Synthetic Minority Oversampling Technique"}]}]}],"p":{}})</script>
+	     </div>
+
+
+
+
+	      <div style="clear: both;" id="main">
+	         <h2>About me</h2>
+	         <p id="about">
+	            I am a Ph.D. student of <a target="_blank" href="http://www.stat.rutgers.edu">Statistics</a> at Rutgers University, starting from September 2018. I am lucky to be supervised by Prof.Han Xiao. My research topics are about time series, high dimensional analysis, algebraic statistics, and random matrix theory. I received a B.Sc. in <a target="_blank" href="http://math.bnu.edu.cn/">Mathematics</a> from Beijing Normal University in 2018.
+	         </p>
+	     </div>
+
+	     	     <div id="contact">
 	         <p>
 	            <br>
 	            A Ph.D. student<br>
@@ -59,14 +85,10 @@
 	        <br>
 	         <img style="width: 150px;height: 150px;" alt="profile_pic.jpg" src="images/g.gif" align="middle"/>
 	      </div>
-	      <div style="clear: both;" id="main">
-	         <h2>About me</h2>
-	         <p id="about">
-	            I am a Ph.D. student of <a target="_blank" href="http://www.stat.rutgers.edu">Statistics</a> at Rutgers University, starting from September 2018. I am lucky to be supervised by Prof.Han Xiao. My research topics are about time series, high dimensional analysis, algebraic statistics, and random matrix theory. I received a B.Sc. in <a target="_blank" href="http://math.bnu.edu.cn/">Mathematics</a> from Beijing Normal University in 2018.
-	         </p>
-	     </div>
+
 
   	<div style="clear: both;" id="main">
+
   		<section>
   		<h2 id="projects">Writting</h2>
   		<p id="research">
@@ -114,6 +136,11 @@
 		  		<time>29 Jul 2017</time> <a href="projects/FSKD2017.pdf">FSKD 2017</a> <br>
 		  		<br></p>
   		</section>
+
+
+
+
+</body>
 
 	  	<section>
   		<h2 id="projects">Courses</h2>
