@@ -1,11 +1,22 @@
-## Notes
+## Notes on Functional Analysis
 
-#### Convergence Rate
+张恭庆《泛函分析讲义》是一本好书，这里是我的学习笔记，旨在并做适当总结，对书中的GAP和错误予以说明，。
 
-**Claim**: Suppose $\mathbf{M}$ is a $p \times p$ symmetric matrix of rank $r \le p$, and let $\mathbf{M}=\mathbf{U}\Lambda\mathbf{U}^{\prime}$ be its spectral decomposition, where $\mathbf{U}$ is a $p \times r$ ortho-normal matrix and $\Lambda$ is a $r \times r$ diagonal matrix. Suppose $\mathbf{\hat{M}}_n$ is a sequence of random matrices and $\{a_n\}$ is a sequence of diverging positive numbers such that  $$a_n\text{vec}(\mathbf{\hat{M}}_n - \mathbf{M}) \Rightarrow N(0,\Theta).$$ Let $\mathbf{\hat{M}}_n = \mathbf{\hat{U}}_n \hat{\Lambda}_n\mathbf{\hat{U}}_n^{\prime}$ be spectral decomposition of $\mathbf{\hat{M}}_n$. Then  $\hat{\mathbf{U}} - \mathbf{U} = O_p(1/a_n)$ and $\mathbf{U}^{\prime}(\hat{\mathbf{U}} - \mathbf{U}) + (\hat{\mathbf{U}} - \mathbf{U})^{\prime}\mathbf{U} = o_p(1/a_n)$.
+### Chapter 1 Metric Space
 
-**Proof**: $\hat{\mathbf{U}} - \mathbf{U} = O_p(1/a_n)$ is obvious. The claim follows by
+* **metric space** is a set with distance.
 
-$$\mathbf{U}^{\prime}(\hat{\mathbf{U}} - \mathbf{U}) + (\hat{\mathbf{U}} - \mathbf{U})^{\prime}\mathbf{U} = -(\hat{\mathbf{U}} - \mathbf{U})^{\prime}(\hat{\mathbf{U}} - \mathbf{U}) + \hat{\mathbf{U}}^{\prime}\hat{\mathbf{U}} - \mathbf{U}^{\prime}\mathbf{U},$$
+* **distance** is a real-valued bi-variate function.
 
-since $\hat{\mathbf{U}}$ and $\mathbf{U}$ are both ortho-normal matrices.
+* The reason to define distance is to describe **convergence**.
+
+* The concept of **close** set and **complete** can be introduced to metric space.
+
+* Given two metric space, we can define **continuous mapping**, **contraction mapping**.
+
+  
+
+  **Example 1.1.7** Uniform convergence preserves the continuity of continuous functions。
+
+  **Definition 1.1.10** Contraction mapping must be continues mapping.
+
