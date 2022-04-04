@@ -14,6 +14,8 @@
 
 * Given two metric space, we can define **continuous mapping**, **contraction mapping**.
 
+* One important theorem related to contraction mapping is **Banach fixed-point theorem**.
+
   
 
   **Example 1.1.7** Uniform convergence preserves the continuity of continuous functions。
