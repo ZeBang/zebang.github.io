@@ -80,7 +80,8 @@ p, li, b {
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
         text-align: justify;
-        margin: 0.6em 1em;
+        /*margin: 0.6em 1em;*/
+        margin: 0.1em;
 }
 
 time {
@@ -100,7 +101,7 @@ time {
 
 #contact {
     float: left;
-    width: 55%
+    width: 40%
 }
 #photo {
     align: center;
@@ -156,7 +157,7 @@ time {
   line-height: 20px;
 }
 #header #nav ul a {
-  margin-right: 15px;
+  margin-right: 10px;
   color: #2bbc8a;
 }
 #header #nav ul a:hover {
