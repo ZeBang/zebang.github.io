@@ -34,7 +34,7 @@ big { font-size: larger; line-height: 150%; }
 
 h1, h2, h3, h4, h5, h6 {
         padding: 0;
-        margin: 0.5em 0 0.1em 0;
+        margin: 1em 0 0.1em 0;
         font-weight: normal;
         /*border-bottom: 1px solid #999;*/
 }
@@ -81,8 +81,11 @@ p, li, b {
     -webkit-hyphens: auto;
         text-align: justify;
         /*margin: 0.6em 1em;*/
-        margin: 0.1em;
+        margin: 0.5em 0.1em;
 }
+
+p{margin: 0.5em 0.1em;}
+
 
 time {
     padding-right: 1em;
@@ -101,7 +104,7 @@ time {
 
 #contact {
     float: left;
-    width: 40%
+    width: 43%
 }
 #photo {
     align: center;
