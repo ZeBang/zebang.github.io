@@ -114,6 +114,7 @@ time {
 }
 
 #header {
+  font-family: "Menlo", "Meslo LG", monospace;
   /*border-top: 5px solid #424242;*/
   border-bottom: 1px solid #e8e8e8;
   margin: 0 auto 2rem;
@@ -391,6 +392,7 @@ time {
 }
 
 #footer {
+  font-family: "Menlo", "Meslo LG", monospace;
   border-top: 1px solid #e8e8e8;
   position: absolute;
   bottom: 0;
