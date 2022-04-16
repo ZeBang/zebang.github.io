@@ -6,7 +6,8 @@ html {
 }
 
 body {
-    font-family: "Menlo", "Meslo LG", monospace;
+    /*font-family: "Menlo", "Meslo LG", monospace;*/
+    font-family: Helvetica, Arial, sans-serif;
     font-weight: 400;
     font-size: 14px;
     position: relative;
@@ -113,6 +114,8 @@ time {
 }
 
 #header {
+  /*border-top: 5px solid #424242;*/
+  border-bottom: 1px solid #e8e8e8;
   margin: 0 auto 2rem;
   width: 100%;
 }
@@ -388,6 +391,7 @@ time {
 }
 
 #footer {
+  border-top: 1px solid #e8e8e8;
   position: absolute;
   bottom: 0;
   margin-bottom: 10px;
